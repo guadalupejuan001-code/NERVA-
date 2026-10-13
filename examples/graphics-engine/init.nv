@@ -1,0 +1,5 @@
+nerva 0.3
+
+# El anfitrión conserva los buffers; NERVA recibe un identificador pequeño.
+const scene_handle = host.create_scene(settings)
+print({handle: scene_handle, instances: settings.count})

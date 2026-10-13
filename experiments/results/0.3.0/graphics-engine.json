@@ -1,0 +1,722 @@
+{
+  "format": "nerva-graphics-evidence",
+  "version": 1,
+  "measuredAt": "2026-10-13T19:03:18.022Z",
+  "scope": "Procedural instanced spheres: CPU reference and WebGPU correctness. Software adapter measurements do not establish physical GPU FPS.",
+  "sourceHashes": {
+    "src/runtime.mjs": "d321c4812263b6f251b6af4160f2b950fd53b2b2991baae6bce05d42b5b0849f",
+    "src/parser.mjs": "382df3543e8e3308d14e1910102be7fbc9098e405150b75860a069bc2d1887bd",
+    "src/project.mjs": "c44fbb85811893363dfa04de1b3bf2fe465e20701755b4133371e3d1c020dd25",
+    "src/tensor.mjs": "8454b6a973d4d03a6aaaed784f5dcdb8d6c2816031b11a5696ef84607e1c452b",
+    "src/graphics/scene.mjs": "ce069f5fd327a2fef40e8ffd237cd7aa6540058ca7f90160e718e8899366cb33",
+    "src/graphics/graph.mjs": "11b45199838e71b69ec01ba0e81b845db9c194d88622ea087f50e0e94d4f9368",
+    "src/graphics/commands.mjs": "3fe3b0959438a74feae039a46a889deda96ad1cbd72ae968e0fd22950354eac7",
+    "src/graphics/shaders.mjs": "1aef46c18f98480aca4cce5b6e9ff4ce5b324026195954936e3d1ea2123c5280",
+    "src/graphics/webgpu.mjs": "4866083b3b8423e9719af0d064b3a89a9f04cc4e050dca04a7b03eca17f64de3",
+    "src/graphics/index.mjs": "2768441de2be97efa9a6fc89ca16581c33df5869def889eefe9470000a3c1a2f",
+    "examples/graphics-engine/init.nv": "83eca3df86f58a4bffbdabd7068dd4c66a964c93564cbab0ad495f1d1e6c57ee",
+    "examples/graphics-engine/frame.nv": "2d49b70119614f10d0f623afa89cf1fa822a3b70c6a48257b036ffa177647265",
+    "examples/graphics-engine/prepare.mjs": "7055da3e61050cbd69a58c47039aa69f94488252bc0e8351f30e7bc53c0b46ba",
+    "examples/graphics-engine/benchmark.mjs": "91f2329ceb6d1ab901dcc2079b75dbadccea7abd2e07f6ddee70e57e480022cb",
+    "examples/graphics-engine/index.html": "79985b78ac5a30fb28c2a370bccf64161b17fc4fbc09cb5b9e6b8cb8365483ab",
+    "scripts/probe-webgpu.py": "5433a49ab1493cd26cb165cacd693fa2b2f7724deda710200346067512145ded"
+  },
+  "cpu": {
+    "version": "0.3.0",
+    "node": "v24.19.0",
+    "commandBytes": 952,
+    "sceneCreations": 1,
+    "commandCount": 5,
+    "preparationMs": 267.831274,
+    "interpreterSteps": {
+      "init": 14,
+      "frames": [
+        27,
+        35,
+        27
+      ]
+    },
+    "cpu": [
+      {
+        "count": 1000,
+        "sceneMemory": {
+          "positionsBytes": 16000,
+          "colorsBytes": 16000,
+          "totalBytes": 32000,
+          "bytesPerInstance": 32
+        },
+        "creationMs": 1.4052720000000036,
+        "cullingMs": {
+          "min": 0.23052400000000262,
+          "median": 0.334889000000004,
+          "max": 0.6474490000000017,
+          "samples": 5
+        },
+        "visibleCount": 668,
+        "lodCounts": [
+          3,
+          44,
+          621
+        ],
+        "initialUploadBytes": 32000,
+        "unchangedUploadBytes": 0,
+        "twoInstanceUploadBytes": 64,
+        "ranges": [
+          {
+            "first": 0,
+            "count": 1
+          },
+          {
+            "first": 999,
+            "count": 1
+          }
+        ],
+        "fullUploadBytesPerFrame": 32000
+      },
+      {
+        "count": 100000,
+        "sceneMemory": {
+          "positionsBytes": 1600000,
+          "colorsBytes": 1600000,
+          "totalBytes": 3200000,
+          "bytesPerInstance": 32
+        },
+        "creationMs": 12.312801,
+        "cullingMs": {
+          "min": 2.452687999999995,
+          "median": 2.5610539999999986,
+          "max": 3.4690750000000037,
+          "samples": 5
+        },
+        "visibleCount": 67031,
+        "lodCounts": [
+          257,
+          3329,
+          63445
+        ],
+        "initialUploadBytes": 3200000,
+        "unchangedUploadBytes": 0,
+        "twoInstanceUploadBytes": 64,
+        "ranges": [
+          {
+            "first": 0,
+            "count": 1
+          },
+          {
+            "first": 99999,
+            "count": 1
+          }
+        ],
+        "fullUploadBytesPerFrame": 3200000
+      },
+      {
+        "count": 1000000,
+        "sceneMemory": {
+          "positionsBytes": 16000000,
+          "colorsBytes": 16000000,
+          "totalBytes": 32000000,
+          "bytesPerInstance": 32
+        },
+        "creationMs": 84.06967800000001,
+        "cullingMs": {
+          "min": 21.78934399999997,
+          "median": 22.010316999999986,
+          "max": 24.63633199999998,
+          "samples": 5
+        },
+        "visibleCount": 669456,
+        "lodCounts": [
+          2452,
+          33512,
+          633492
+        ],
+        "initialUploadBytes": 32000000,
+        "unchangedUploadBytes": 0,
+        "twoInstanceUploadBytes": 64,
+        "ranges": [
+          {
+            "first": 0,
+            "count": 1
+          },
+          {
+            "first": 999999,
+            "count": 1
+          }
+        ],
+        "fullUploadBytesPerFrame": 32000000
+      }
+    ],
+    "timingScope": "CPU scene construction and reference culling only; upload bytes are planned instance-buffer traffic, not measured GPU bandwidth. No GPU FPS claim."
+  },
+  "gpu": {
+    "adapterMode": "software",
+    "chromiumArgs": [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--enable-unsafe-webgpu",
+      "--use-angle=swiftshader",
+      "--allow-unsafe-swiftshader"
+    ],
+    "probe": {
+      "available": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "subgroupMinSize": 4,
+        "subgroupMaxSize": 4,
+        "isFallbackAdapter": true
+      },
+      "softwareAdapter": true,
+      "fallbackAdapter": true,
+      "features": [
+        "bgra8unorm-storage",
+        "chromium-experimental-sampling-resource-table",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "clip-distances",
+        "core-features-and-limits",
+        "depth-clip-control",
+        "depth32float-stencil8",
+        "float32-blendable",
+        "float32-filterable",
+        "indirect-first-instance",
+        "rg11b10ufloat-renderable",
+        "subgroup-size-control",
+        "subgroups",
+        "texture-component-swizzle",
+        "texture-compression-astc",
+        "texture-compression-astc-sliced-3d",
+        "texture-compression-bc",
+        "texture-compression-bc-sliced-3d",
+        "texture-compression-etc2",
+        "texture-compression-unaligned",
+        "timestamp-query"
+      ],
+      "limits": {
+        "maxTextureDimension2D": 8192,
+        "maxBindGroups": 4,
+        "maxBufferSize": 1073741824,
+        "maxStorageBufferBindingSize": 1073741824,
+        "maxComputeWorkgroupSizeX": 256,
+        "maxComputeInvocationsPerWorkgroup": 256,
+        "maxComputeWorkgroupsPerDimension": 65535,
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "compute": {
+        "input": [
+          0,
+          1,
+          -2,
+          3.5,
+          8,
+          16,
+          32,
+          63
+        ],
+        "expected": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "actual": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "verified": true
+      }
+    },
+    "browser": "154.0.8037.57",
+    "benchmark": {
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "isFallbackAdapter": true
+      },
+      "softwareAdapter": true,
+      "physicalGPUPerformanceValidated": false,
+      "timestampFeature": true,
+      "timingScope": "CPU encoding/submission, validation wall time, and optional GPU pass timestamps are separate. GPU pass sum excludes upload/reset/readback; software adapter values do not establish physical GPU FPS.",
+      "frames": [
+        {
+          "frame": 1,
+          "width": 640,
+          "height": 480,
+          "instanceCount": 10000,
+          "drawCalls": 3,
+          "readback": true,
+          "capture": true,
+          "cpuEncodeMs": 0.900000000372529,
+          "gpuTimeMs": 143.75619899999998,
+          "gpuPassTimesMs": {
+            "cullAndLOD": 0.378471,
+            "forwardOpaque": 143.377728
+          },
+          "gpuMeasuredSpanMs": 143.78612,
+          "gpuTimestampStatus": "measured",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 128,
+          "uploadsBytesPerFrame": 128,
+          "uploadBytesPerFrame": 128,
+          "totalUploadBytes": 328708,
+          "sceneUploadBytesTotal": 320000,
+          "bufferBytes": 1797632,
+          "textureBytesEstimate": 2457600,
+          "allocatedBytesEstimate": 4255232,
+          "resourceCreateCount": 38,
+          "resourceCreationsThisFrame": 3,
+          "renderGraphPasses": [
+            "clear-counts",
+            "cull-and-lod",
+            "forward-opaque"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 2577660,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 328600
+          },
+          "lodTriangleCounts": [
+            224,
+            48,
+            8
+          ],
+          "counts": [
+            75,
+            1015,
+            5629
+          ],
+          "countsGPU": [
+            75,
+            1015,
+            5629
+          ],
+          "visibleCount": 6719,
+          "triangleCount": 110552,
+          "allHighDetailTriangleCount": 1505056,
+          "validationWallMs": 249.10000000149012,
+          "parity": {
+            "verified": true,
+            "visibleCount": 6719,
+            "lodCounts": [
+              75,
+              1015,
+              5629
+            ]
+          }
+        },
+        {
+          "frame": 2,
+          "width": 640,
+          "height": 480,
+          "instanceCount": 10000,
+          "drawCalls": 3,
+          "readback": true,
+          "capture": true,
+          "cpuEncodeMs": 0.2999999988824129,
+          "gpuTimeMs": 104.770251,
+          "gpuPassTimesMs": {
+            "cullAndLOD": 0.348775,
+            "forwardOpaque": 104.421476
+          },
+          "gpuMeasuredSpanMs": 104.842845,
+          "gpuTimestampStatus": "measured",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+          "sceneUploadBytes": 64,
+          "uniformUploadBytes": 128,
+          "uploadsBytesPerFrame": 192,
+          "uploadBytesPerFrame": 192,
+          "totalUploadBytes": 328900,
+          "sceneUploadBytesTotal": 320064,
+          "bufferBytes": 1797632,
+          "textureBytesEstimate": 2457600,
+          "allocatedBytesEstimate": 4255232,
+          "resourceCreateCount": 38,
+          "resourceCreationsThisFrame": 0,
+          "renderGraphPasses": [
+            "clear-counts",
+            "cull-and-lod",
+            "forward-opaque"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 2577660,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 328600
+          },
+          "lodTriangleCounts": [
+            224,
+            48,
+            8
+          ],
+          "counts": [
+            76,
+            1034,
+            5610
+          ],
+          "countsGPU": [
+            76,
+            1034,
+            5610
+          ],
+          "visibleCount": 6720,
+          "triangleCount": 111536,
+          "allHighDetailTriangleCount": 1505280,
+          "validationWallMs": 186.19999999925494,
+          "parity": {
+            "verified": true,
+            "visibleCount": 6720,
+            "lodCounts": [
+              76,
+              1034,
+              5610
+            ]
+          }
+        },
+        {
+          "frame": 3,
+          "width": 640,
+          "height": 480,
+          "instanceCount": 10000,
+          "drawCalls": 3,
+          "readback": true,
+          "capture": true,
+          "cpuEncodeMs": 0.2000000011175871,
+          "gpuTimeMs": 113.894253,
+          "gpuPassTimesMs": {
+            "cullAndLOD": 0.569974,
+            "forwardOpaque": 113.324279
+          },
+          "gpuMeasuredSpanMs": 113.951687,
+          "gpuTimestampStatus": "measured",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 128,
+          "uploadsBytesPerFrame": 128,
+          "uploadBytesPerFrame": 128,
+          "totalUploadBytes": 329028,
+          "sceneUploadBytesTotal": 320064,
+          "bufferBytes": 1797632,
+          "textureBytesEstimate": 2457600,
+          "allocatedBytesEstimate": 4255232,
+          "resourceCreateCount": 38,
+          "resourceCreationsThisFrame": 0,
+          "renderGraphPasses": [
+            "clear-counts",
+            "cull-and-lod",
+            "forward-opaque"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 2577660,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 328600
+          },
+          "lodTriangleCounts": [
+            224,
+            48,
+            8
+          ],
+          "counts": [
+            76,
+            1034,
+            5610
+          ],
+          "countsGPU": [
+            76,
+            1034,
+            5610
+          ],
+          "visibleCount": 6720,
+          "triangleCount": 111536,
+          "allHighDetailTriangleCount": 1505280,
+          "validationWallMs": 117.60000000149012,
+          "parity": {
+            "verified": true,
+            "visibleCount": 6720,
+            "lodCounts": [
+              76,
+              1034,
+              5610
+            ]
+          }
+        }
+      ],
+      "tests": {
+        "timestamps": {
+          "verified": true,
+          "passTimesMs": {
+            "cullAndLOD": 0.569974,
+            "forwardOpaque": 113.324279
+          },
+          "passSumMs": 113.894253
+        },
+        "persistence": {
+          "verified": true,
+          "sceneCreations": 1,
+          "changedInstanceBytes": 64,
+          "staticInstanceBytes": 0,
+          "uniformBytes": 128,
+          "steadyFrames": [
+            {
+              "frame": 4,
+              "width": 640,
+              "height": 480,
+              "instanceCount": 10000,
+              "drawCalls": 3,
+              "readback": false,
+              "capture": false,
+              "cpuEncodeMs": 0.10000000149011612,
+              "gpuTimeMs": null,
+              "gpuPassTimesMs": null,
+              "gpuMeasuredSpanMs": null,
+              "gpuTimestampStatus": "not-requested-this-frame",
+              "timingScope": "CPU encode and queue submission; excludes GPU completion",
+              "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+              "sceneUploadBytes": 0,
+              "uniformUploadBytes": 128,
+              "uploadsBytesPerFrame": 128,
+              "uploadBytesPerFrame": 128,
+              "totalUploadBytes": 329156,
+              "sceneUploadBytesTotal": 320064,
+              "bufferBytes": 1797632,
+              "textureBytesEstimate": 2457600,
+              "allocatedBytesEstimate": 4255232,
+              "resourceCreateCount": 38,
+              "resourceCreationsThisFrame": 0,
+              "renderGraphPasses": [
+                "clear-counts",
+                "cull-and-lod",
+                "forward-opaque"
+              ],
+              "renderGraphMemory": {
+                "persistentBytes": 2577660,
+                "transientPeakBytes": 0,
+                "unaliasedTransientBytes": 0,
+                "externalBytes": 328600
+              },
+              "lodTriangleCounts": [
+                224,
+                48,
+                8
+              ],
+              "counts": null,
+              "countsGPU": null,
+              "visibleCount": null,
+              "triangleCount": null,
+              "allHighDetailTriangleCount": null
+            },
+            {
+              "frame": 5,
+              "width": 640,
+              "height": 480,
+              "instanceCount": 10000,
+              "drawCalls": 3,
+              "readback": false,
+              "capture": false,
+              "cpuEncodeMs": 0.09999999962747097,
+              "gpuTimeMs": null,
+              "gpuPassTimesMs": null,
+              "gpuMeasuredSpanMs": null,
+              "gpuTimestampStatus": "not-requested-this-frame",
+              "timingScope": "CPU encode and queue submission; excludes GPU completion",
+              "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+              "sceneUploadBytes": 0,
+              "uniformUploadBytes": 128,
+              "uploadsBytesPerFrame": 128,
+              "uploadBytesPerFrame": 128,
+              "totalUploadBytes": 329284,
+              "sceneUploadBytesTotal": 320064,
+              "bufferBytes": 1797632,
+              "textureBytesEstimate": 2457600,
+              "allocatedBytesEstimate": 4255232,
+              "resourceCreateCount": 38,
+              "resourceCreationsThisFrame": 0,
+              "renderGraphPasses": [
+                "clear-counts",
+                "cull-and-lod",
+                "forward-opaque"
+              ],
+              "renderGraphMemory": {
+                "persistentBytes": 2577660,
+                "transientPeakBytes": 0,
+                "unaliasedTransientBytes": 0,
+                "externalBytes": 328600
+              },
+              "lodTriangleCounts": [
+                224,
+                48,
+                8
+              ],
+              "counts": null,
+              "countsGPU": null,
+              "visibleCount": null,
+              "triangleCount": null,
+              "allHighDetailTriangleCount": null
+            },
+            {
+              "frame": 6,
+              "width": 640,
+              "height": 480,
+              "instanceCount": 10000,
+              "drawCalls": 3,
+              "readback": false,
+              "capture": false,
+              "cpuEncodeMs": 0.2000000011175871,
+              "gpuTimeMs": null,
+              "gpuPassTimesMs": null,
+              "gpuMeasuredSpanMs": null,
+              "gpuTimestampStatus": "not-requested-this-frame",
+              "timingScope": "CPU encode and queue submission; excludes GPU completion",
+              "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+              "sceneUploadBytes": 0,
+              "uniformUploadBytes": 128,
+              "uploadsBytesPerFrame": 128,
+              "uploadBytesPerFrame": 128,
+              "totalUploadBytes": 329412,
+              "sceneUploadBytesTotal": 320064,
+              "bufferBytes": 1797632,
+              "textureBytesEstimate": 2457600,
+              "allocatedBytesEstimate": 4255232,
+              "resourceCreateCount": 38,
+              "resourceCreationsThisFrame": 0,
+              "renderGraphPasses": [
+                "clear-counts",
+                "cull-and-lod",
+                "forward-opaque"
+              ],
+              "renderGraphMemory": {
+                "persistentBytes": 2577660,
+                "transientPeakBytes": 0,
+                "unaliasedTransientBytes": 0,
+                "externalBytes": 328600
+              },
+              "lodTriangleCounts": [
+                224,
+                48,
+                8
+              ],
+              "counts": null,
+              "countsGPU": null,
+              "visibleCount": null,
+              "triangleCount": null,
+              "allHighDetailTriangleCount": null
+            }
+          ]
+        },
+        "planesAndLOD": {
+          "verified": true,
+          "visibleCount": 5,
+          "lodCounts": [
+            3,
+            1,
+            1
+          ]
+        },
+        "resizeAndCapture": {
+          "verified": true,
+          "width": 257,
+          "height": 193,
+          "rgbaBytes": 198404
+        },
+        "emptyAndDispose": {
+          "verified": true
+        },
+        "concurrentRenderersAndOwnership": {
+          "verified": true
+        },
+        "optionalTimestampFeature": {
+          "verified": true
+        },
+        "stress": {
+          "frame": 1,
+          "width": 320,
+          "height": 180,
+          "instanceCount": 100000,
+          "drawCalls": 3,
+          "readback": true,
+          "capture": false,
+          "cpuEncodeMs": 0.09999999962747097,
+          "gpuTimeMs": 902.94074,
+          "gpuPassTimesMs": {
+            "cullAndLOD": 2.464503,
+            "forwardOpaque": 900.476237
+          },
+          "gpuMeasuredSpanMs": 902.992326,
+          "gpuTimestampStatus": "measured",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU compute and render pass sum; excludes uploads, count reset, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 128,
+          "uploadsBytesPerFrame": 128,
+          "uploadBytesPerFrame": 128,
+          "totalUploadBytes": 3208708,
+          "sceneUploadBytesTotal": 3200000,
+          "bufferBytes": 5608832,
+          "textureBytesEstimate": 460800,
+          "allocatedBytesEstimate": 6069632,
+          "resourceCreateCount": 37,
+          "resourceCreationsThisFrame": 2,
+          "renderGraphPasses": [
+            "clear-counts",
+            "cull-and-lod",
+            "forward-opaque"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 1660860,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 3208600
+          },
+          "lodTriangleCounts": [
+            224,
+            48,
+            8
+          ],
+          "counts": [
+            311,
+            3958,
+            65081
+          ],
+          "countsGPU": [
+            311,
+            3958,
+            65081
+          ],
+          "visibleCount": 69350,
+          "triangleCount": 780296,
+          "allHighDetailTriangleCount": 15534400,
+          "validationWallMs": 908,
+          "parity": {
+            "verified": true,
+            "visibleCount": 69350,
+            "lodCounts": [
+              311,
+              3958,
+              65081
+            ]
+          }
+        }
+      },
+      "verified": true
+    },
+    "ok": true
+  }
+}

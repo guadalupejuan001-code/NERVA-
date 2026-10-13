@@ -14,7 +14,8 @@
     ".": "./src/runtime.mjs",
     "./parser": "./src/parser.mjs",
     "./tensor": "./src/tensor.mjs",
-    "./project": "./src/project.mjs"
+    "./project": "./src/project.mjs",
+    "./graphics": "./src/graphics/index.mjs"
   },
   "files": [
     "src/",
@@ -29,6 +30,9 @@
     "check": "node src/nerva.mjs check",
     "demo": "node src/nerva.mjs run examples/hola.nv",
     "demo:graphics": "node examples/graphics/render.mjs",
+    "demo:engine": "node examples/graphics-engine/prepare.mjs",
+    "test:engine:webgpu": "python scripts/probe-webgpu.py --adapter software --page examples/graphics-engine/index.html --out private/graphics-engine/browser-report.json --screenshot private/graphics-engine/scene.png",
+    "report:engine": "node examples/graphics-engine/report.mjs",
     "demo:professional": "node src/nerva.mjs run examples/professional --inputs examples/professional/input.json --json",
     "test:professional": "node src/nerva.mjs test examples/professional --json",
     "train:regression": "node src/nerva.mjs run examples/regresion.nv",

@@ -1,0 +1,7 @@
+nerva 0.3
+
+if len(frame.patches) > 0 {
+    host.update_instances(scene_handle, frame.patches)
+}
+host.render_scene(scene_handle, frame.camera)
+print({handle: scene_handle, changed: len(frame.patches)})

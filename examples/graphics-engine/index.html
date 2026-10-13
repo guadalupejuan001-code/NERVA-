@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NERVA · prueba de motor gráfico</title>
+<style>
+  :root { color-scheme:dark; font:16px/1.5 system-ui,sans-serif; background:#080e19; color:#dce7f5 }
+  body { max-width:1100px; margin:32px auto; padding:0 24px }
+  h1 { font-size:28px; margin-bottom:4px } p { color:#9eb0c9; margin-top:0 }
+  main { display:grid; grid-template-columns:minmax(0,640px) 1fr; gap:24px; align-items:start }
+  canvas { display:block; width:100%; height:auto; background:#04070b; border:1px solid #24344b; border-radius:12px }
+  aside { background:#111b2b; padding:20px; border-radius:12px } dl { margin:0 }
+  dt { color:#9eb0c9; font-size:13px; margin-top:16px } dd { margin:2px 0; font-weight:600 }
+  button { padding:10px 18px; border:0; border-radius:8px; background:#48cee9; color:#062633; font:inherit; cursor:pointer }
+  #status { margin:20px 0 } pre { white-space:pre-wrap; font-size:12px; color:#9eb0c9 }
+  @media(max-width:760px) { main { grid-template-columns:1fr } }
+</style>
+<h1>NERVA · escena residente en GPU</h1>
+<p>Frustum, tres niveles de detalle, dibujo indirecto y profundidad. Prueba reproducible con comandos escritos en NERVA.</p>
+<main>
+  <canvas id="scene" width="640" height="480" aria-label="Escena 3D renderizada por WebGPU"></canvas>
+  <aside>
+    <button id="run">Ejecutar prueba</button>
+    <dl>
+      <dt>Adaptador</dt><dd id="adapter">Pendiente</dd>
+      <dt>Instancias de la escena</dt><dd id="instances">—</dd>
+      <dt>Visibles / órdenes de dibujo</dt><dd id="visible">—</dd>
+      <dt>Triángulos seleccionados / detalle alto</dt><dd id="triangles">—</dd>
+      <dt>Datos de escena subidos en cuadro estático</dt><dd id="upload">—</dd>
+      <dt>Validación</dt><dd id="validation">Pendiente</dd>
+    </dl>
+  </aside>
+</main>
+<div id="status">Prepara los comandos con <code>npm run demo:engine</code> y sirve la raíz del repositorio por HTTP local.</div>
+<pre id="details"></pre>
+<script type="module" src="./benchmark.mjs"></script>
+</html>

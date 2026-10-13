@@ -118,6 +118,25 @@ función registrada pertenecen al anfitrión; un fallo no los revierte.
 
 ## Aprendizaje y experimentos
 
+La [base de motor WebGPU](examples/graphics-engine/README.md) incorpora escena
+persistente, actualizaciones parciales, culling y tres LOD en GPU, dibujo
+indirecto, profundidad y material con iluminación directa. NERVA controla la
+escena mediante comandos pequeños. El [diseño gráfico](docs/arquitectura-grafica.md)
+explica las técnicas estudiadas en fuentes de Epic, Unity, Filament y
+meshoptimizer, el alcance actual y las siguientes etapas.
+
+```sh
+npm run demo:engine
+# Opcional: requiere Chromium y Python Playwright.
+npm run test:engine:webgpu
+```
+
+El primer comando prepara la escena desde NERVA y mide la referencia CPU hasta
+un millón de instancias. El segundo verifica WebGPU con SwiftShader, compara
+visibilidad CPU/GPU hasta 100.000 instancias y guarda captura e informe en
+`private/graphics-engine/`. SwiftShader es un adaptador de software; los
+resultados no acreditan FPS ni calidad de un juego en una GPU física.
+
 También hay una [prueba gráfica](examples/graphics/README.md): NERVA calcula la
 geometría, rotaciones y perspectiva de un cubo 3D, y un backend JavaScript exporta
 cuadros SVG/PNG. Ejecuta `npm run demo:graphics` para generar sus imágenes en
