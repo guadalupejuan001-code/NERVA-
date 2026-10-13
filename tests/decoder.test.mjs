@@ -15,9 +15,9 @@ function select(changes = {}) {
   `, { inputs }).globals;
 }
 
-function runWorker(chunks) {
+function runWorker(chunks, worker = workerPath) {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [workerPath], { stdio: ['pipe', 'pipe', 'pipe'] });
+    const child = spawn(process.execPath, [worker], { stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
     child.stdout.setEncoding('utf8');
     child.stderr.setEncoding('utf8');
@@ -103,4 +103,24 @@ test('one decoder process enforces its decision limit', async () => {
   assert.deepEqual(result.messages[0], { token: 2 });
   assert.deepEqual(result.messages[1023], { token: 2 });
   assert.match(result.messages[1024].error, /exceeds 1024 decisions/);
+});
+
+test('specialized worker preserves protocol, fragmentation and all worker limits', async () => {
+  const fast = fileURLToPath(new URL('../src/conversation_worker_fast.mjs', import.meta.url));
+  const requests = [defaults, {...defaults, excluded: [2]}, {...defaults, scores: [0, 0, 0], temperature: 1, draw: .8}];
+  const input = requests.map(x => JSON.stringify(x) + '\n').join('');
+  const chunks = [input.slice(0, 7), input.slice(7, 77), input.slice(77)];
+  assert.deepEqual(await runWorker(chunks, fast), await runWorker(chunks));
+  for (const text of [JSON.stringify({...defaults, source: 'print(1)'}) + '\n', JSON.stringify(defaults),
+      'not-json\n', JSON.stringify({...defaults, excluded: [0, 1, 2]}) + '\n', ' '.repeat(8 * 1024 * 1024 + 1)]) {
+    const actual = await runWorker([text], fast);
+    assert.equal(actual.code, 1);
+    assert.equal(actual.messages.length, 1);
+    assert.ok(actual.messages[0].error);
+  }
+  const many = await runWorker([(JSON.stringify(defaults) + '\n').repeat(1025)], fast);
+  assert.equal(many.code, 1);
+  assert.equal(many.messages.length, 1025);
+  assert.deepEqual(many.messages[1023], {token: 2});
+  assert.match(many.messages[1024].error, /exceeds 1024 decisions/);
 });

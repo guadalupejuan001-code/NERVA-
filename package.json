@@ -14,7 +14,8 @@
     ".": "./src/runtime.mjs",
     "./parser": "./src/parser.mjs",
     "./tensor": "./src/tensor.mjs",
-    "./project": "./src/project.mjs"
+    "./project": "./src/project.mjs",
+    "./selector": "./src/token_selector.mjs"
   },
   "files": [
     "src/",

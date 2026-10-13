@@ -160,3 +160,6 @@ una actualización deliberada.
 La CI ejecuta pruebas del motor y la aplicación de ejemplo en Node.js 18, 22 y 24.
 El paquete está marcado como privado. Guarda datos personales, pesos y artefactos
 propios en `private/` o en rutas excluidas de Git.
+
+La [ruta opcional del selector fijo](docs/selector.md) se verifica también con
+la copia 0.2 de UNIDAD. Sus mediciones distinguen selector y generación completa.
