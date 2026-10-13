@@ -118,6 +118,38 @@ y termina con código 1 si se modificó esa base; no copia ni sobrescribe archiv
 Las ampliaciones futuras del motor deben conservar esta procedencia histórica y
 validar su compatibilidad por comportamiento.
 
+## Laboratorio de escalado
+
+Los experimentos exploran cómo ampliar NERVA usando su motor actual y prototipos
+separados. Para reproducirlos y regenerar los informes JSON:
+
+```sh
+npm run explore
+```
+
+El comando ejecuta los experimentos secuencialmente y deja los resultados en
+`experiments/results/`. Los tiempos son mediciones de la máquina donde se
+ejecutan; no son umbrales de aceptación.
+
+| Experimento | Resultado y alcance |
+| --- | --- |
+| [Aprendizaje](experiments/learning.mjs) | Compara SGD, Adam construido con primitivas NERVA y SGD con escalado de entradas, en tres semillas y datos reservados. Las tasas y el coste por actualización difieren. |
+| [Síntesis](experiments/synthesis.mjs) | Un buscador JavaScript genera expresiones `.nv` y NERVA ejecuta candidatos. Recupera dos reglas aritméticas y evalúa cinco puntos nuevos por regla; no es programación autónoma general. |
+| [Planificación](experiments/planning.mjs) | Optimiza acciones de un simulador 2D y comprueba el plan con un verificador escalar independiente. Evalúa cuatro metas factibles y una imposible; no aprende una política general. |
+| [Ejecución](experiments/performance.mjs) | Mide caché de AST y omisión de globales en versiones temporales del selector, más un kernel f64 fusionado de inferencia. No cambia el runtime canónico. |
+
+Los informes conservan configuración, métricas y límites:
+[aprendizaje](experiments/results/learning.json),
+[síntesis](experiments/results/synthesis.json),
+[planificación](experiments/results/planning.json) y
+[ejecución](experiments/results/performance.json).
+
+La variante que omite globales cambia esa parte del contrato y su presupuesto de
+serialización; sólo se compara el camino del selector que consume registros.
+El kernel fusionado es específico y omite validación, contabilidad y gradientes.
+Estas pruebas orientan una futura implementación; no convierten esos prototipos
+en capacidades públicas ni acreditan aceleración de una IA completa.
+
 ## Desarrollo
 
 ```sh
@@ -128,7 +160,9 @@ Las pruebas usan `node:test`, ejecutan programas y procesos reales y comprueban
 aprendizaje, gradientes, checkpoints, CLI, selección de tokens y límites. La CI
 ejecuta las pruebas y los ejemplos en Node.js 18, 22 y 24.
 
-Con esta base se pueden explorar nuevos modelos y ampliar el propio lenguaje.
-Los siguientes avances candidatos son módulos `.nv` reutilizables, mejores
-diagnósticos y optimizadores adicionales; cada capacidad necesita implementación
-y verificación antes de figurar como disponible.
+La dirección solicitada es ampliar NERVA como lenguaje general potente, con
+aprendizaje y transformación de código como capacidades propias. Los siguientes
+avances candidatos son módulos `.nv`, records y colecciones, contextos de
+ejecución aislados e interoperabilidad con bibliotecas del anfitrión. La síntesis,
+simulación y compilación crecerían sobre esa base. Cada capacidad necesita
+implementación y verificación antes de figurar como disponible.

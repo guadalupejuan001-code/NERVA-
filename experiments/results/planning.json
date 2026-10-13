@@ -1,0 +1,958 @@
+{
+  "experiment": "Differentiable finite-horizon 2D planning with independent verification",
+  "nervaVersion": "0.2.0",
+  "runtime": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "config": {
+    "seed": 731,
+    "horizon": 12,
+    "dt": 1,
+    "maxVelocityPerAxis": 1,
+    "maxAccelerationPerAxis": 0.35,
+    "accelerationPenaltyMargin": 0.03,
+    "iterations": 700,
+    "learningRate": 0.01,
+    "goalWeight": 6,
+    "energyWeight": 0.025,
+    "accelerationWeight": 30,
+    "goalTolerance": 0.15,
+    "numericTolerance": 1e-9,
+    "stepLimit": 200000,
+    "operationLimit": 20000000
+  },
+  "protocol": {
+    "calibrationGoals": [
+      [
+        2,
+        1
+      ],
+      [
+        -2,
+        2
+      ],
+      [
+        4,
+        0
+      ]
+    ],
+    "evaluationGoals": [
+      [
+        1.2,
+        3.3
+      ],
+      [
+        -4.5,
+        -1
+      ],
+      [
+        5.5,
+        -2.5
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        14,
+        0
+      ]
+    ],
+    "frozenBeforeEvaluation": true,
+    "calibrationUsedFor": "Sanity checks only; no automated hyperparameter search",
+    "trainingData": "None; each supplied goal defines a separate optimization problem",
+    "physics": "Kinematic position update p[t+1] = p[t] + dt*v[t], per-axis speed and acceleration bounds, rest at start/end",
+    "verifiedProperties": [
+      "finite 2D actions",
+      "speed bound for all steps",
+      "acceleration bound including start and final stop",
+      "endpoint tolerance",
+      "agreement of scalar JS simulation with NERVA tensor integration"
+    ],
+    "independentVerifier": "Scalar JavaScript; accepts/rejects without calling NERVA or consuming its loss",
+    "baseline": "Goal-aware trapezoid with hard per-axis speed/acceleration bounds",
+    "capacityPerAxis": 10.1
+  },
+  "summary": {
+    "calibrationAccepted": 3,
+    "calibrationTotal": 3,
+    "evaluationAccepted": 4,
+    "evaluationTotal": 5,
+    "unreachableGoalsRejected": 1,
+    "totalElapsedMs": 579.10678
+  },
+  "cases": [
+    {
+      "split": "calibration",
+      "goal": [
+        2,
+        1
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 2.23606797749979,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          1.9999999999999998,
+          0.9999999999999999
+        ],
+        "distanceToGoal": 2.482534153247273e-16,
+        "energy": 0.4521615527889423,
+        "maximumVelocity": 0.19801980198019803,
+        "maximumAcceleration": 0.0693069306930693,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          1.998612074947953,
+          0.9993060374739765
+        ],
+        "distanceToGoal": 0.0015517473820260016,
+        "energy": 0.4160885652216416,
+        "maximumVelocity": 0.1665510062456627,
+        "maximumAcceleration": 0.1665510062456627,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 15,
+      "finalLoss": 0.010409437890353914,
+      "energyImprovementVsBaselinePercent": 7.977898020033268,
+      "velocityPlan": [
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ],
+        [
+          0.1665510062456627,
+          0.08327550312283136
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 131.54367200000002
+      }
+    },
+    {
+      "split": "calibration",
+      "goal": [
+        -2,
+        2
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 2.8284271247461903,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          -1.9999999999999998,
+          1.9999999999999998
+        ],
+        "distanceToGoal": 3.1401849173675503e-16,
+        "energy": 0.7234584844623076,
+        "maximumVelocity": 0.19801980198019803,
+        "maximumAcceleration": 0.0693069306930693,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          -1.998612074947953,
+          1.998612074947953
+        ],
+        "distanceToGoal": 0.001962822432162237,
+        "energy": 0.6657417043546269,
+        "maximumVelocity": 0.1665510062456627,
+        "maximumAcceleration": 0.1665510062456627,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 24,
+      "finalLoss": 0.016655100624566273,
+      "energyImprovementVsBaselinePercent": 7.977898020033219,
+      "velocityPlan": [
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ],
+        [
+          -0.1665510062456627,
+          0.1665510062456627
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 81.166934
+      }
+    },
+    {
+      "split": "calibration",
+      "goal": [
+        4,
+        0
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 4,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          3.9999999999999996,
+          0
+        ],
+        "distanceToGoal": 4.440892098500626e-16,
+        "energy": 1.4469169689246155,
+        "maximumVelocity": 0.39603960396039606,
+        "maximumAcceleration": 0.1386138613861386,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          3.9972023845133307,
+          0
+        ],
+        "distanceToGoal": 0.002797615486669347,
+        "energy": 1.3318787815820272,
+        "maximumVelocity": 0.3357138584002849,
+        "maximumAcceleration": 0.32003190025524136,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 48,
+      "finalLoss": 0.03332047450846119,
+      "energyImprovementVsBaselinePercent": 7.950572825757067,
+      "velocityPlan": [
+        [
+          0.32003190025524136,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.3357138584002849,
+          0
+        ],
+        [
+          0.32003190025524136,
+          0
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 62.321410999999955
+      }
+    },
+    {
+      "split": "evaluation",
+      "goal": [
+        1.2,
+        3.3
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 3.5114099732158874,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          1.2000000000000002,
+          3.2999999999999994
+        ],
+        "distanceToGoal": 4.965068306494546e-16,
+        "energy": 1.1150303891775313,
+        "maximumVelocity": 0.32673267326732675,
+        "maximumAcceleration": 0.11435643564356435,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          1.199167244968772,
+          3.297709923664122
+        ],
+        "distanceToGoal": 0.0024367869349173057,
+        "energy": 1.026074401836568,
+        "maximumVelocity": 0.2748091603053434,
+        "maximumAcceleration": 0.2748091603053434,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 36.989999999999995,
+      "finalLoss": 0.025669673837612754,
+      "energyImprovementVsBaselinePercent": 7.977898020033251,
+      "velocityPlan": [
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ],
+        [
+          0.09993060374739765,
+          0.2748091603053434
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 66.845868
+      }
+    },
+    {
+      "split": "evaluation",
+      "goal": [
+        -4.5,
+        -1
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 4.609772228646444,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          -4.5,
+          -0.9999999999999999
+        ],
+        "distanceToGoal": 1.1102230246251565e-16,
+        "energy": 1.921686599353005,
+        "maximumVelocity": 0.44554455445544555,
+        "maximumAcceleration": 0.15594059405940594,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          -4.496786233497205,
+          -0.9993060374739765
+        ],
+        "distanceToGoal": 0.0032878380620117303,
+        "energy": 1.7754627631945297,
+        "maximumVelocity": 0.38565198033530934,
+        "maximumAcceleration": 0.32013321507205605,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 63.75,
+      "finalLoss": 0.04441943503078193,
+      "energyImprovementVsBaselinePercent": 7.609140647996718,
+      "velocityPlan": [
+        [
+          -0.32013321507205605,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.38565198033530934,
+          -0.08327550312283136
+        ],
+        [
+          -0.32013321507205605,
+          -0.08327550312283136
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 58.45334500000001
+      }
+    },
+    {
+      "split": "evaluation",
+      "goal": [
+        5.5,
+        -2.5
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 6.041522986797285,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          5.5,
+          -2.5
+        ],
+        "distanceToGoal": 0,
+        "energy": 3.300779335359279,
+        "maximumVelocity": 0.5445544554455446,
+        "maximumAcceleration": 0.1905940594059406,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          5.49595393098662,
+          -2.4982650936849407
+        ],
+        "distanceToGoal": 0.004402337377242225,
+        "energy": 3.082717567668543,
+        "maximumVelocity": 0.48552828160541905,
+        "maximumAcceleration": 0.3203355574662146,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 109.5,
+      "finalLoss": 0.07712885104581803,
+      "energyImprovementVsBaselinePercent": 6.60637217867824,
+      "velocityPlan": [
+        [
+          0.3203355574662146,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.48552828160541905,
+          -0.2081887578070784
+        ],
+        [
+          0.3203355574662146,
+          -0.2081887578070784
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 60.44226899999995
+      }
+    },
+    {
+      "split": "evaluation",
+      "goal": [
+        9,
+        2
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 9.219544457292889,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          9,
+          1.9999999999999998
+        ],
+        "distanceToGoal": 2.220446049250313e-16,
+        "energy": 7.68674639741202,
+        "maximumVelocity": 0.8910891089108911,
+        "maximumAcceleration": 0.3118811881188119,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "optimized": {
+        "endpoint": [
+          8.9915068077936,
+          1.998612074947953
+        ],
+        "distanceToGoal": 0.008605849743340247,
+        "energy": 7.599607733493761,
+        "maximumVelocity": 0.882605307891898,
+        "maximumAcceleration": 0.32224971992427776,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": true,
+        "accepted": true
+      },
+      "initialLoss": 255,
+      "finalLoss": 0.19035472276672413,
+      "energyImprovementVsBaselinePercent": 1.1336222038962718,
+      "velocityPlan": [
+        [
+          0.32224971992427776,
+          0.1665510062456627
+        ],
+        [
+          0.6430824524049306,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.882605307891898,
+          0.1665510062456627
+        ],
+        [
+          0.6430824524049306,
+          0.1665510062456627
+        ],
+        [
+          0.32224971992427776,
+          0.1665510062456627
+        ]
+      ],
+      "execution": {
+        "steps": 50157,
+        "tensorOperations": 3120151,
+        "elapsedMs": 60.0865
+      }
+    },
+    {
+      "split": "evaluation",
+      "goal": [
+        14,
+        0
+      ],
+      "initial": {
+        "endpoint": [
+          0,
+          0
+        ],
+        "distanceToGoal": 14,
+        "energy": 0,
+        "maximumVelocity": 0,
+        "maximumAcceleration": 0,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "baseline": {
+        "endpoint": [
+          10.1,
+          0
+        ],
+        "distanceToGoal": 3.9000000000000004,
+        "energy": 9.225000000000001,
+        "maximumVelocity": 1,
+        "maximumAcceleration": 0.35,
+        "speedValid": true,
+        "accelerationValid": true,
+        "goalReached": false,
+        "accepted": false
+      },
+      "optimized": {
+        "endpoint": [
+          11.19024985210351,
+          0
+        ],
+        "distanceToGoal": 2.809750147896491,
+        "energy": 10.691354776450027,
+        "maximumVelocity": 0.997926126979224,
+        "maximumAcceleration": 0.6057859252890863,
+        "speedValid": true,
+        "accelerationValid": false,
+        "goalReached": false,
+        "accepted": false
+      },
+      "initialLoss": 588,
+      "finalLoss": 28.308368284464446,
+      "energyImprovementVsBaselinePercent": null,
+      "velocityPlan": [
+        [
+          0.6057859252890863,
+          0
+        ],
+        [
+          0.9976344928457721,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.997926126979224,
+          0
+        ],
+        [
+          0.9976344928457721,
+          0
+        ],
+        [
+          0.6057859252890863,
+          0
+        ]
+      ],
+      "execution": {
+        "steps": 50167,
+        "tensorOperations": 3120151,
+        "elapsedMs": 56.292078999999944
+      }
+    }
+  ],
+  "limitations": [
+    "This is a goal-specific local solver, not a model that learned general planning.",
+    "Accelerations use a soft loss penalty; independent verification is mandatory.",
+    "No obstacles, disturbances, uncertain physics, discrete actions, or real robot are evaluated.",
+    "Success on this small frozen set does not establish generalization to arbitrary tasks.",
+    "Energy comparisons are meaningful only for accepted plans with comparable endpoint tolerance.",
+    "Timing describes this Node process and concurrent environment, not a speedup or performance benchmark."
+  ],
+  "languageOpportunities": [
+    "A reusable differentiable simulator/rollout abstraction with modules.",
+    "Constrained optimization or projected updates for hard acceleration limits.",
+    "Trajectory types, units, state/action shape contracts, and explicit verification results.",
+    "Receding-horizon replanning and robust tests under disturbances before physical control."
+  ]
+}

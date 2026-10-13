@@ -18,6 +18,7 @@
   "files": [
     "src/",
     "examples/",
+    "experiments/",
     "docs/",
     "scripts/",
     "provenance.json"
@@ -29,6 +30,7 @@
     "train:regression": "node src/nerva.mjs run examples/regresion.nv",
     "train:classification": "node src/nerva.mjs run examples/clasificacion.nv",
     "test": "node --test tests/*.test.mjs",
+    "explore": "node experiments/run.mjs",
     "verify:origin": "node scripts/verify-origin.mjs"
   }
 }

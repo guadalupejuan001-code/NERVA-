@@ -1,5 +1,10 @@
 # Desarrollo de NERVA
 
+El creador quiere que NERVA alcance la máxima capacidad general en código:
+«quiero que nerva sea omnipotente en el codigo». Esa dirección guía la evolución
+hacia programación general, interoperabilidad, aprendizaje y transformación de
+programas; las capacidades disponibles se siguen declarando por evidencia.
+
 - Lee README.md y docs/lenguaje.md para conocer el contrato existente.
 - Desarrolla el lenguaje aquí. UNIDAD conserva una copia empaquetada; una
   actualización allí requiere revisar sus adaptadores y pruebas de integración.

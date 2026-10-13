@@ -1,0 +1,413 @@
+{
+  "experiment": "bounded-program-synthesis-v1",
+  "runtimeVersion": "0.2.0",
+  "runtimeSha256": "67eef8b571770485fab2f9aa7950f8021db008fb5e41e9a268a37015223aed06",
+  "nodeVersion": "v24.19.0",
+  "scriptSha256": "920afb2912953bccfa0b963f5be4896e80be2ff488f8aec5b97decaf5c2ee119",
+  "grammar": {
+    "variable": "x",
+    "constants": [
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3
+    ],
+    "binaryOperators": [
+      "+",
+      "-",
+      "*",
+      "/"
+    ],
+    "complexity": "One node per variable, constant or binary operator."
+  },
+  "budgetsPerTask": {
+    "maxCandidates": 30000,
+    "maxMilliseconds": 15000,
+    "maxComplexity": 9
+  },
+  "interpreterLimitsPerCandidate": {
+    "stepLimit": 1000,
+    "operationLimit": 10000
+  },
+  "selection": "Training MSE first, then grammar node count; stop at the first exact fit in increasing complexity.",
+  "partitions": [
+    {
+      "name": "affine",
+      "trainSha256": "9c29e4764caa35f597f329f8b560a0b50d06f3a507bc7aa134706e450e4dfb58",
+      "heldOutSha256": "427c95f23ad8dc89c422e256b6079dfbb11d4b5de90b5e27e66b064ee371be10",
+      "trainInputs": [
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "heldOutInputs": [
+        -3.5,
+        -0.5,
+        0.5,
+        3.5,
+        5
+      ]
+    },
+    {
+      "name": "quadratic",
+      "trainSha256": "cd329ab0ff56ca943a4d10874b81ba3c178615440cc5a5c460755cc73df388b3",
+      "heldOutSha256": "f78b24a36ebfd24800fe2d63c457f5c0209a267e1f038c7c73be339fc6240b3b",
+      "trainInputs": [
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "heldOutInputs": [
+        -3.5,
+        -0.5,
+        0.5,
+        3.5,
+        5
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "name": "affine",
+      "synthesis": {
+        "candidates": 190,
+        "valid": 169,
+        "errors": 21,
+        "duplicateTrainingBehavior": 113,
+        "retained": 55,
+        "stopReason": "exact_training_fit",
+        "elapsedMilliseconds": 27.873,
+        "cpuMilliseconds": 45.482,
+        "selected": {
+          "expression": "((x - -1) + x)",
+          "complexity": 5,
+          "trainMse": 0
+        },
+        "errorSamples": [
+          {
+            "expression": "(x / x)",
+            "error": "Se esperaba un número finito. (line 2, column 27)"
+          },
+          {
+            "expression": "(x / 0)",
+            "error": "Se esperaba un número finito. (line 2, column 27)"
+          },
+          {
+            "expression": "(-2 / x)",
+            "error": "Se esperaba un número finito. (line 2, column 28)"
+          }
+        ],
+        "pruning": "Keep only the first expression for each exact TRAIN prediction vector; held-out behavior is never used."
+      },
+      "selectedProgram": "nerva 0.2\nfn predict(x) { return ((x - -1) + x) }\nfor point in points { print(predict(point)) }",
+      "train": {
+        "mse": 0,
+        "maximumAbsoluteError": 0,
+        "exactWithin1e12": 5,
+        "points": [
+          {
+            "x": -2,
+            "y": -3,
+            "prediction": -3
+          },
+          {
+            "x": -1,
+            "y": -1,
+            "prediction": -1
+          },
+          {
+            "x": 0,
+            "y": 1,
+            "prediction": 1
+          },
+          {
+            "x": 1,
+            "y": 3,
+            "prediction": 3
+          },
+          {
+            "x": 2,
+            "y": 5,
+            "prediction": 5
+          }
+        ]
+      },
+      "heldOut": {
+        "mse": 0,
+        "maximumAbsoluteError": 0,
+        "exactWithin1e12": 5,
+        "points": [
+          {
+            "x": -3.5,
+            "y": -6,
+            "prediction": -6
+          },
+          {
+            "x": -0.5,
+            "y": 0,
+            "prediction": 0
+          },
+          {
+            "x": 0.5,
+            "y": 2,
+            "prediction": 2
+          },
+          {
+            "x": 3.5,
+            "y": 8,
+            "prediction": 8
+          },
+          {
+            "x": 5,
+            "y": 11,
+            "prediction": 11
+          }
+        ]
+      },
+      "memorizedNearestTable": {
+        "train": {
+          "mse": 0,
+          "maximumAbsoluteError": 0,
+          "exactWithin1e12": 5,
+          "points": [
+            {
+              "x": -2,
+              "y": -3,
+              "prediction": -3
+            },
+            {
+              "x": -1,
+              "y": -1,
+              "prediction": -1
+            },
+            {
+              "x": 0,
+              "y": 1,
+              "prediction": 1
+            },
+            {
+              "x": 1,
+              "y": 3,
+              "prediction": 3
+            },
+            {
+              "x": 2,
+              "y": 5,
+              "prediction": 5
+            }
+          ]
+        },
+        "heldOut": {
+          "mse": 11.2,
+          "maximumAbsoluteError": 6,
+          "exactWithin1e12": 0,
+          "points": [
+            {
+              "x": -3.5,
+              "y": -6,
+              "prediction": -3
+            },
+            {
+              "x": -0.5,
+              "y": 0,
+              "prediction": -1
+            },
+            {
+              "x": 0.5,
+              "y": 2,
+              "prediction": 1
+            },
+            {
+              "x": 3.5,
+              "y": 8,
+              "prediction": 5
+            },
+            {
+              "x": 5,
+              "y": 11,
+              "prediction": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "quadratic",
+      "synthesis": {
+        "candidates": 7364,
+        "valid": 6689,
+        "errors": 675,
+        "duplicateTrainingBehavior": 5089,
+        "retained": 1599,
+        "stopReason": "exact_training_fit",
+        "elapsedMilliseconds": 327.815,
+        "cpuMilliseconds": 540.302,
+        "selected": {
+          "expression": "(((-2 + x) * x) + 3)",
+          "complexity": 7,
+          "trainMse": 0
+        },
+        "errorSamples": [
+          {
+            "expression": "(x / x)",
+            "error": "Se esperaba un número finito. (line 2, column 27)"
+          },
+          {
+            "expression": "(x / 0)",
+            "error": "Se esperaba un número finito. (line 2, column 27)"
+          },
+          {
+            "expression": "(-2 / x)",
+            "error": "Se esperaba un número finito. (line 2, column 28)"
+          }
+        ],
+        "pruning": "Keep only the first expression for each exact TRAIN prediction vector; held-out behavior is never used."
+      },
+      "selectedProgram": "nerva 0.2\nfn predict(x) { return (((-2 + x) * x) + 3) }\nfor point in points { print(predict(point)) }",
+      "train": {
+        "mse": 0,
+        "maximumAbsoluteError": 0,
+        "exactWithin1e12": 5,
+        "points": [
+          {
+            "x": -2,
+            "y": 11,
+            "prediction": 11
+          },
+          {
+            "x": -1,
+            "y": 6,
+            "prediction": 6
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "prediction": 3
+          },
+          {
+            "x": 1,
+            "y": 2,
+            "prediction": 2
+          },
+          {
+            "x": 2,
+            "y": 3,
+            "prediction": 3
+          }
+        ]
+      },
+      "heldOut": {
+        "mse": 0,
+        "maximumAbsoluteError": 0,
+        "exactWithin1e12": 5,
+        "points": [
+          {
+            "x": -3.5,
+            "y": 22.25,
+            "prediction": 22.25
+          },
+          {
+            "x": -0.5,
+            "y": 4.25,
+            "prediction": 4.25
+          },
+          {
+            "x": 0.5,
+            "y": 2.25,
+            "prediction": 2.25
+          },
+          {
+            "x": 3.5,
+            "y": 8.25,
+            "prediction": 8.25
+          },
+          {
+            "x": 5,
+            "y": 18,
+            "prediction": 18
+          }
+        ]
+      },
+      "memorizedNearestTable": {
+        "train": {
+          "mse": 0,
+          "maximumAbsoluteError": 0,
+          "exactWithin1e12": 5,
+          "points": [
+            {
+              "x": -2,
+              "y": 11,
+              "prediction": 11
+            },
+            {
+              "x": -1,
+              "y": 6,
+              "prediction": 6
+            },
+            {
+              "x": 0,
+              "y": 3,
+              "prediction": 3
+            },
+            {
+              "x": 1,
+              "y": 2,
+              "prediction": 2
+            },
+            {
+              "x": 2,
+              "y": 3,
+              "prediction": 3
+            }
+          ]
+        },
+        "heldOut": {
+          "mse": 76.55,
+          "maximumAbsoluteError": 15,
+          "exactWithin1e12": 0,
+          "points": [
+            {
+              "x": -3.5,
+              "y": 22.25,
+              "prediction": 11
+            },
+            {
+              "x": -0.5,
+              "y": 4.25,
+              "prediction": 6
+            },
+            {
+              "x": 0.5,
+              "y": 2.25,
+              "prediction": 3
+            },
+            {
+              "x": 3.5,
+              "y": 8.25,
+              "prediction": 3
+            },
+            {
+              "x": 5,
+              "y": 18,
+              "prediction": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "interpretation": [
+    "This searches a hand-written arithmetic grammar using black-box examples; it does not train neural weights.",
+    "The target functions and frozen held-out pairs are accessible to the fixture harness only, not to the search interface.",
+    "Equivalent TRAIN behavior can conceal different out-of-sample behavior; behavioral pruning is an efficiency heuristic, not a proof.",
+    "A finite held-out check validates these points only, not every input or general autonomous programming.",
+    "The memorization control is a table with nearest-neighbor fallback, not a trained competing model."
+  ],
+  "nextStep": "Scale to typed, guided synthesis with independent verification and counterexamples; retain explicit search and runtime budgets."
+}
