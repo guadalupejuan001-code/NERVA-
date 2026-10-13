@@ -28,6 +28,7 @@
     "nerva": "node src/nerva.mjs",
     "check": "node src/nerva.mjs check",
     "demo": "node src/nerva.mjs run examples/hola.nv",
+    "demo:graphics": "node examples/graphics/render.mjs",
     "demo:professional": "node src/nerva.mjs run examples/professional --inputs examples/professional/input.json --json",
     "test:professional": "node src/nerva.mjs test examples/professional --json",
     "train:regression": "node src/nerva.mjs run examples/regresion.nv",

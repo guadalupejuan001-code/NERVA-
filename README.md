@@ -118,6 +118,11 @@ función registrada pertenecen al anfitrión; un fallo no los revierte.
 
 ## Aprendizaje y experimentos
 
+También hay una [prueba gráfica](examples/graphics/README.md): NERVA calcula la
+geometría, rotaciones y perspectiva de un cubo 3D, y un backend JavaScript exporta
+cuadros SVG/PNG. Ejecuta `npm run demo:graphics` para generar sus imágenes en
+`private/graphics/`.
+
 ```sh
 npm run train:regression
 npm run train:classification
