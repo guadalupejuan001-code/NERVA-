@@ -63,3 +63,22 @@ encabezado 0.2. No importa módulos ni registra funciones del anfitrión. Los
 getters, símbolos, prototipos personalizados y arrays dispersos se rechazan
 sin ejecutar código del anfitrión. Versiones futuras requieren una revisión
 explícita; no se supone compatibilidad por compartir el nombre NERVA.
+
+## Resultado de generación en UNIDAD
+
+La corrida final de UNIDAD `ecf03da` conservó 468 respuestas medidas y 117 pares
+NERVA original/optimizada con salidas idénticas. Medianas por diez consultas:
+
+| Modelo | NERVA original | NERVA especializada | Torch con caché |
+|---|---:|---:|---:|
+| C7 | 4,617 s | 3,669 s | 0,912 s |
+| SOVENGI predeterminado | 7,431 s | 6,740 s | 4,417 s |
+| Candidato de memoria | 8,099 s | 7,392 s | 4,913 s |
+
+Se recomienda mantener Torch con caché predeterminado y esta ruta como opción.
+Los pesos y el runtime 0.2 de UNIDAD no se modificaron.
+[Informe y respuestas completas en UNIDAD](https://github.com/guadalupejuan001-code/UNIDAD/blob/work/nerva-selector-performance-20261013/docs/nerva-selector-20261013/README.md).
+
+La [medición aislada de esta extensión con runtime 0.3](../experiments/results/selector-0.3.0.json)
+usa otra máquina y sólo mide Node. No se mezcla con los tiempos de generación
+0.2 de UNIDAD ni se presenta como una migración completa ya evaluada.
