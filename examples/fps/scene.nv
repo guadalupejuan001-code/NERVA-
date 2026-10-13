@@ -1,0 +1,141 @@
+nerva 0.3
+
+# NERVA diseña la instalación. El anfitrión prepara mallas y recursos residentes.
+const concrete = {color: [0.23, 0.27, 0.29], roughness: 0.83, metallic: 0, pattern: 1}
+const steel = {color: [0.16, 0.21, 0.24], roughness: 0.34, metallic: 0.85, pattern: 5}
+const silver = {color: [0.44, 0.5, 0.54], roughness: 0.24, metallic: 0.92, pattern: 5}
+const copper = {color: [0.42, 0.17, 0.06], roughness: 0.42, metallic: 0.85, pattern: 5}
+const teal = {color: [0.04, 0.19, 0.2], roughness: 0.42, metallic: 0.65, pattern: 5}
+const hazard = {color: [0.9, 0.44, 0.035], roughness: 0.52, metallic: 0.2, pattern: 4}
+const blue = {color: [0.18, 0.46, 0.61], roughness: 0.21, metallic: 0.1, emission: 4}
+const amber = {color: [1, 0.29, 0.025], roughness: 0.24, metallic: 0.1, emission: 7}
+const white = {color: [0.9, 0.82, 0.7], roughness: 0.18, metallic: 0.1, emission: 4}
+const wet = {color: [0.055, 0.085, 0.105], roughness: 0.18, metallic: 0.15, pattern: 2, reflection: 0.85}
+
+fn box(position, scale, material, solid) {
+    host.object({kind: "box", position: position, scale: scale, material: material, solid: solid})
+}
+fn cylinder(position, scale, material, solid) {
+    host.object({kind: "cylinder", position: position, scale: scale, material: material, solid: solid})
+}
+fn pipe(position, scale, material) {
+    host.object({kind: "pipe", position: position, scale: scale, material: material, solid: false})
+}
+fn lamp(position, color, intensity) {
+    host.light({position: position, color: color, intensity: intensity, radius: 14})
+}
+fn crate(x, z) {
+    box([x, 0.67, z], [1.55, 1.34, 1.35], teal, true)
+    box([x, 1.37, z], [1.68, 0.1, 1.48], silver, false)
+    box([x, 0.09, z], [1.68, 0.16, 1.48], steel, false)
+    for side in [-1, 1] {
+        box([x + side * 0.6, 0.7, z - 0.686], [0.065, 1.3, 0.025], silver, false)
+        box([x + side * 0.6, 0.7, z + 0.686], [0.065, 1.3, 0.025], silver, false)
+    }
+    box([x, 0.35, z - 0.697], [1.18, 0.2, 0.025], hazard, false)
+    box([x, 1.02, z - 0.703], [0.55, 0.14, 0.025], steel, false)
+}
+fn tank(x, z) {
+    cylinder([x, 1.7, z], [1.7, 3.4, 1.7], teal, true)
+    for y in [0.3, 1.7, 3.1] {
+        cylinder([x, y, z], [1.86, 0.11, 1.86], silver, false)
+    }
+    cylinder([x, 3.48, z], [0.55, 0.18, 0.55], copper, false)
+    box([x, 1.9, z - 0.9], [0.68, 0.5, 0.1], steel, false)
+    box([x, 1.9, z - 0.956], [0.48, 0.27, 0.025], blue, false)
+}
+
+host.configure({
+    floorY: 0,
+    spawn: {position: [0, 1.7, -4], yaw: 0.025, pitch: -0.04},
+    character: {
+        name: "Iria", url: "../../assets/characters/iria.gltf",
+        position: [-1.7, 0, 6], yaw: 3.141592653589793,
+        interactionRadius: 2, patrolDistance: 0.65, patrolSpeed: 0.2,
+        dialogue: "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo."
+    },
+    lighting: {
+        sunDirection: [-0.45, 0.8, -0.35], sunColor: [1, 0.86, 0.67],
+        sunIntensity: 2.4, ambient: 0.18, fogDensity: 0.027,
+        exposure: 1.08, reflectionStrength: 0.65, bloomStrength: 0.2, aoStrength: 0.35
+    }
+})
+
+box([0, -0.09, 18], [16, 0.18, 52], wet, false)
+box([-7.8, 2.3, 18], [0.45, 4.6, 52], concrete, true)
+box([7.8, 2.3, 18], [0.45, 4.6, 52], concrete, true)
+box([0, 3.8, 44], [16, 7.6, 0.45], concrete, true)
+box([0, 3.8, -8], [16, 7.6, 0.45], concrete, true)
+
+# Juntas, paneles, marcos y vigas dan escala al recorrido.
+for z in range(-4, 44, 4) {
+    for side in [-1, 1] {
+        box([side * 7.5, 2.3, z], [0.12, 4.6, 0.13], steel, false)
+        box([side * 6.5, 3.2, z], [0.42, 6.4, 0.48], steel, true)
+        box([side * 6.5, 0.14, z], [0.86, 0.28, 0.95], silver, true)
+        box([side * 6.5, 1.06, z - 0.255], [0.44, 0.4, 0.025], hazard, false)
+        box([side * 7.52, 3.2, z + 1.6], [0.1, 0.65, 2.9], teal, false)
+    }
+    box([0, 6.5, z], [13.4, 0.32, 0.42], steel, false)
+    box([0, 6.67, z], [13.4, 0.09, 0.46], silver, false)
+}
+for side in [-1, 1] {
+    pipe([side * 6.95, 5.3, 18], [0.36, 0.36, 48], copper)
+    pipe([side * 6.55, 5.7, 18], [0.21, 0.21, 48], silver)
+    pipe([side * 4.85, 0.95, 18], [0.05, 0.05, 43], silver)
+    pipe([side * 4.85, 0.48, 18], [0.035, 0.035, 43], steel)
+    box([side * 1.68, 0.014, 17], [0.045, 0.015, 44], amber, false)
+    for z in range(-3, 42, 5) {
+        cylinder([side * 4.85, 0.48, z], [0.07, 0.96, 0.07], steel, false)
+    }
+    for z in [2, 14, 26, 38] {
+        box([side * 6.12, 3.35, z], [0.32, 0.86, 1.48], steel, false)
+        box([side * 5.94, 3.35, z], [0.035, 0.62, 1.2], blue, false)
+        box([side * 5.9, 3.35, z], [0.08, 0.72, 0.045], silver, false)
+        lamp([side * 5.65, 3.15, z], [0.25, 0.5, 0.7], 18)
+    }
+}
+
+for z in [5, 17, 29, 41] {
+    box([0, 6.1, z], [5.2, 0.15, 0.44], steel, false)
+    box([0, 6.01, z], [4.7, 0.04, 0.24], white, false)
+    lamp([0, 5.7, z], [1, 0.64, 0.32], 24)
+}
+
+# La luz de trabajo hace legible el rostro sin depender de un filtro de imagen.
+host.light({position: [-1.7, 2.4, 4.2], color: [1, 0.7, 0.46], intensity: 10, radius: 6})
+
+crate(3.1, 4.5)
+crate(-3.4, 9)
+crate(4.0, 17.5)
+crate(-3.1, 23.5)
+crate(3.3, 31)
+tank(-5.55, 4.5)
+tank(5.55, 10)
+tank(-5.55, 18.5)
+tank(5.55, 27)
+
+# El núcleo central y sus marcos forman el punto de interés visual.
+cylinder([0, 0.22, 35], [3.6, 0.44, 3.6], steel, true)
+cylinder([0, 1.7, 35], [1.5, 3, 1.5], silver, true)
+for y in [0.55, 1.15, 2.25, 3.0] {
+    cylinder([0, y, 35], [2.0, 0.11, 2.0], copper, false)
+    cylinder([0, y + 0.07, 35], [1.88, 0.035, 1.88], blue, false)
+}
+host.object({kind: "sphere", position: [0, 3.65, 35], scale: [1.25, 1.25, 1.25], material: blue, solid: false})
+lamp([0, 3.7, 34], [0.06, 0.8, 1], 42)
+for side in [-1, 1] {
+    box([side * 2.4, 3, 35], [0.42, 6, 0.68], steel, true)
+    box([side * 2.15, 3.5, 34.62], [0.06, 4.7, 0.055], amber, false)
+}
+box([0, 6.05, 35], [5.25, 0.45, 0.72], steel, false)
+box([0, 5.78, 34.62], [4.25, 0.06, 0.06], amber, false)
+
+# Consola de inspección: el programa de control NERVA atiende E al acercarse.
+box([0, 0.58, 31.5], [1.45, 1.16, 0.72], steel, true)
+box([0, 1.22, 31.5], [1.62, 0.16, 0.91], silver, false)
+box([0, 1.32, 31.25], [1.2, 0.04, 0.5], blue, false)
+host.sign({text: "NERVA", position: [0, 4.8, 43.6], height: 1.25, material: white})
+host.sign({text: "07", position: [-4.5, 3.1, 7.2], height: 0.7, material: amber})
+host.sign({text: "07", position: [4.5, 3.1, 19.2], height: 0.7, material: amber})
+print({scene: "SECTOR 07", purpose: "first-person exploration", version: 1})

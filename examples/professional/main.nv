@@ -1,0 +1,7 @@
+nerva 0.3
+
+import { build_batch } from "./lib/invoice.nv"
+
+# orders llega como entrada JSON explícita del CLI o de runProgram.
+const report = build_batch(orders)
+print(report)

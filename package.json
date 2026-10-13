@@ -1,0 +1,52 @@
+{
+  "name": "nerva-private",
+  "version": "0.3.0",
+  "description": "Lenguaje privado con módulos, colecciones, herramientas de proyecto y aprendizaje local",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "nerva": "src/nerva.mjs"
+  },
+  "exports": {
+    ".": "./src/runtime.mjs",
+    "./parser": "./src/parser.mjs",
+    "./tensor": "./src/tensor.mjs",
+    "./project": "./src/project.mjs",
+    "./graphics": "./src/graphics/index.mjs"
+  },
+  "files": [
+    "src/",
+    "assets/",
+    "examples/",
+    "experiments/",
+    "docs/",
+    "scripts/",
+    "provenance.json"
+  ],
+  "scripts": {
+    "nerva": "node src/nerva.mjs",
+    "check": "node src/nerva.mjs check",
+    "demo": "node src/nerva.mjs run examples/hola.nv",
+    "demo:graphics": "node examples/graphics/render.mjs",
+    "demo:engine": "node examples/graphics-engine/prepare.mjs",
+    "test:engine:webgpu": "python scripts/probe-webgpu.py --adapter software --page examples/graphics-engine/index.html --out private/graphics-engine/browser-report.json --screenshot private/graphics-engine/scene.png",
+    "report:engine": "node examples/graphics-engine/report.mjs",
+    "demo:fps": "node examples/fps/prepare.mjs",
+    "build:character": "blender --background --python scripts/build-character.py",
+    "test:fps:webgpu": "python scripts/probe-webgpu.py --adapter software --page examples/fps/index.html --out private/fps/browser-report.json --screenshot private/fps/sector-07.png",
+    "test:fps:controls": "python scripts/probe-fps.py --adapter software --out private/fps/controls-report.json --screenshot private/fps/controls.png",
+    "test:fps:renderer": "python scripts/probe-fps-renderer.py --adapter software --out private/fps/gpu-final-qa.json",
+    "test:fps:character": "python scripts/probe-fps-character.py --adapter software --out private/fps/skin-gpu-qa.json",
+    "report:fps": "node examples/fps/report.mjs",
+    "demo:professional": "node src/nerva.mjs run examples/professional --inputs examples/professional/input.json --json",
+    "test:professional": "node src/nerva.mjs test examples/professional --json",
+    "train:regression": "node src/nerva.mjs run examples/regresion.nv",
+    "train:classification": "node src/nerva.mjs run examples/clasificacion.nv",
+    "test": "node --test tests/*.test.mjs",
+    "explore": "node experiments/run.mjs",
+    "verify:origin": "node scripts/verify-origin.mjs"
+  }
+}

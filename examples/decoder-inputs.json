@@ -1,0 +1,10 @@
+{
+  "scores": [0.1, 0.2, 5.0, 1.0],
+  "excluded": [2],
+  "generated": [],
+  "temperature": 0,
+  "top_k": 0,
+  "top_p": 1,
+  "repetition_penalty": 1,
+  "draw": 0
+}

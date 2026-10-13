@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NERVA — SECTOR 07</title>
+<style>
+  :root { color-scheme:dark; font:14px/1.5 system-ui,sans-serif; background:#060a10; color:#dce9ef }
+  * { box-sizing:border-box } body { margin:0; overflow:hidden } canvas { display:block; width:100vw; height:100vh; object-fit:cover; background:#09111a }
+  .hud { position:fixed; inset:0; pointer-events:none; background:linear-gradient(#02060c88,transparent 20%,transparent 75%,#02060caa) }
+  header { display:flex; align-items:start; justify-content:space-between; gap:16px; padding:26px 34px }
+  .brand { font-size:27px; letter-spacing:6px; font-weight:700; line-height:1.1; text-shadow:0 2px 8px #000 }
+  .brand small { display:block; font-size:10px; letter-spacing:3px; font-weight:500; margin-top:10px; color:#8fbdc9 }
+  .tools { display:flex; align-items:center; gap:10px; pointer-events:auto; font-size:11px }
+  button,select { font:inherit; color:#dce9ef; background:#091722bd; border:1px solid #5b87916e; border-radius:5px; padding:9px 12px; cursor:pointer }
+  button:hover { border-color:#7cebf0 } #enter { background:#64dde6; color:#082229; border:0; font-weight:700; letter-spacing:1px; padding:12px 24px }
+  .crosshair { position:absolute; top:50%; left:50%; width:4px; height:4px; margin:-2px; border:1px solid #b2f4f49a; border-radius:50%; box-shadow:0 0 8px #000 }
+  footer { position:absolute; bottom:30px; left:34px; right:34px; display:flex; justify-content:space-between; align-items:end; gap:20px }
+  .mission { max-width:570px; border-left:2px solid #67dfea; padding-left:16px; text-shadow:0 2px 4px #000 }
+  .label { font-size:10px; color:#71d9e2; letter-spacing:2px; margin-bottom:5px }
+  #objective { font-size:15px } .keys { margin-top:9px; color:#a3b4bb; font-size:11px; letter-spacing:.5px }
+  .entry { text-align:right; pointer-events:auto } #status { font-size:11px; color:#c4d5dc; margin-bottom:8px; max-width:360px }
+  #diagnostics { position:absolute; top:90px; right:34px; padding:16px; white-space:pre-wrap; background:#07101fe0; border:1px solid #2a454b; border-radius:6px; font:11px/1.6 monospace; max-width:450px; pointer-events:auto }
+  #loading { position:fixed; top:45%; left:0; right:0; text-align:center; letter-spacing:3px; color:#6bdae5; pointer-events:none }
+  @media(max-width:650px) { header { padding:18px } footer { left:18px; right:18px; bottom:20px } .brand { font-size:21px } .tools { gap:5px } .tools button { display:none } .keys { font-size:10px } .entry { max-width:150px } }
+</style>
+<canvas id="scene" width="960" height="540" aria-label="Instalación industrial 3D explorable en primera persona"></canvas>
+<div class="hud">
+  <header>
+    <div class="brand">NERVA<small>SECTOR 07 / INSTALACIÓN DE ENERGÍA</small></div>
+    <div class="tools">
+      <select id="quality" aria-label="Calidad de render" disabled><option value="high">Alta</option><option value="balanced">Equilibrada</option><option value="validation">Validación</option></select>
+      <button id="character" disabled>Conocer a Iria</button>
+      <button id="effects" disabled>Efectos activos</button><button id="stats" disabled>Métricas</button>
+    </div>
+  </header>
+  <div class="crosshair"></div>
+  <pre id="diagnostics" hidden></pre>
+  <footer>
+    <div class="mission"><div class="label">OBJETIVO / INSPECCIÓN</div><div id="objective">Explora la instalación y localiza la consola del núcleo</div><div class="keys">WASD mover · ratón mirar · Shift correr · Espacio saltar · E inspeccionar · Esc pausa</div></div>
+    <div class="entry"><div id="status">Preparando la instalación…</div><button id="enter" disabled>ENTRAR</button></div>
+  </footer>
+</div>
+<div id="loading">INICIANDO SECTOR 07</div>
+<script type="module" src="./app.mjs"></script>
+</html>

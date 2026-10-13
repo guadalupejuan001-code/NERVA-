@@ -1,0 +1,235 @@
+{
+  "experiment": "execution_scaling",
+  "runtimeVersion": "0.2.0",
+  "environment": {
+    "node": "v24.19.0",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logicalCPUs": 5
+  },
+  "timingPolicy": "Run after other experiments finish; alternating/rotated order and medians of five rounds.",
+  "decoder": {
+    "hypothesis": "Avoid repeated parsing and exporting unused globals on a fixed decoder path.",
+    "parityCases": 24,
+    "cacheInvalidationAndBudgetChecks": true,
+    "results": [
+      {
+        "vocabularySize": 128,
+        "callsPerRound": 160,
+        "rounds": 5,
+        "measurements": {
+          "original": {
+            "medianMsPerDecision": 0.059427,
+            "samplesMsPerDecision": [
+              0.106087,
+              0.060481,
+              0.059427,
+              0.059106,
+              0.056605
+            ],
+            "speedupVsOriginal": 1
+          },
+          "cache_ast": {
+            "medianMsPerDecision": 0.038784,
+            "samplesMsPerDecision": [
+              0.05904,
+              0.038784,
+              0.038984,
+              0.037662,
+              0.035693
+            ],
+            "speedupVsOriginal": 1.532279
+          },
+          "records_only": {
+            "medianMsPerDecision": 0.041015,
+            "samplesMsPerDecision": [
+              0.059405,
+              0.064505,
+              0.036511,
+              0.041015,
+              0.037195
+            ],
+            "speedupVsOriginal": 1.448909
+          },
+          "cache_ast_records_only": {
+            "medianMsPerDecision": 0.02173,
+            "samplesMsPerDecision": [
+              0.033863,
+              0.028077,
+              0.02173,
+              0.020341,
+              0.019071
+            ],
+            "speedupVsOriginal": 2.734743
+          }
+        }
+      },
+      {
+        "vocabularySize": 1024,
+        "callsPerRound": 100,
+        "rounds": 5,
+        "measurements": {
+          "original": {
+            "medianMsPerDecision": 0.248518,
+            "samplesMsPerDecision": [
+              0.243821,
+              0.248518,
+              0.242297,
+              0.264889,
+              0.282273
+            ],
+            "speedupVsOriginal": 1
+          },
+          "cache_ast": {
+            "medianMsPerDecision": 0.233696,
+            "samplesMsPerDecision": [
+              0.256613,
+              0.237949,
+              0.233696,
+              0.23033,
+              0.230579
+            ],
+            "speedupVsOriginal": 1.063424
+          },
+          "records_only": {
+            "medianMsPerDecision": 0.115501,
+            "samplesMsPerDecision": [
+              0.116549,
+              0.111199,
+              0.115501,
+              0.126486,
+              0.112897
+            ],
+            "speedupVsOriginal": 2.151656
+          },
+          "cache_ast_records_only": {
+            "medianMsPerDecision": 0.09684,
+            "samplesMsPerDecision": [
+              0.098758,
+              0.09684,
+              0.098799,
+              0.087824,
+              0.094817
+            ],
+            "speedupVsOriginal": 2.566279
+          }
+        }
+      },
+      {
+        "vocabularySize": 8192,
+        "callsPerRound": 40,
+        "rounds": 5,
+        "measurements": {
+          "original": {
+            "medianMsPerDecision": 3.144889,
+            "samplesMsPerDecision": [
+              3.501691,
+              3.144889,
+              3.74343,
+              2.863569,
+              2.890946
+            ],
+            "speedupVsOriginal": 1
+          },
+          "cache_ast": {
+            "medianMsPerDecision": 3.109098,
+            "samplesMsPerDecision": [
+              2.978023,
+              3.109098,
+              3.642637,
+              2.868741,
+              3.185695
+            ],
+            "speedupVsOriginal": 1.011512
+          },
+          "records_only": {
+            "medianMsPerDecision": 0.76511,
+            "samplesMsPerDecision": [
+              0.728651,
+              0.782912,
+              1.303752,
+              0.688322,
+              0.76511
+            ],
+            "speedupVsOriginal": 4.110376
+          },
+          "cache_ast_records_only": {
+            "medianMsPerDecision": 0.691332,
+            "samplesMsPerDecision": [
+              0.671794,
+              0.651931,
+              0.837258,
+              0.729356,
+              0.691332
+            ],
+            "speedupVsOriginal": 4.549029
+          }
+        }
+      }
+    ],
+    "scope": "Temporary prototype, same records/steps on tested decoder inputs. records_only changes global export semantics and is not a public API replacement.",
+    "limitations": "No full conversation speedup established; production needs a separate prepared/records-only API and all compatibility checks."
+  },
+  "fusion": {
+    "expression": "tanh(x * 0.73 - 0.17)",
+    "results": [
+      {
+        "elements": 8192,
+        "dtype": "f64",
+        "callsPerRound": 24,
+        "rounds": 5,
+        "exactForwardParity": true,
+        "medianMsPerCall": {
+          "generic": 0.891352,
+          "fused": 0.1272
+        },
+        "speedup": 7.007479,
+        "samplesMsPerCall": {
+          "generic": [
+            1.28902,
+            0.850872,
+            0.891352,
+            1.014129,
+            0.78841
+          ],
+          "fused": [
+            0.119657,
+            0.1272,
+            0.109918,
+            0.159817,
+            0.130951
+          ]
+        }
+      },
+      {
+        "elements": 65536,
+        "dtype": "f64",
+        "callsPerRound": 4,
+        "rounds": 5,
+        "exactForwardParity": true,
+        "medianMsPerCall": {
+          "generic": 8.738035,
+          "fused": 1.032393
+        },
+        "speedup": 8.463863,
+        "samplesMsPerCall": {
+          "generic": [
+            8.566538,
+            8.738035,
+            9.524462,
+            9.123127,
+            8.661304
+          ],
+          "fused": [
+            1.216198,
+            1.142242,
+            0.922626,
+            0.9619,
+            1.032393
+          ]
+        }
+      }
+    ],
+    "scope": "Handwritten inference-only JavaScript kernel, not an implemented NERVA compiler.",
+    "limitations": "Fused prototype bypasses tensor validation/accounting and has no backward pass. Speedups mix fewer allocations, fewer checks and fewer traversals; production must preserve errors, budgets and gradients."
+  }
+}

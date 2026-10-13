@@ -1,0 +1,24 @@
+nerva 0.3
+
+export const support_order = {
+    invoice_id: "DEMO-001",
+    currency: "EUR",
+    customer: {id: "SYNTHETIC-A", name: "Cliente sintético A"},
+    items: [
+        {sku: "NERVA-SUPPORT", quantity: 2, unit_price_cents: 12500, discount_bps: 1000, tax_bps: 2100},
+        {sku: "NERVA-BOOK", quantity: 3, unit_price_cents: 1999, tax_bps: 1000},
+        {sku: "FREE-SAMPLE", quantity: 1, unit_price_cents: 0, tax_bps: 0},
+    ],
+}
+
+export const course_order = {
+    invoice_id: "DEMO-002",
+    currency: "EUR",
+    customer: {id: "SYNTHETIC-B", name: "Cliente sintético B"},
+    items: [
+        {sku: "NERVA-COURSE", quantity: 1, unit_price_cents: 15000, discount_bps: 2000, tax_bps: 0},
+        {sku: "NERVA-LAB", quantity: 2, unit_price_cents: 2550, tax_bps: 2100},
+    ],
+}
+
+export const minimal_item = {sku: "ONE", quantity: 1, unit_price_cents: 1, tax_bps: 0}

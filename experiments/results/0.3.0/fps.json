@@ -1,0 +1,2313 @@
+{
+  "format": "nerva-fps-evidence",
+  "version": 2,
+  "measuredAt": "2026-10-13T20:14:38.190Z",
+  "scope": "First-person procedural installation and original rigged character rendered by WebGPU; scene and live movement, mission and NPC logic authored in NERVA. Native resolution, MSAA/FXAA, skinning pixels, effect contributions and persistent uploads verified. Software adapter evidence does not establish physical GPU FPS or photogrammetric asset quality.",
+  "sourceHashes": {
+    "src/runtime.mjs": "22a4dffc57c37975bdd8757444ca85a3b4b90bb611e53cf92af72894de28f55d",
+    "src/parser.mjs": "382df3543e8e3308d14e1910102be7fbc9098e405150b75860a069bc2d1887bd",
+    "src/tensor.mjs": "8454b6a973d4d03a6aaaed784f5dcdb8d6c2816031b11a5696ef84607e1c452b",
+    "src/virtual-path.mjs": "64570a5412b36f54cd84284d4f62fc3a5948007a1b663b202920f0ae41fd5849",
+    "src/graphics/index.mjs": "4c7997a57b0030b66887e9473cfcb2368e5ea870f8660262ed2a5332bd190566",
+    "src/graphics/camera.mjs": "ee3320fdd30cf8474b4d5e0652f83ae19a9a7ffaed220be654be5b66f3d477f2",
+    "src/graphics/scene.mjs": "a87777e4f8a1c437f2f4f421c2357b189a8c4ed36314cc225b506ed779f5e734",
+    "src/graphics/graph.mjs": "11b45199838e71b69ec01ba0e81b845db9c194d88622ea087f50e0e94d4f9368",
+    "src/graphics/webgpu.mjs": "2cedd906a1ac4ba97c1ac46a68a77e0cb152669fe972700c1800eed2c92079a2",
+    "src/graphics/shaders.mjs": "1aef46c18f98480aca4cce5b6e9ff4ce5b324026195954936e3d1ea2123c5280",
+    "src/graphics/world.mjs": "08d6774ea9002859dd982641a95b5f8b5222c09435f30677d8eb590fc7012f81",
+    "src/graphics/gltf.mjs": "581d75cbad7beb5165c887f9aacb6457560587c29bf694dabd554177a88904c1",
+    "src/graphics/fps-renderer.mjs": "7f2c36ee5e0bfcaef6a52d7efb97c8d27b49f630e421c1d84e3c5370063c9e9f",
+    "src/graphics/fps-shaders.mjs": "ac6d92b411eb23f882e8f45f61d0d46252d7f8c7c0c577cc8bbfa8ae7147f13e",
+    "examples/fps/author.mjs": "8da77c12d437201b55543dd9c302a36e62d11ba2205ad5caee6b5668199a4c02",
+    "examples/fps/scene.nv": "49a906f32588ade2dc248ac21e27a3deb9254c1b9a6f5f3c3a52aac44729b1c2",
+    "examples/fps/control.nv": "846c55d06d8401d4fd0d97270079107c03c184a3e2eae355029b90248a95b726",
+    "examples/fps/app.mjs": "d3f219e42fe108b2f03fc9045d5d77de59e65904e4e71c2875e4c87724e581d2",
+    "examples/fps/index.html": "1998ea204a26bf391445adc241b7abc06de3c6748051aeb5dd1656a5b672be9d",
+    "examples/fps/quality.mjs": "eb1cadaa661c4df9bd00c83a64275f0f587c765d00947c496a93c1fadddd54c5",
+    "examples/fps/prepare.mjs": "cc9ce7b103b67d802280ed67770926fd1ff03252dc60b927a725bb3b9667f4c9",
+    "examples/fps/report.mjs": "7f0f1e79a7492c6d503886492ae78486cd6d923aea3f503ab48e83785c650808",
+    "assets/characters/iria.gltf": "c62ed8470b980ba0629aeab94b64baf35aa984715729cec86a9b9f1f3fbd68a9",
+    "assets/characters/iria.bin": "307bb7fb481e1d50e4c2928bab345668d1363e96aa9a0cdb094745b32a710029",
+    "scripts/build-character.py": "6283e2bc3cc8e38765530f9fa9ec165033749787e7bf72a52c812551c2d57110",
+    "scripts/probe-webgpu.py": "b8bba4cb309a3c3245459a44d486b7499b3ce50239db7ede9e8294b409f450d5",
+    "scripts/probe-fps.py": "061ade90551809650612882f18111f569283e9040265b1cff4d6a71f305d88fe",
+    "scripts/probe-fps-renderer.py": "125438ffc92cb94e9e203b46389d64cad69272b821add9109e757007cc861334",
+    "scripts/probe-fps-character.py": "a3a294ddf10c891b2186fe626c652eac9c8eca7a56c5e6cea708bdedae1eab82"
+  },
+  "preparation": {
+    "node": "v24.19.0",
+    "objectCount": 446,
+    "instancesBytes": 28544,
+    "sceneBytes": 29056,
+    "lightCount": 14,
+    "colliderCount": 66,
+    "batches": [
+      {
+        "kind": "box",
+        "first": 0,
+        "count": 389
+      },
+      {
+        "kind": "cylinder",
+        "first": 389,
+        "count": 48
+      },
+      {
+        "kind": "sphere",
+        "first": 437,
+        "count": 1
+      },
+      {
+        "kind": "pipe",
+        "first": 438,
+        "count": 8
+      }
+    ],
+    "sceneInterpreterSteps": 8990,
+    "controlFrames": 10,
+    "controlSteps": 2210,
+    "spawn": {
+      "position": [
+        0,
+        1.7000000476837158,
+        -4
+      ],
+      "yaw": 0.02500000037252903,
+      "pitch": -0.03999999910593033
+    },
+    "movedPosition": [
+      0.016664930858083304,
+      1.7000000476837158,
+      -3.3335416558224082
+    ],
+    "mission": {
+      "scanned": false,
+      "nearby": false,
+      "message": "Explora la instalación y localiza la consola del núcleo",
+      "npc": {
+        "name": "Iria",
+        "position": [
+          -1.7,
+          0,
+          6
+        ],
+        "homePosition": [
+          -1.7,
+          0,
+          6
+        ],
+        "yaw": 3.141592653589793,
+        "interactionRadius": 2,
+        "patrolDistance": 0.65,
+        "patrolSpeed": 0.2,
+        "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "state": "idle",
+        "elapsed": 0.16666666666666666,
+        "spoken": false,
+        "speechRemaining": 0,
+        "patrolDirection": 1,
+        "interactionCount": 0
+      }
+    },
+    "character": {
+      "name": "Iria",
+      "url": "../../assets/characters/iria.gltf",
+      "position": [
+        -1.7,
+        0,
+        6
+      ],
+      "yaw": 3.141592653589793,
+      "interactionRadius": 2,
+      "patrolDistance": 0.65,
+      "patrolSpeed": 0.2,
+      "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo."
+    },
+    "scope": "NERVA authors the scene and original NPC, then runs movement/mission/NPC state logic; the host stores state and implements collision, skeletal animation and graphics. GPU validation is a separate browser run."
+  },
+  "browser": {
+    "adapterMode": "software",
+    "chromiumArgs": [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--enable-unsafe-webgpu",
+      "--use-angle=swiftshader",
+      "--allow-unsafe-swiftshader",
+      "--enable-features=Vulkan",
+      "--use-vulkan=swiftshader"
+    ],
+    "probe": {
+      "available": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "subgroupMinSize": 4,
+        "subgroupMaxSize": 4,
+        "isFallbackAdapter": true
+      },
+      "softwareAdapter": true,
+      "fallbackAdapter": true,
+      "features": [
+        "bgra8unorm-storage",
+        "chromium-experimental-sampling-resource-table",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "clip-distances",
+        "core-features-and-limits",
+        "depth-clip-control",
+        "depth32float-stencil8",
+        "float32-blendable",
+        "float32-filterable",
+        "indirect-first-instance",
+        "rg11b10ufloat-renderable",
+        "subgroup-size-control",
+        "subgroups",
+        "texture-component-swizzle",
+        "texture-compression-astc",
+        "texture-compression-astc-sliced-3d",
+        "texture-compression-bc",
+        "texture-compression-bc-sliced-3d",
+        "texture-compression-etc2",
+        "texture-compression-unaligned",
+        "timestamp-query"
+      ],
+      "limits": {
+        "maxTextureDimension2D": 8192,
+        "maxBindGroups": 4,
+        "maxBufferSize": 1073741824,
+        "maxStorageBufferBindingSize": 1073741824,
+        "maxComputeWorkgroupSizeX": 256,
+        "maxComputeInvocationsPerWorkgroup": 256,
+        "maxComputeWorkgroupsPerDimension": 65535,
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "compute": {
+        "input": [
+          0,
+          1,
+          -2,
+          3.5,
+          8,
+          16,
+          32,
+          63
+        ],
+        "expected": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "actual": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "verified": true
+      }
+    },
+    "browser": "154.0.8037.57",
+    "benchmark": {
+      "verified": true,
+      "nervaVersion": "0.3.0",
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "isFallbackAdapter": true
+      },
+      "softwareAdapter": true,
+      "physicalGPUPerformanceValidated": false,
+      "quality": "high",
+      "resolution": {
+        "width": 1280,
+        "height": 720
+      },
+      "antialiasing": {
+        "msaaSamples": 4,
+        "fxaa": true
+      },
+      "sceneInterpreterSteps": 8990,
+      "objectCount": 446,
+      "lightCount": 14,
+      "character": {
+        "name": "Iria",
+        "jointCount": 23,
+        "vertices": 11913,
+        "triangles": 19716,
+        "animations": [
+          "Idle",
+          "Walk"
+        ],
+        "bytes": 1380240
+      },
+      "worldBytes": 29056,
+      "colliderCount": 66,
+      "batches": [
+        {
+          "kind": "box",
+          "first": 0,
+          "count": 389
+        },
+        {
+          "kind": "cylinder",
+          "first": 389,
+          "count": 48
+        },
+        {
+          "kind": "sphere",
+          "first": 437,
+          "count": 1
+        },
+        {
+          "kind": "pipe",
+          "first": 438,
+          "count": 8
+        }
+      ],
+      "baseline": {
+        "frame": 2,
+        "width": 1280,
+        "height": 720,
+        "instanceCount": 446,
+        "lightCount": 14,
+        "drawCalls": 15,
+        "sceneTriangles": 10268,
+        "trianglesSubmitted": 59968,
+        "sampleCount": 4,
+        "fxaa": true,
+        "antialiasPixels": 3686400,
+        "characterVertexCount": 11913,
+        "characterJointCount": 23,
+        "jointCount": 23,
+        "skinnedTriangles": 19716,
+        "characterDrawCalls": 2,
+        "npcShadowRendered": false,
+        "boneUploadBytes": 0,
+        "characterTransformUploadBytes": 0,
+        "capture": true,
+        "readback": true,
+        "cpuEncodeMs": 0.40000000037252903,
+        "gpuTimeMs": 1171.877642,
+        "gpuPassTimesMs": {
+          "reflection": 171.055025,
+          "forward": 831.327397,
+          "depth-resolve": 11.227653,
+          "bloom-extract": 3.576217,
+          "bloom-horizontal": 3.851547,
+          "bloom-vertical": 3.785764,
+          "post": 147.054039
+        },
+        "gpuTimestampStatus": "measured",
+        "timingScope": "CPU encode and queue submission; excludes GPU completion",
+        "gpuTimingScope": "GPU pass spans; character shadow span includes cached depth copy; excludes uploads, readbacks and CPU submission",
+        "sceneUploadBytes": 0,
+        "uniformUploadBytes": 512,
+        "uploadBytesPerFrame": 512,
+        "totalUploadBytes": 1429496,
+        "bufferBytes": 5117552,
+        "textureBytesEstimate": 96684040,
+        "allocatedBytesEstimate": 101801592,
+        "resourceCreateCount": 90,
+        "resourceCreationsThisFrame": 1,
+        "renderGraphPasses": [
+          "reflection",
+          "forward",
+          "depth-resolve",
+          "bloom-extract",
+          "bloom-horizontal",
+          "bloom-vertical",
+          "post"
+        ],
+        "renderGraphSchedule": [
+          "shadow",
+          "reflection",
+          "forward",
+          "depth-resolve",
+          "bloom-extract",
+          "bloom-horizontal",
+          "bloom-vertical",
+          "post"
+        ],
+        "renderGraphMemory": {
+          "persistentBytes": 95762432,
+          "transientPeakBytes": 0,
+          "unaliasedTransientBytes": 0,
+          "externalBytes": 1410832
+        },
+        "shadowCached": true,
+        "effects": {
+          "bloom": true,
+          "ao": true,
+          "reflection": true,
+          "shadows": true,
+          "bloomStrength": 0.20000000298023224,
+          "aoStrength": 0.3499999940395355,
+          "reflectionStrength": 0.6499999761581421,
+          "exposure": 1.0800000429153442,
+          "fogDensity": 0.027000000700354576
+        },
+        "reflectionWidth": 640,
+        "reflectionHeight": 360,
+        "bloomWidth": 320,
+        "bloomHeight": 180,
+        "cpuAnimationMs": 0.2000000011175871
+      },
+      "steadyFrames": [
+        {
+          "frame": 7,
+          "width": 1280,
+          "height": 720,
+          "instanceCount": 446,
+          "lightCount": 14,
+          "drawCalls": 15,
+          "sceneTriangles": 10268,
+          "trianglesSubmitted": 59968,
+          "sampleCount": 4,
+          "fxaa": true,
+          "antialiasPixels": 3686400,
+          "characterVertexCount": 11913,
+          "characterJointCount": 23,
+          "jointCount": 23,
+          "skinnedTriangles": 19716,
+          "characterDrawCalls": 2,
+          "npcShadowRendered": false,
+          "boneUploadBytes": 0,
+          "characterTransformUploadBytes": 0,
+          "capture": false,
+          "readback": false,
+          "cpuEncodeMs": 0.19999999925494194,
+          "gpuTimeMs": null,
+          "gpuPassTimesMs": null,
+          "gpuTimestampStatus": "not-requested-this-frame",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU pass spans; character shadow span includes cached depth copy; excludes uploads, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 512,
+          "uploadBytesPerFrame": 512,
+          "totalUploadBytes": 1432056,
+          "bufferBytes": 5117552,
+          "textureBytesEstimate": 96684040,
+          "allocatedBytesEstimate": 101801592,
+          "resourceCreateCount": 90,
+          "resourceCreationsThisFrame": 0,
+          "renderGraphPasses": [
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphSchedule": [
+            "shadow",
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 95762432,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 1410832
+          },
+          "shadowCached": true,
+          "effects": {
+            "bloom": true,
+            "ao": true,
+            "reflection": true,
+            "shadows": true,
+            "bloomStrength": 0.20000000298023224,
+            "aoStrength": 0.3499999940395355,
+            "reflectionStrength": 0.6499999761581421,
+            "exposure": 1.0800000429153442,
+            "fogDensity": 0.027000000700354576
+          },
+          "reflectionWidth": 640,
+          "reflectionHeight": 360,
+          "bloomWidth": 320,
+          "bloomHeight": 180,
+          "cpuAnimationMs": 0.19999999925494194
+        },
+        {
+          "frame": 8,
+          "width": 1280,
+          "height": 720,
+          "instanceCount": 446,
+          "lightCount": 14,
+          "drawCalls": 15,
+          "sceneTriangles": 10268,
+          "trianglesSubmitted": 59968,
+          "sampleCount": 4,
+          "fxaa": true,
+          "antialiasPixels": 3686400,
+          "characterVertexCount": 11913,
+          "characterJointCount": 23,
+          "jointCount": 23,
+          "skinnedTriangles": 19716,
+          "characterDrawCalls": 2,
+          "npcShadowRendered": false,
+          "boneUploadBytes": 0,
+          "characterTransformUploadBytes": 0,
+          "capture": false,
+          "readback": false,
+          "cpuEncodeMs": 0.30000000074505806,
+          "gpuTimeMs": null,
+          "gpuPassTimesMs": null,
+          "gpuTimestampStatus": "not-requested-this-frame",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU pass spans; character shadow span includes cached depth copy; excludes uploads, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 512,
+          "uploadBytesPerFrame": 512,
+          "totalUploadBytes": 1432568,
+          "bufferBytes": 5117552,
+          "textureBytesEstimate": 96684040,
+          "allocatedBytesEstimate": 101801592,
+          "resourceCreateCount": 90,
+          "resourceCreationsThisFrame": 0,
+          "renderGraphPasses": [
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphSchedule": [
+            "shadow",
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 95762432,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 1410832
+          },
+          "shadowCached": true,
+          "effects": {
+            "bloom": true,
+            "ao": true,
+            "reflection": true,
+            "shadows": true,
+            "bloomStrength": 0.20000000298023224,
+            "aoStrength": 0.3499999940395355,
+            "reflectionStrength": 0.6499999761581421,
+            "exposure": 1.0800000429153442,
+            "fogDensity": 0.027000000700354576
+          },
+          "reflectionWidth": 640,
+          "reflectionHeight": 360,
+          "bloomWidth": 320,
+          "bloomHeight": 180,
+          "cpuAnimationMs": 0
+        },
+        {
+          "frame": 9,
+          "width": 1280,
+          "height": 720,
+          "instanceCount": 446,
+          "lightCount": 14,
+          "drawCalls": 15,
+          "sceneTriangles": 10268,
+          "trianglesSubmitted": 59968,
+          "sampleCount": 4,
+          "fxaa": true,
+          "antialiasPixels": 3686400,
+          "characterVertexCount": 11913,
+          "characterJointCount": 23,
+          "jointCount": 23,
+          "skinnedTriangles": 19716,
+          "characterDrawCalls": 2,
+          "npcShadowRendered": false,
+          "boneUploadBytes": 0,
+          "characterTransformUploadBytes": 0,
+          "capture": false,
+          "readback": false,
+          "cpuEncodeMs": 0.19999999925494194,
+          "gpuTimeMs": null,
+          "gpuPassTimesMs": null,
+          "gpuTimestampStatus": "not-requested-this-frame",
+          "timingScope": "CPU encode and queue submission; excludes GPU completion",
+          "gpuTimingScope": "GPU pass spans; character shadow span includes cached depth copy; excludes uploads, readbacks and CPU submission",
+          "sceneUploadBytes": 0,
+          "uniformUploadBytes": 512,
+          "uploadBytesPerFrame": 512,
+          "totalUploadBytes": 1433080,
+          "bufferBytes": 5117552,
+          "textureBytesEstimate": 96684040,
+          "allocatedBytesEstimate": 101801592,
+          "resourceCreateCount": 90,
+          "resourceCreationsThisFrame": 0,
+          "renderGraphPasses": [
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphSchedule": [
+            "shadow",
+            "reflection",
+            "forward",
+            "depth-resolve",
+            "bloom-extract",
+            "bloom-horizontal",
+            "bloom-vertical",
+            "post"
+          ],
+          "renderGraphMemory": {
+            "persistentBytes": 95762432,
+            "transientPeakBytes": 0,
+            "unaliasedTransientBytes": 0,
+            "externalBytes": 1410832
+          },
+          "shadowCached": true,
+          "effects": {
+            "bloom": true,
+            "ao": true,
+            "reflection": true,
+            "shadows": true,
+            "bloomStrength": 0.20000000298023224,
+            "aoStrength": 0.3499999940395355,
+            "reflectionStrength": 0.6499999761581421,
+            "exposure": 1.0800000429153442,
+            "fogDensity": 0.027000000700354576
+          },
+          "reflectionWidth": 640,
+          "reflectionHeight": 360,
+          "bloomWidth": 320,
+          "bloomHeight": 180,
+          "cpuAnimationMs": 0.19999999925494194
+        }
+      ],
+      "final": {
+        "frame": 11,
+        "width": 1280,
+        "height": 720,
+        "instanceCount": 446,
+        "lightCount": 14,
+        "drawCalls": 15,
+        "sceneTriangles": 10268,
+        "trianglesSubmitted": 59968,
+        "sampleCount": 4,
+        "fxaa": true,
+        "antialiasPixels": 3686400,
+        "characterVertexCount": 11913,
+        "characterJointCount": 23,
+        "jointCount": 23,
+        "skinnedTriangles": 19716,
+        "characterDrawCalls": 2,
+        "npcShadowRendered": false,
+        "boneUploadBytes": 0,
+        "characterTransformUploadBytes": 0,
+        "capture": true,
+        "readback": true,
+        "cpuEncodeMs": 0.40000000037252903,
+        "gpuTimeMs": 1171.135339,
+        "gpuPassTimesMs": {
+          "reflection": 135.917808,
+          "forward": 862.512891,
+          "depth-resolve": 11.454435,
+          "bloom-extract": 3.129526,
+          "bloom-horizontal": 3.323814,
+          "bloom-vertical": 3.512054,
+          "post": 151.284811
+        },
+        "gpuTimestampStatus": "measured",
+        "timingScope": "CPU encode and queue submission; excludes GPU completion",
+        "gpuTimingScope": "GPU pass spans; character shadow span includes cached depth copy; excludes uploads, readbacks and CPU submission",
+        "sceneUploadBytes": 0,
+        "uniformUploadBytes": 512,
+        "uploadBytesPerFrame": 512,
+        "totalUploadBytes": 1434104,
+        "bufferBytes": 5117552,
+        "textureBytesEstimate": 96684040,
+        "allocatedBytesEstimate": 101801592,
+        "resourceCreateCount": 90,
+        "resourceCreationsThisFrame": 0,
+        "renderGraphPasses": [
+          "reflection",
+          "forward",
+          "depth-resolve",
+          "bloom-extract",
+          "bloom-horizontal",
+          "bloom-vertical",
+          "post"
+        ],
+        "renderGraphSchedule": [
+          "shadow",
+          "reflection",
+          "forward",
+          "depth-resolve",
+          "bloom-extract",
+          "bloom-horizontal",
+          "bloom-vertical",
+          "post"
+        ],
+        "renderGraphMemory": {
+          "persistentBytes": 95762432,
+          "transientPeakBytes": 0,
+          "unaliasedTransientBytes": 0,
+          "externalBytes": 1410832
+        },
+        "shadowCached": true,
+        "effects": {
+          "bloom": true,
+          "ao": true,
+          "reflection": true,
+          "shadows": true,
+          "bloomStrength": 0.20000000298023224,
+          "aoStrength": 0.3499999940395355,
+          "reflectionStrength": 0.6499999761581421,
+          "exposure": 1.0800000429153442,
+          "fogDensity": 0.027000000700354576
+        },
+        "reflectionWidth": 640,
+        "reflectionHeight": 360,
+        "bloomWidth": 320,
+        "bloomHeight": 180,
+        "cpuAnimationMs": 0.09999999962747097
+      },
+      "gpuUncapturedErrors": [],
+      "deviceLost": null,
+      "tests": {
+        "effects": {
+          "shadows": {
+            "changedChannels": 827055,
+            "meanAbsoluteDifference": 5.289750795717593
+          },
+          "reflections": {
+            "changedChannels": 635197,
+            "meanAbsoluteDifference": 2.593655960648148
+          },
+          "bloom": {
+            "changedChannels": 224638,
+            "meanAbsoluteDifference": 1.9579036458333334
+          },
+          "ao": {
+            "changedChannels": 49386,
+            "meanAbsoluteDifference": 0.18343279803240742
+          }
+        },
+        "persistentResources": true,
+        "browserNerva": true,
+        "movement": {
+          "steps": 221,
+          "cpuLogicMs": 3.199999999254942
+        },
+        "cameraRendering": {
+          "changedChannels": 2312389,
+          "meanAbsoluteDifference": 33.11404116030093
+        },
+        "missionInteraction": true
+      },
+      "scope": "Real WebGPU first-person rendering and live NERVA logic. Software adapter timings do not establish physical GPU FPS or AAA asset quality."
+    },
+    "ok": true
+  },
+  "controls": {
+    "adapterMode": "software",
+    "chromiumArgs": [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--enable-unsafe-webgpu",
+      "--use-angle=swiftshader",
+      "--allow-unsafe-swiftshader",
+      "--enable-features=Vulkan",
+      "--use-vulkan=swiftshader"
+    ],
+    "inputSource": "Playwright browser mouse and keyboard events",
+    "tests": {
+      "realPointerLock": true,
+      "realKeyWMovement": true,
+      "realMouseLook": true,
+      "realSpaceJump": true,
+      "escapeUnlocksAndClearsKeys": true,
+      "npcLiveWalkUploadsBones": true,
+      "npcBodyBlocksRealKeyW": true,
+      "npcRealEAuthoredDialogue": true
+    },
+    "browser": "154.0.8037.57",
+    "stage": "complete",
+    "probe": {
+      "available": true,
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": "",
+        "subgroupMinSize": 4,
+        "subgroupMaxSize": 4,
+        "isFallbackAdapter": true
+      },
+      "softwareAdapter": true,
+      "fallbackAdapter": true,
+      "features": [
+        "bgra8unorm-storage",
+        "chromium-experimental-sampling-resource-table",
+        "chromium-experimental-timestamp-query-inside-passes",
+        "clip-distances",
+        "core-features-and-limits",
+        "depth-clip-control",
+        "depth32float-stencil8",
+        "float32-blendable",
+        "float32-filterable",
+        "indirect-first-instance",
+        "rg11b10ufloat-renderable",
+        "subgroup-size-control",
+        "subgroups",
+        "texture-component-swizzle",
+        "texture-compression-astc",
+        "texture-compression-astc-sliced-3d",
+        "texture-compression-bc",
+        "texture-compression-bc-sliced-3d",
+        "texture-compression-etc2",
+        "texture-compression-unaligned",
+        "timestamp-query"
+      ],
+      "limits": {
+        "maxTextureDimension2D": 8192,
+        "maxBindGroups": 4,
+        "maxBufferSize": 1073741824,
+        "maxStorageBufferBindingSize": 1073741824,
+        "maxComputeWorkgroupSizeX": 256,
+        "maxComputeInvocationsPerWorkgroup": 256,
+        "maxComputeWorkgroupsPerDimension": 65535,
+        "maxStorageBuffersPerShaderStage": 10
+      },
+      "compute": {
+        "input": [
+          0,
+          1,
+          -2,
+          3.5,
+          8,
+          16,
+          32,
+          63
+        ],
+        "expected": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "actual": [
+          0,
+          2,
+          -4,
+          7,
+          16,
+          32,
+          64,
+          126
+        ],
+        "verified": true
+      }
+    },
+    "initialState": {
+      "position": [
+        0,
+        1.7000000476837158,
+        -4
+      ],
+      "yaw": 0.02500000037252903,
+      "pitch": -0.03999999910593033,
+      "verticalVelocity": 0,
+      "grounded": true,
+      "frameCount": 1,
+      "pointerLocked": false,
+      "keys": [],
+      "playing": false,
+      "quality": "validation",
+      "mission": {
+        "scanned": false,
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "homePosition": [
+            -1.7,
+            0,
+            6
+          ],
+          "yaw": 3.141592653589793,
+          "interactionRadius": 2,
+          "patrolDistance": 0.65,
+          "patrolSpeed": 0.2,
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "state": "idle",
+          "elapsed": 0,
+          "spoken": false,
+          "speechRemaining": 0,
+          "patrolDirection": 1,
+          "interactionCount": 0
+        }
+      },
+      "logicSteps": 0,
+      "width": 320,
+      "height": 180,
+      "deviceLost": null,
+      "gpuUncapturedErrors": [],
+      "pendingUIActions": 0,
+      "antialiasing": {
+        "msaaSamples": 1,
+        "fxaa": true
+      },
+      "resolutionScale": 0.25,
+      "npc": {
+        "name": "Iria",
+        "state": "idle",
+        "position": [
+          -1.7,
+          0,
+          6
+        ],
+        "spoken": false,
+        "animation": "idle"
+      }
+    },
+    "states": {
+      "locked": {
+        "position": [
+          0,
+          1.7000000476837158,
+          -4
+        ],
+        "yaw": 0.02500000037252903,
+        "pitch": -0.03999999910593033,
+        "verticalVelocity": 0,
+        "grounded": true,
+        "frameCount": 3,
+        "pointerLocked": true,
+        "keys": [],
+        "playing": true,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Explora la instalación y localiza la consola del núcleo",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 0.06676666666666681,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 663,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      },
+      "afterForward": {
+        "position": [
+          0.03832600798741996,
+          1.7000000476837158,
+          -2.4672791000603747
+        ],
+        "yaw": 0.02500000037252903,
+        "pitch": -0.03999999910593033,
+        "verticalVelocity": 0,
+        "grounded": true,
+        "frameCount": 6,
+        "pointerLocked": true,
+        "keys": [
+          "KeyW"
+        ],
+        "playing": true,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Explora la instalación y localiza la consola del núcleo",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 0.4500666666666668,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 1326,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      },
+      "afterMouse": {
+        "position": [
+          0.03832600798741996,
+          1.7000000476837158,
+          -2.4672791000603747
+        ],
+        "yaw": -1.1024999996274705,
+        "pitch": 0.6525000008940697,
+        "verticalVelocity": 0,
+        "grounded": true,
+        "frameCount": 7,
+        "pointerLocked": true,
+        "keys": [],
+        "playing": true,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Explora la instalación y localiza la consola del núcleo",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 0.5667666666666669,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 1547,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      },
+      "afterJump": {
+        "position": [
+          0.03832600798741996,
+          2.207878283424892,
+          -2.4672791000603747
+        ],
+        "yaw": -1.1024999996274705,
+        "pitch": 0.6525000008940697,
+        "verticalVelocity": 3.1913460000000025,
+        "grounded": false,
+        "frameCount": 8,
+        "pointerLocked": true,
+        "keys": [
+          "Space"
+        ],
+        "playing": true,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Explora la instalación y localiza la consola del núcleo",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 0.7001666666666667,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 1768,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      },
+      "originalControlsFinal": {
+        "position": [
+          0.03832600798741996,
+          2.207878283424892,
+          -2.4672791000603747
+        ],
+        "yaw": -1.1024999996274705,
+        "pitch": 0.6525000008940697,
+        "verticalVelocity": 3.1913460000000025,
+        "grounded": false,
+        "frameCount": 9,
+        "pointerLocked": false,
+        "keys": [],
+        "playing": false,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Explora la instalación y localiza la consola del núcleo",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 0.7001666666666667,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 1768,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      }
+    },
+    "forwardDistance": 1.5331999999999957,
+    "finalState": {
+      "position": [
+        -1.7,
+        1.7,
+        5.44664
+      ],
+      "yaw": 0,
+      "pitch": -0.16,
+      "verticalVelocity": 0,
+      "grounded": true,
+      "frameCount": 64,
+      "pointerLocked": false,
+      "keys": [],
+      "playing": false,
+      "quality": "validation",
+      "mission": {
+        "scanned": false,
+        "nearby": false,
+        "message": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6.02664
+          ],
+          "homePosition": [
+            -1.7,
+            0,
+            6
+          ],
+          "yaw": 3.141592653589793,
+          "interactionRadius": 2,
+          "patrolDistance": 0.65,
+          "patrolSpeed": 0.2,
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "state": "speaking",
+          "elapsed": 5.266600000000002,
+          "spoken": true,
+          "speechRemaining": 4.8667,
+          "patrolDirection": 1,
+          "interactionCount": 1
+        }
+      },
+      "logicSteps": 14023,
+      "width": 320,
+      "height": 180,
+      "deviceLost": null,
+      "gpuUncapturedErrors": [],
+      "pendingUIActions": 0,
+      "antialiasing": {
+        "msaaSamples": 1,
+        "fxaa": true
+      },
+      "resolutionScale": 0.25,
+      "npc": {
+        "name": "Iria",
+        "state": "speaking",
+        "position": [
+          -1.7,
+          0,
+          6.02664
+        ],
+        "spoken": true,
+        "animation": "idle"
+      }
+    },
+    "npcChecksAvailable": true,
+    "npcStates": {
+      "initial": {
+        "name": "Iria",
+        "position": [
+          -1.7,
+          0,
+          6
+        ],
+        "state": "idle",
+        "animation": "idle",
+        "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "spoken": false,
+        "interactionCount": 0,
+        "jointCount": 23,
+        "animationTime": 0.7001666666666667,
+        "boneUploadBytesLastFrame": 1472,
+        "frameCount": 9
+      },
+      "walking": {
+        "name": "Iria",
+        "position": [
+          -1.7,
+          0,
+          6.02664
+        ],
+        "state": "walking",
+        "animation": "walk",
+        "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "spoken": false,
+        "interactionCount": 0,
+        "jointCount": 23,
+        "animationTime": 4.100033333333334,
+        "boneUploadBytesLastFrame": 1472,
+        "frameCount": 51
+      },
+      "near": {
+        "fps": {
+          "position": [
+            -1.7,
+            1.7,
+            4.12664
+          ],
+          "yaw": 0,
+          "pitch": -0.16,
+          "verticalVelocity": 0,
+          "grounded": true,
+          "frameCount": 53,
+          "pointerLocked": false,
+          "keys": [],
+          "playing": false,
+          "quality": "validation",
+          "mission": {
+            "scanned": false,
+            "nearby": false,
+            "message": "Pulsa E para hablar con Iria",
+            "npc": {
+              "name": "Iria",
+              "position": [
+                -1.7,
+                0,
+                6.02664
+              ],
+              "homePosition": [
+                -1.7,
+                0,
+                6
+              ],
+              "yaw": 3.141592653589793,
+              "interactionRadius": 2,
+              "patrolDistance": 0.65,
+              "patrolSpeed": 0.2,
+              "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+              "state": "idle",
+              "elapsed": 4.100033333333334,
+              "spoken": false,
+              "speechRemaining": 0,
+              "patrolDirection": 1,
+              "interactionCount": 0
+            }
+          },
+          "logicSteps": 11575,
+          "width": 320,
+          "height": 180,
+          "deviceLost": null,
+          "gpuUncapturedErrors": [],
+          "pendingUIActions": 0,
+          "antialiasing": {
+            "msaaSamples": 1,
+            "fxaa": true
+          },
+          "resolutionScale": 0.25,
+          "npc": {
+            "name": "Iria",
+            "state": "idle",
+            "position": [
+              -1.7,
+              0,
+              6.02664
+            ],
+            "spoken": false,
+            "animation": "idle"
+          }
+        },
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6.02664
+          ],
+          "state": "idle",
+          "animation": "idle",
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "spoken": false,
+          "interactionCount": 0,
+          "jointCount": 23,
+          "animationTime": 4.100033333333334,
+          "boneUploadBytesLastFrame": 1472,
+          "frameCount": 53
+        }
+      },
+      "bodyBlocked": {
+        "fps": {
+          "position": [
+            -1.7,
+            1.7,
+            5.44664
+          ],
+          "yaw": 0,
+          "pitch": -0.16,
+          "verticalVelocity": 0,
+          "grounded": true,
+          "frameCount": 61,
+          "pointerLocked": true,
+          "keys": [
+            "KeyW"
+          ],
+          "playing": true,
+          "quality": "validation",
+          "mission": {
+            "scanned": false,
+            "nearby": false,
+            "message": "Pulsa E para hablar con Iria",
+            "npc": {
+              "name": "Iria",
+              "position": [
+                -1.7,
+                0,
+                6.02664
+              ],
+              "homePosition": [
+                -1.7,
+                0,
+                6
+              ],
+              "yaw": 3.141592653589793,
+              "interactionRadius": 2,
+              "patrolDistance": 0.65,
+              "patrolSpeed": 0.2,
+              "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+              "state": "idle",
+              "elapsed": 5.016700000000002,
+              "spoken": false,
+              "speechRemaining": 0,
+              "patrolDirection": 1,
+              "interactionCount": 0
+            }
+          },
+          "logicSteps": 13573,
+          "width": 320,
+          "height": 180,
+          "deviceLost": null,
+          "gpuUncapturedErrors": [],
+          "pendingUIActions": 0,
+          "antialiasing": {
+            "msaaSamples": 1,
+            "fxaa": true
+          },
+          "resolutionScale": 0.25,
+          "npc": {
+            "name": "Iria",
+            "state": "idle",
+            "position": [
+              -1.7,
+              0,
+              6.02664
+            ],
+            "spoken": false,
+            "animation": "idle"
+          }
+        },
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6.02664
+          ],
+          "state": "idle",
+          "animation": "idle",
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "spoken": false,
+          "interactionCount": 0,
+          "jointCount": 23,
+          "animationTime": 5.016700000000002,
+          "boneUploadBytesLastFrame": 1472,
+          "frameCount": 61
+        }
+      },
+      "speaking": {
+        "name": "Iria",
+        "position": [
+          -1.7,
+          0,
+          6.02664
+        ],
+        "state": "speaking",
+        "animation": "idle",
+        "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "spoken": true,
+        "interactionCount": 1,
+        "jointCount": 23,
+        "animationTime": 5.266600000000002,
+        "boneUploadBytesLastFrame": 1472,
+        "frameCount": 63
+      }
+    },
+    "npcBodyClearance": 0.5800000000000001,
+    "verified": true,
+    "ok": true
+  },
+  "rendererQA": {
+    "verified": true,
+    "adapter": {
+      "vendor": "google",
+      "architecture": "swiftshader",
+      "device": "",
+      "description": "",
+      "isFallbackAdapter": true
+    },
+    "softwareAdapter": true,
+    "physicalGPUPerformanceValidated": false,
+    "tests": {
+      "cameraYawPitch": [
+        {
+          "name": "forward +Z",
+          "yaw": 0,
+          "pitch": 0,
+          "ids": [
+            0
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw +90 degrees +X with three LODs",
+          "yaw": 1.5707963267948966,
+          "pitch": 0,
+          "ids": [
+            1,
+            6,
+            7
+          ],
+          "lodCounts": [
+            1,
+            1,
+            1
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw -90 degrees -X",
+          "yaw": -1.5707963267948966,
+          "pitch": 0,
+          "ids": [
+            2
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw 180 degrees -Z",
+          "yaw": 3.141592653589793,
+          "pitch": 0,
+          "ids": [
+            3
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "pitch +45 degrees +Z",
+          "yaw": 0,
+          "pitch": 0.7853981633974483,
+          "ids": [
+            4
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "pitch -45 degrees +Z",
+          "yaw": 0,
+          "pitch": -0.7853981633974483,
+          "ids": [
+            5
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw +90 and pitch +45",
+          "yaw": 1.5707963267948966,
+          "pitch": 0.7853981633974483,
+          "ids": [
+            9
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw +90 and pitch -45",
+          "yaw": 1.5707963267948966,
+          "pitch": -0.7853981633974483,
+          "ids": [
+            10
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        },
+        {
+          "name": "yaw 180 and pitch +45",
+          "yaw": 3.141592653589793,
+          "pitch": 0.7853981633974483,
+          "ids": [
+            8
+          ],
+          "lodCounts": [
+            1,
+            0,
+            0
+          ],
+          "manualExpectedVerified": true,
+          "cpuGpuVerified": true
+        }
+      ],
+      "fpsResizeReadback": {
+        "verified": true,
+        "worldObjects": 446,
+        "lights": 14,
+        "format": "bgra8unorm",
+        "width": 257,
+        "height": 193,
+        "rgbaBytes": 198404,
+        "unpaddedRowBytes": 1028,
+        "gpuAlignedRowBytes": 1280,
+        "alphaCorrect": true,
+        "rgbRange": [
+          15,
+          255
+        ],
+        "steadyResourceCreations": 0,
+        "steadySceneUploadBytes": 0
+      },
+      "disposal": {
+        "verified": true,
+        "disposed": true,
+        "bufferBytes": 0,
+        "textureBytesEstimate": 0,
+        "renderAfterDisposeRejected": true,
+        "suppliedDevicePreserved": true
+      }
+    },
+    "gpuErrors": [],
+    "deviceLost": null,
+    "scope": "Real WebGPU camera culling, manual expected IDs and CPU parity; actual NERVA world GPU padded capture and disposal. Software adapter does not establish hardware FPS."
+  },
+  "characterQA": {
+    "adapterMode": "software",
+    "chromiumArgs": [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--enable-unsafe-webgpu",
+      "--use-angle=swiftshader",
+      "--allow-unsafe-swiftshader",
+      "--enable-features=Vulkan",
+      "--use-vulkan=swiftshader"
+    ],
+    "verified": true,
+    "physicalGPUPerformanceValidated": false,
+    "browser": "154.0.8037.57",
+    "adapter": {
+      "vendor": "google",
+      "architecture": "swiftshader",
+      "device": "",
+      "description": "",
+      "isFallbackAdapter": true
+    },
+    "softwareAdapter": true,
+    "asset": {
+      "joints": 23,
+      "vertices": 11913,
+      "triangles": 19716
+    },
+    "resolution": {
+      "width": 320,
+      "height": 180
+    },
+    "sampleCount": 4,
+    "fxaa": true,
+    "tests": {
+      "poseDifference": {
+        "changedChannels": 5825,
+        "meanAbsoluteDifference": 0.58375
+      },
+      "shadowContributionPoseDifference": {
+        "changedChannels": 3066,
+        "meanAbsoluteDifference": 0.23357638888888888
+      },
+      "reflectionContributionPoseDifference": {
+        "changedChannels": 2407,
+        "meanAbsoluteDifference": 0.12017939814814815
+      },
+      "changedPose": {
+        "boneUploadBytes": 1472,
+        "npcShadowRendered": true,
+        "passes": [
+          "shadow",
+          "reflection",
+          "forward",
+          "depth-resolve",
+          "post"
+        ]
+      },
+      "unchangedPose": {
+        "boneUploadBytes": 0,
+        "npcShadowRendered": false,
+        "resourceCreations": 0
+      }
+    },
+    "gpuErrors": [],
+    "scope": "Real glTF asset rendered by WebGPU. Pixel readbacks prove pose, shadow and reflection changes; adapter identity is explicit. No physical GPU FPS claim.",
+    "ok": true
+  },
+  "characterStructureQA": {
+    "verified": true,
+    "stage": "final frozen asset",
+    "jointCount": 23,
+    "vertexCount": 11913,
+    "triangleCount": 19716,
+    "materialCount": 19,
+    "bounds": {
+      "min": [
+        -0.34200000762939453,
+        0.007000001147389412,
+        -0.11599999666213989
+      ],
+      "max": [
+        0.34200000762939453,
+        1.720036506652832,
+        0.1899999976158142
+      ]
+    },
+    "maxBindError": 7.919538851566286e-7,
+    "maxWeightError": 2.9802322387695312e-8,
+    "maxPoseDisplacement": 0.465298757932527,
+    "movedVertices": 11913,
+    "weightedJoints": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      9,
+      10,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      20,
+      21
+    ],
+    "animations": [
+      {
+        "name": "Idle",
+        "duration": 2.4000000953674316,
+        "channels": 69
+      },
+      {
+        "name": "Walk",
+        "duration": 1.100000023841858,
+        "channels": 69
+      }
+    ],
+    "scope": "CPU parse and independent weighted matrix evaluation. GPU appearance and live NPC require browser proof."
+  },
+  "npcQA": {
+    "verified": true,
+    "physicalGPUPerformanceValidated": false,
+    "stage": "complete",
+    "ready": {
+      "sceneInterpreterSteps": 8990,
+      "objectCount": 446,
+      "lightCount": 14,
+      "character": {
+        "name": "Iria",
+        "jointCount": 23,
+        "vertices": 11913,
+        "triangles": 19716,
+        "animations": [
+          "Idle",
+          "Walk"
+        ],
+        "bytes": 1380240
+      }
+    },
+    "initialState": {
+      "position": [
+        0,
+        1.7000000476837158,
+        -4
+      ],
+      "yaw": 0.02500000037252903,
+      "pitch": -0.03999999910593033,
+      "verticalVelocity": 0,
+      "grounded": true,
+      "frameCount": 1,
+      "pointerLocked": false,
+      "keys": [],
+      "playing": false,
+      "quality": "validation",
+      "mission": {
+        "scanned": false,
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6
+          ],
+          "homePosition": [
+            -1.7,
+            0,
+            6
+          ],
+          "yaw": 3.141592653589793,
+          "interactionRadius": 2,
+          "patrolDistance": 0.65,
+          "patrolSpeed": 0.2,
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "state": "idle",
+          "elapsed": 0,
+          "spoken": false,
+          "speechRemaining": 0,
+          "patrolDirection": 1,
+          "interactionCount": 0
+        }
+      },
+      "logicSteps": 0,
+      "width": 320,
+      "height": 180,
+      "deviceLost": null,
+      "gpuUncapturedErrors": [],
+      "pendingUIActions": 0,
+      "antialiasing": {
+        "msaaSamples": 1,
+        "fxaa": true
+      },
+      "resolutionScale": 0.25,
+      "npc": {
+        "name": "Iria",
+        "state": "idle",
+        "position": [
+          -1.7,
+          0,
+          6
+        ],
+        "spoken": false,
+        "animation": "idle"
+      }
+    },
+    "idleState": {
+      "name": "Iria",
+      "position": [
+        -1.7,
+        0,
+        6
+      ],
+      "state": "idle",
+      "animation": "idle",
+      "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+      "spoken": false,
+      "interactionCount": 0,
+      "jointCount": 23,
+      "animationTime": 0,
+      "boneUploadBytesLastFrame": 0,
+      "frameCount": 1
+    },
+    "walkState": {
+      "name": "Iria",
+      "position": [
+        -1.7,
+        0,
+        6.1
+      ],
+      "state": "walking",
+      "animation": "walk",
+      "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+      "spoken": false,
+      "interactionCount": 0,
+      "jointCount": 23,
+      "animationTime": 4.449866666666667,
+      "boneUploadBytesLastFrame": 1472,
+      "frameCount": 27
+    },
+    "nearState": {
+      "fps": {
+        "position": [
+          -1.7,
+          1.7,
+          4.199999999999999
+        ],
+        "yaw": 0,
+        "pitch": -0.16,
+        "verticalVelocity": 0,
+        "grounded": true,
+        "frameCount": 29,
+        "pointerLocked": false,
+        "keys": [],
+        "playing": false,
+        "quality": "validation",
+        "mission": {
+          "scanned": false,
+          "nearby": false,
+          "message": "Pulsa E para hablar con Iria",
+          "npc": {
+            "name": "Iria",
+            "position": [
+              -1.7,
+              0,
+              6.1
+            ],
+            "homePosition": [
+              -1.7,
+              0,
+              6
+            ],
+            "yaw": 3.141592653589793,
+            "interactionRadius": 2,
+            "patrolDistance": 0.65,
+            "patrolSpeed": 0.2,
+            "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+            "state": "idle",
+            "elapsed": 4.449866666666667,
+            "spoken": false,
+            "speechRemaining": 0,
+            "patrolDirection": 1,
+            "interactionCount": 0
+          }
+        },
+        "logicSteps": 6271,
+        "width": 320,
+        "height": 180,
+        "deviceLost": null,
+        "gpuUncapturedErrors": [],
+        "pendingUIActions": 0,
+        "antialiasing": {
+          "msaaSamples": 1,
+          "fxaa": true
+        },
+        "resolutionScale": 0.25,
+        "npc": {
+          "name": "Iria",
+          "state": "idle",
+          "position": [
+            -1.7,
+            0,
+            6.1
+          ],
+          "spoken": false,
+          "animation": "idle"
+        }
+      },
+      "npc": {
+        "name": "Iria",
+        "position": [
+          -1.7,
+          0,
+          6.1
+        ],
+        "state": "idle",
+        "animation": "idle",
+        "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "spoken": false,
+        "interactionCount": 0,
+        "jointCount": 23,
+        "animationTime": 4.449866666666667,
+        "boneUploadBytesLastFrame": 1472,
+        "frameCount": 29
+      }
+    },
+    "speakingState": {
+      "name": "Iria",
+      "position": [
+        -1.7,
+        0,
+        6.1
+      ],
+      "state": "speaking",
+      "animation": "idle",
+      "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+      "spoken": true,
+      "interactionCount": 1,
+      "jointCount": 23,
+      "animationTime": 4.699833333333334,
+      "boneUploadBytesLastFrame": 1472,
+      "frameCount": 32
+    },
+    "gpuAntialiasing": {
+      "textures": [
+        {
+          "label": "nerva/fps/hdr-msaa",
+          "width": 1280,
+          "height": 720,
+          "sampleCount": 4,
+          "format": "rgba16float"
+        },
+        {
+          "label": "nerva/fps/depth-msaa",
+          "width": 1280,
+          "height": 720,
+          "sampleCount": 4,
+          "format": "depth32float"
+        }
+      ],
+      "pipelines": [
+        {
+          "label": "nerva/fps/forward",
+          "sampleCount": 4
+        },
+        {
+          "label": "nerva/fps/character-forward",
+          "sampleCount": 4
+        }
+      ],
+      "actualResolves": [
+        {
+          "label": "nerva/fps/forward"
+        }
+      ],
+      "verified": true,
+      "depthResolveEvidence": {
+        "source": "private/fps/browser-report.json baseline actual GPU timestamps",
+        "sampleCount": 4,
+        "depthResolveEncoded": true,
+        "gpuTimestampStatus": "measured",
+        "depthResolveGpuMs": 11.227653,
+        "softwareAdapter": true
+      }
+    },
+    "highState": {
+      "position": [
+        -1.7,
+        1.7,
+        4.199999999999999
+      ],
+      "yaw": 0,
+      "pitch": -0.16,
+      "verticalVelocity": 0,
+      "grounded": true,
+      "frameCount": 33,
+      "pointerLocked": false,
+      "keys": [],
+      "playing": false,
+      "quality": "high",
+      "mission": {
+        "scanned": false,
+        "nearby": false,
+        "message": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6.1
+          ],
+          "homePosition": [
+            -1.7,
+            0,
+            6
+          ],
+          "yaw": 3.141592653589793,
+          "interactionRadius": 2,
+          "patrolDistance": 0.65,
+          "patrolSpeed": 0.2,
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "state": "speaking",
+          "elapsed": 4.699833333333334,
+          "spoken": true,
+          "speechRemaining": 5,
+          "patrolDirection": 1,
+          "interactionCount": 1
+        }
+      },
+      "logicSteps": 6945,
+      "width": 1280,
+      "height": 720,
+      "deviceLost": null,
+      "gpuUncapturedErrors": [],
+      "pendingUIActions": 0,
+      "antialiasing": {
+        "msaaSamples": 4,
+        "fxaa": true
+      },
+      "resolutionScale": 1,
+      "npc": {
+        "name": "Iria",
+        "state": "speaking",
+        "position": [
+          -1.7,
+          0,
+          6.1
+        ],
+        "spoken": true,
+        "animation": "idle"
+      }
+    },
+    "finalState": {
+      "position": [
+        -1.7,
+        1.7,
+        4.199999999999999
+      ],
+      "yaw": 0,
+      "pitch": -0.16,
+      "verticalVelocity": 0,
+      "grounded": true,
+      "frameCount": 33,
+      "pointerLocked": false,
+      "keys": [],
+      "playing": false,
+      "quality": "high",
+      "mission": {
+        "scanned": false,
+        "nearby": false,
+        "message": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+        "npc": {
+          "name": "Iria",
+          "position": [
+            -1.7,
+            0,
+            6.1
+          ],
+          "homePosition": [
+            -1.7,
+            0,
+            6
+          ],
+          "yaw": 3.141592653589793,
+          "interactionRadius": 2,
+          "patrolDistance": 0.65,
+          "patrolSpeed": 0.2,
+          "dialogue": "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+          "state": "speaking",
+          "elapsed": 4.699833333333334,
+          "spoken": true,
+          "speechRemaining": 5,
+          "patrolDirection": 1,
+          "interactionCount": 1
+        }
+      },
+      "logicSteps": 6945,
+      "width": 1280,
+      "height": 720,
+      "deviceLost": null,
+      "gpuUncapturedErrors": [],
+      "pendingUIActions": 0,
+      "antialiasing": {
+        "msaaSamples": 4,
+        "fxaa": true
+      },
+      "resolutionScale": 1,
+      "npc": {
+        "name": "Iria",
+        "state": "speaking",
+        "position": [
+          -1.7,
+          0,
+          6.1
+        ],
+        "spoken": true,
+        "animation": "idle"
+      }
+    },
+    "tests": {
+      "native1280x720": true,
+      "actualMSAA4Resolve": true,
+      "fxaaConfigured": true,
+      "idle23Bones": true,
+      "liveWalkUpdatesBones": true,
+      "realEAuthoredDialogue": true,
+      "escapePauses": true,
+      "noGpuErrors": true,
+      "actualDepthResolve": true
+    },
+    "scope": "Actual WebGPU high native presentation, real NERVA NPC state/pose, and real browser E input; software adapter, no hardware FPS claim."
+  },
+  "packageQA": {
+    "check": "offline npm package installation and public imports",
+    "network": "npm --offline; no downloaded dependencies",
+    "package": "nerva-private",
+    "version": "0.3.0",
+    "included": {
+      "assets/characters/iria.gltf": 85725,
+      "assets/characters/iria.bin": 748140,
+      "src/graphics/gltf.mjs": 33521,
+      "src/graphics/index.mjs": 632,
+      "src/runtime.mjs": 37356
+    },
+    "dependencyCount": 0,
+    "runtimes": [
+      {
+        "node": "v24.19.0",
+        "packageVersion": "0.3.0",
+        "runtimeResult": 42,
+        "publicGraphicsImports": true,
+        "model": {
+          "joints": 23,
+          "primitives": 19,
+          "vertices": 11913,
+          "triangles": 19716,
+          "idle": "Idle",
+          "walk": "Walk",
+          "paletteBytes": 1472,
+          "reusedPalette": true,
+          "sha256": {
+            "gltf": "c62ed8470b980ba0629aeab94b64baf35aa984715729cec86a9b9f1f3fbd68a9",
+            "binary": "307bb7fb481e1d50e4c2928bab345668d1363e96aa9a0cdb094745b32a710029"
+          }
+        }
+      }
+    ],
+    "node18Executed": false,
+    "temporaryDirectoryRemoved": true,
+    "verified": true,
+    "finalDryRun": {
+      "verified": true,
+      "command": "npm pack --dry-run --json --ignore-scripts",
+      "includes": {
+        "assets/characters/iria.gltf": 85725,
+        "assets/characters/iria.bin": 748140,
+        "scripts/probe-fps-character.py": 9004,
+        "src/graphics/gltf.mjs": 33521,
+        "src/graphics/index.mjs": 632,
+        "src/runtime.mjs": 37356
+      }
+    },
+    "packagedSourcesScope": "Offline installation verified runtime, graphics and final Iria asset; final dry-run also verified the new character probe helper. README, report assembler and package script changed after installation without changing the validated runtime or assets."
+  }
+}

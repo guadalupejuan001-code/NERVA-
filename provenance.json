@@ -1,0 +1,45 @@
+{
+  "languageVersion": "0.2.0",
+  "origin": {
+    "repository": "https://github.com/guadalupejuan001-code/UNIDAD",
+    "commit": "2d989a56f92af6a8c9d4a686bef77a173b1f602b",
+    "directory": "src/ia_propia/assets/nerva"
+  },
+  "files": [
+    {
+      "path": "src/conversation_decoder.nv",
+      "sourcePath": "src/ia_propia/assets/nerva/conversation_decoder.nv",
+      "sha256": "97d5b38f4e3aa0277eec0d37debbfdbba4e6b814eb281b1cbcd05fc9a2bfec4d"
+    },
+    {
+      "path": "src/conversation_worker.mjs",
+      "sourcePath": "src/ia_propia/assets/nerva/conversation_worker.mjs",
+      "sha256": "420773fc26c27812f2d200186793318fa3f0868e85cbbe1e794082129676959c"
+    },
+    {
+      "path": "src/language_rnn.nv",
+      "sourcePath": "src/ia_propia/assets/nerva/language_rnn.nv",
+      "sha256": "94efa33605e0ab8a18ae4072df2ec1134c4dcfab1a4a35bf4d5919b7452f607c"
+    },
+    {
+      "path": "src/nerva.mjs",
+      "sourcePath": "src/ia_propia/assets/nerva/nerva.mjs",
+      "sha256": "83197cafb2594f931dfe963bb57c81e40f9e027a1dc6355697bfb7624ce1d7eb"
+    },
+    {
+      "path": "src/parser.mjs",
+      "sourcePath": "src/ia_propia/assets/nerva/parser.mjs",
+      "sha256": "d25d3a409faef397a60ac70239b9674aa6616a8f1159f28067f2a9fb8178fba6"
+    },
+    {
+      "path": "src/runtime.mjs",
+      "sourcePath": "src/ia_propia/assets/nerva/runtime.mjs",
+      "sha256": "67eef8b571770485fab2f9aa7950f8021db008fb5e41e9a268a37015223aed06"
+    },
+    {
+      "path": "src/tensor.mjs",
+      "sourcePath": "src/ia_propia/assets/nerva/tensor.mjs",
+      "sha256": "807e6e020ad854a79234635d6adea204881f2bed7497369c7f3433a233d4cd62"
+    }
+  ]
+}
