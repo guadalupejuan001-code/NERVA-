@@ -13,7 +13,8 @@
   "exports": {
     ".": "./src/runtime.mjs",
     "./parser": "./src/parser.mjs",
-    "./tensor": "./src/tensor.mjs"
+    "./tensor": "./src/tensor.mjs",
+    "./selector": "./src/token_selector.mjs"
   },
   "files": [
     "src/",
