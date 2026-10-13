@@ -1,0 +1,28 @@
+nerva 0.2
+# Clasificador lineal de cuatro puntos separables. No es un modelo de lenguaje.
+# Comprueba ajuste a los ejemplos conocidos; no demuestra generalización.
+const x = tensor64([[-2, -1], [-1, -2], [1, 2], [2, 1]])
+const etiquetas = [0, 0, 1, 1]
+param pesos: Tensor[2, 2] = zeros([2, 2], "f64")
+param sesgo: Tensor[2] = zeros([2], "f64")
+const parametros = [pesos, sesgo]
+print("Pérdida inicial", value(cross_entropy(x @ pesos + sesgo, etiquetas)))
+
+for epoca in range(100) {
+    zero_grad(parametros)
+    let logits = x @ pesos + sesgo
+    let perdida = cross_entropy(logits, etiquetas)
+    backward(perdida)
+    step(parametros, 0.1)
+}
+
+const logits_finales = x @ pesos + sesgo
+const perdida_final = value(cross_entropy(logits_finales, etiquetas))
+print("Pérdida final", perdida_final)
+assert(perdida_final < 0.05, "El clasificador no convergió.")
+for indice in range(len(etiquetas)) {
+    let clase = argmax(logits_finales[indice])
+    print("Punto y clase", indice, clase)
+    assert(clase == etiquetas[indice])
+}
+checkpoint("clasificacion", parametros)

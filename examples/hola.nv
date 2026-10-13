@@ -1,0 +1,15 @@
+nerva 0.2
+# Variables, funciones y operaciones matriciales en un programa independiente.
+fn saludar(nombre) {
+    return "Hola, " + nombre + ". Esto es NERVA."
+}
+
+const mensaje = saludar("creador")
+print(mensaje)
+
+const datos: Tensor[2, 2] = tensor([[1, 2], [3, 4]])
+const pesos: Tensor[2] = tensor([2, 1])
+const resultado = datos @ pesos
+print("Resultado matricial", resultado)
+assert(value(resultado[0]) == 4)
+assert(value(resultado[1]) == 10)

@@ -1,0 +1,27 @@
+nerva 0.2
+# Aprende y = 2*x + 1 desde parámetros iniciales cero, con autograd y SGD.
+# Ejemplo pequeño: los mismos cinco puntos se usan para entrenar y comprobar.
+const x = tensor64([-2, -1, 0, 1, 2])
+const y = tensor64([-3, -1, 1, 3, 5])
+param peso: Tensor[] = tensor64(0)
+param sesgo: Tensor[] = tensor64(0)
+const parametros = [peso, sesgo]
+const perdida_inicial = value(mse(x * peso + sesgo, y))
+print("Pérdida inicial", perdida_inicial)
+
+for epoca in range(100) {
+    zero_grad(parametros)
+    let prediccion = x * peso + sesgo
+    let perdida = mse(prediccion, y)
+    backward(perdida)
+    step(parametros, 0.1)
+}
+
+const perdida_final = value(mse(x * peso + sesgo, y))
+const prediccion_nueva = value(tensor64(3) * peso + sesgo)
+print("Pérdida final", perdida_final)
+print("Peso y sesgo", value(peso), value(sesgo))
+print("Predicción para x=3", prediccion_nueva)
+assert(perdida_final < 0.000001, "La regresión no convergió.")
+assert(abs(prediccion_nueva - 7) < 0.001)
+checkpoint("regresion", parametros)
