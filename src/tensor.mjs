@@ -1,21 +1,62 @@
-/* NERVA 0.2: bounded CPU tensors and reverse-mode differentiation. */
+/* NERVA 0.3: CPU tensors, differentiation and isolated operation budgets. */
 const MAX_ELEMENTS = 1_000_000;
 const MAX_RANK = 8;
 const DEFAULT_BUDGET = 20_000_000;
-let budgetLimit = DEFAULT_BUDGET;
-let budgetUsed = 0;
+const ASYNC_FUNCTION_PROTOTYPE = Object.getPrototypeOf(async function () {});
+const budgetContexts = new WeakSet();
+let activeBudget = createBudget();
 
-export function resetBudget(limit = DEFAULT_BUDGET) {
+function checkBudgetLimit(limit) {
   if (!Number.isSafeInteger(limit) || limit < 0) throw new RangeError('Operation budget must be a nonnegative safe integer');
-  budgetLimit = limit;
-  budgetUsed = 0;
+}
+function requireBudget(context) {
+  if (!budgetContexts.has(context)) throw new TypeError('Expected a tensor budget context created by createBudget');
+  checkBudgetLimit(context.limit);
+  if (!Number.isSafeInteger(context.used) || context.used < 0 || context.used > context.limit)
+    throw new RangeError('Operation budget usage must be a nonnegative safe integer within its limit');
+  return context;
+}
+export function createBudget(limit = DEFAULT_BUDGET) {
+  checkBudgetLimit(limit);
+  const context = { limit, used: 0 };
+  budgetContexts.add(context);
+  return context;
+}
+export function withBudget(context, work) {
+  requireBudget(context);
+  if (typeof work !== 'function') throw new TypeError('Budget work must be a synchronous function');
+  if (Object.getPrototypeOf(work) === ASYNC_FUNCTION_PROTOTYPE) throw new TypeError('Budget work must be a synchronous function');
+  const previous = activeBudget;
+  activeBudget = context;
+  try {
+    const result = work();
+    if (result instanceof Promise) {
+      // Consume rejected native Promises before reporting the synchronous API error.
+      Promise.prototype.then.call(result, undefined, () => {});
+      throw new TypeError('Budget work must be synchronous');
+    }
+    if (result !== null && (typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function')
+      throw new TypeError('Budget work must be synchronous');
+    return result;
+  } finally {
+    activeBudget = previous;
+  }
+}
+export function resetBudget(limit = DEFAULT_BUDGET) {
+  checkBudgetLimit(limit);
+  activeBudget.limit = limit;
+  activeBudget.used = 0;
   return getBudget();
 }
 export const setBudget = resetBudget;
-export function getBudget() { return { limit: budgetLimit, used: budgetUsed, remaining: budgetLimit - budgetUsed }; }
+export function getBudget(context = activeBudget) {
+  const { limit, used } = requireBudget(context);
+  return { limit, used, remaining: limit - used };
+}
 function charge(count) {
-  if (!Number.isSafeInteger(count) || count < 0 || count > budgetLimit - budgetUsed) throw new RangeError('Tensor operation budget exceeded');
-  budgetUsed += count;
+  const context = requireBudget(activeBudget);
+  if (!Number.isSafeInteger(count) || count < 0 || count > context.limit - context.used) throw new RangeError('Tensor operation budget exceeded');
+  context.used += count;
 }
 
 // Inference-only token selection. No tensor/parameter is mutated and there is

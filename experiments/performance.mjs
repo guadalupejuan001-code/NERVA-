@@ -1,38 +1,28 @@
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
-import { tmpdir, cpus } from 'node:os';
-import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { readFile, writeFile } from 'node:fs/promises';
+import { cpus } from 'node:os';
 import { performance } from 'node:perf_hooks';
-import { runProgram } from '../src/runtime.mjs';
+import { runProgram, prepareProgram, VERSION } from '../src/runtime.mjs';
 import * as T from '../src/tensor.mjs';
 
-// Experimental copies live in a temporary directory. The canonical runtime and
-// its full API remain unchanged. These variants intentionally omit globals only
-// on the internal decoder path where the host consumes records and steps.
-const sourceURL = new URL('../src/runtime.mjs', import.meta.url);
+// Measure the public APIs independently: preparation avoids repeated parsing;
+// captureGlobals controls serialization without changing records or steps.
 const decoder = await readFile(new URL('../src/conversation_decoder.nv', import.meta.url), 'utf8');
 const median = values => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
 const round = value => Number(value.toFixed(6));
 
-function replaceOnce(source, before, after) {
-  assert.equal(source.split(before).length, 2, `Expected exactly one occurrence: ${before}`);
-  return source.replace(before, after);
-}
-
-function variant(source, cacheAST, recordsOnly) {
-  source = replaceOnce(source, "from './parser.mjs'", `from ${JSON.stringify(new URL('../src/parser.mjs', import.meta.url).href)}`);
-  source = replaceOnce(source, "from './tensor.mjs'", `from ${JSON.stringify(new URL('../src/tensor.mjs', import.meta.url).href)}`);
-  if (cacheAST) {
-    source = 'let cachedSource = null, cachedAST = null;\n' + source;
-    source = replaceOnce(source, 'const ast = parse(source);',
-      'const ast = source === cachedSource ? cachedAST : (cachedAST = parse(source), cachedSource = source, cachedAST);');
-  }
-  if (recordsOnly) {
-    source = replaceOnce(source, 'for (const [name, binding] of global.bindings) {',
-      'for (const [name, binding] of []) {');
-  }
-  return source;
+function variantsFor(source) {
+  const prepared = prepareProgram(source);
+  return [
+    { name: 'run_program', captureGlobals: true,
+      run: options => runProgram(source, { ...options, captureGlobals: true }) },
+    { name: 'prepared_program', captureGlobals: true,
+      run: options => prepared.run({ ...options, captureGlobals: true }) },
+    { name: 'run_records_only', captureGlobals: false,
+      run: options => runProgram(source, { ...options, captureGlobals: false }) },
+    { name: 'prepared_records_only', captureGlobals: false,
+      run: options => prepared.run({ ...options, captureGlobals: false }) },
+  ];
 }
 
 function inputs(size, iteration = 0) {
@@ -41,48 +31,53 @@ function inputs(size, iteration = 0) {
     top_k: 0, top_p: 1, repetition_penalty: 1.1, draw: 0 };
 }
 
-async function decoderExperiment(directory) {
-  const original = await readFile(sourceURL, 'utf8');
-  const variants = [{ name: 'original', run: runProgram }];
-  for (const [name, cache, records] of [
-    ['cache_ast', true, false], ['records_only', false, true], ['cache_ast_records_only', true, true],
-  ]) {
-    const file = join(directory, name + '.mjs');
-    await writeFile(file, variant(original, cache, records));
-    const module = await import(pathToFileURL(file).href);
-    variants.push({ name, run: module.runProgram });
-  }
-  // Validate varying controls before timing. AST caches must also invalidate
-  // when the source changes; the original public API is not being replaced.
+function decoderExperiment() {
+  const preparationStart = performance.now();
+  const variants = variantsFor(decoder);
+  const preparationMs = performance.now() - preparationStart;
+  // Validate varying controls before timing. Prepared programs reuse their
+  // syntax, while inputs, execution state and budgets are fresh for each run.
   let parityCases = 0;
   for (const size of [8, 128, 1024, 8192]) {
     for (const iteration of [0, 1, 2]) {
       for (const temperature of [0, 0.8]) {
         const data = { ...inputs(size, iteration), temperature,
           draw: 0.37, top_k: temperature ? 6 : 0, top_p: temperature ? 0.9 : 1 };
-        const expected = runProgram(decoder, { inputs: data });
+        const expected = variants[0].run({ inputs: data });
+        let recordsOnlyOperations;
         for (const candidate of variants.slice(1)) {
-          const actual = candidate.run(decoder, { inputs: data });
+          const actual = candidate.run({ inputs: data });
           assert.deepEqual(actual.records, expected.records);
           assert.equal(actual.steps, expected.steps);
-          if (candidate.name.includes('records_only')) assert.equal(Object.keys(actual.globals).length, 0);
+          assert(Number.isSafeInteger(actual.tensorOperations) && actual.tensorOperations > 0);
+          if (candidate.captureGlobals) {
+            assert.deepEqual(actual.globals, expected.globals);
+            assert.equal(actual.tensorOperations, expected.tensorOperations);
+          } else {
+            assert.equal(Object.keys(actual.globals).length, 0);
+            if (recordsOnlyOperations !== undefined) assert.equal(actual.tensorOperations, recordsOnlyOperations);
+            recordsOnlyOperations = actual.tensorOperations;
+          }
         }
         parityCases++;
       }
     }
   }
-  for (const candidate of variants.slice(1)) {
-    assert.deepEqual(candidate.run('print(1)').records[0].values, [1]);
-    assert.deepEqual(candidate.run('print(2)').records[0].values, [2]);
-    assert.throws(() => candidate.run('print(unknown)'));
-    assert.deepEqual(candidate.run('print(3)').records[0].values, [3]);
-    assert.throws(() => candidate.run('print(tensor64([1,2]))', { operationLimit: 1 }));
+  for (const value of [1, 2, 3]) {
+    for (const candidate of variantsFor(`print(${value})`)) {
+      assert.deepEqual(candidate.run({}).records[0].values, [value]);
+    }
+  }
+  for (const candidate of variantsFor('print(unknown)')) assert.throws(() => candidate.run({}));
+  for (const candidate of variantsFor('print(tensor64([1,2]))')) {
+    assert.throws(() => candidate.run({ operationLimit: 1 }));
+    assert.deepEqual(candidate.run({}).records[0].values[0].data, [1, 2]);
   }
   const results = [];
   for (const [size, calls] of [[128, 160], [1024, 100], [8192, 40]]) {
     const data = inputs(size);
     for (let warmup = 0; warmup < 20; warmup++) {
-      for (const candidate of variants) candidate.run(decoder, { inputs: data });
+      for (const candidate of variants) candidate.run({ inputs: data });
     }
     const samples = Object.fromEntries(variants.map(candidate => [candidate.name, []]));
     for (let repetition = 0; repetition < 5; repetition++) {
@@ -92,21 +87,29 @@ async function decoderExperiment(directory) {
       for (let offset = 0; offset < variants.length; offset++) {
         const candidate = variants[(repetition + offset) % variants.length];
         const start = performance.now();
-        for (let call = 0; call < calls; call++) candidate.run(decoder, { inputs: data });
+        for (let call = 0; call < calls; call++) candidate.run({ inputs: data });
         samples[candidate.name].push((performance.now() - start) / calls);
       }
     }
     const measurements = Object.fromEntries(variants.map(candidate => [candidate.name, {
       medianMsPerDecision: round(median(samples[candidate.name])),
       samplesMsPerDecision: samples[candidate.name].map(round),
-      speedupVsOriginal: round(median(samples.original) / median(samples[candidate.name])),
+      speedupVsRunProgram: round(median(samples.run_program) / median(samples[candidate.name])),
     }]));
-    results.push({ vocabularySize: size, callsPerRound: calls, rounds: 5, measurements });
+    const ratio = (before, after) => round(median(samples[before]) / median(samples[after]));
+    results.push({ vocabularySize: size, callsPerRound: calls, rounds: 5, measurements,
+      isolatedComparisons: {
+        preparationWithGlobals: ratio('run_program', 'prepared_program'),
+        preparationWithoutGlobals: ratio('run_records_only', 'prepared_records_only'),
+        omitGlobalsWithoutPreparation: ratio('run_program', 'run_records_only'),
+        omitGlobalsWithPreparation: ratio('prepared_program', 'prepared_records_only'),
+      } });
   }
   return { hypothesis: 'Avoid repeated parsing and exporting unused globals on a fixed decoder path.',
-    parityCases, cacheInvalidationAndBudgetChecks: true, results,
-    scope: 'Temporary prototype, same records/steps on tested decoder inputs. records_only changes global export semantics and is not a public API replacement.',
-    limitations: 'No full conversation speedup established; production needs a separate prepared/records-only API and all compatibility checks.' };
+    preparationMs: round(preparationMs), parityCases,
+    preparedSourceIsolationAndBudgetChecks: true, results,
+    scope: 'Public runProgram and prepareProgram(...).run APIs with captureGlobals true/false; same records/steps on tested decoder inputs. Preparation occurs outside repeated-run timings.',
+    limitations: 'No full conversation or system speedup established. Omitting globals changes the returned global exports and their serialization cost; results describe in-process token decisions only.' };
 }
 
 function fused(x, weight, bias) {
@@ -152,18 +155,13 @@ function fusionExperiment() {
 async function main() {
   const args = process.argv.slice(2);
   if (args.length && (args.length !== 2 || args[0] !== '--out')) throw new Error('Usage: node experiments/performance.mjs [--out result.json]');
-  const directory = await mkdtemp(join(tmpdir(), 'nerva-performance-'));
-  try {
-    const report = { experiment: 'execution_scaling', runtimeVersion: '0.2.0',
-      environment: { node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length },
-      timingPolicy: 'Run after other experiments finish; alternating/rotated order and medians of five rounds.',
-      decoder: await decoderExperiment(directory), fusion: fusionExperiment() };
-    const text = JSON.stringify(report, null, 2) + '\n';
-    if (args.length) await writeFile(args[1], text);
-    process.stdout.write(text);
-  } finally {
-    await rm(directory, { recursive: true, force: true });
-  }
+  const report = { experiment: 'execution_scaling', runtimeVersion: VERSION,
+    environment: { node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length },
+    timingPolicy: 'Run after other experiments finish; alternating/rotated order and medians of five rounds.',
+    decoder: decoderExperiment(), fusion: fusionExperiment() };
+  const text = JSON.stringify(report, null, 2) + '\n';
+  if (args.length) await writeFile(args[1], text);
+  process.stdout.write(text);
 }
 
 main().catch(error => { process.stderr.write(String(error.stack) + '\n'); process.exitCode = 1; });

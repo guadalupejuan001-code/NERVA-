@@ -1,0 +1,31 @@
+nerva 0.3
+
+import { build_invoice } from "../lib/invoice.nv"
+import { minimal_item } from "./fixtures.nv"
+
+const half_cent = set(minimal_item, "tax_bps", 5000)
+const just_below = set(minimal_item, "tax_bps", 4999)
+const full_discount = set(set(minimal_item, "discount_bps", 10000), "tax_bps", 2100)
+const discounted = {sku: "DISCOUNT", quantity: 1, unit_price_cents: 3, discount_bps: 5000, tax_bps: 5000}
+const order = {
+    invoice_id: "ROUNDING",
+    currency: "EUR",
+    customer: {id: "SYNTHETIC-C"},
+    items: [half_cent, just_below, full_discount, discounted],
+}
+const invoice = build_invoice(order)
+assert(invoice.totals.subtotal_cents == 6)
+assert(invoice.totals.discount_cents == 3)
+assert(invoice.totals.net_cents == 3)
+assert(invoice.totals.tax_cents == 2)
+assert(invoice.totals.total_cents == 5)
+assert(invoice.items[0].tax_cents == 1)
+assert(invoice.items[3].total_cents == 0)
+
+# Append también es persistente: recalcular el informe no modifica el anterior.
+const extended = set(order, "items", append(order.items, minimal_item))
+const extended_invoice = build_invoice(extended)
+assert(len(order.items) == 4)
+assert(len(extended.items) == 5)
+assert(invoice.totals.total_cents == 5)
+assert(extended_invoice.totals.total_cents == 6)

@@ -8,9 +8,13 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 async function main() {
-  if (process.argv.length > 3) throw new Error('Uso: node scripts/verify-origin.mjs [ruta-a-UNIDAD]');
+  const args = process.argv.slice(2);
+  const reportOnly = args.includes('--report');
+  const paths = args.filter(argument => argument !== '--report');
+  if (paths.length > 1 || paths.some(argument => argument.startsWith('--')))
+    throw new Error('Uso: node scripts/verify-origin.mjs [ruta-a-UNIDAD] [--report]');
   const manifest = JSON.parse(await readFile(resolve(root, 'provenance.json'), 'utf8'));
-  const unidad = process.argv[2] ? resolve(process.argv[2]) : null;
+  const unidad = paths[0] ? resolve(paths[0]) : null;
   const files = [];
   for (const file of manifest.files) {
     const local = sha256(await readFile(resolve(root, file.path)));
@@ -20,7 +24,7 @@ async function main() {
   }
   const ok = files.every(file => file.matchesOrigin && (!unidad || (file.matchesUnidad && file.unidadMatchesOrigin)));
   process.stdout.write(JSON.stringify({ ok, originCommit: manifest.origin.commit, files }, null, 2) + '\n');
-  if (!ok) process.exitCode = 1;
+  if (!ok && !reportOnly) process.exitCode = 1;
 }
 
 main().catch(error => {

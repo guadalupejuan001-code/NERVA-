@@ -3,7 +3,6 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { runProgram, VERSION } from '../src/runtime.mjs';
-import { getBudget } from '../src/tensor.mjs';
 
 // Frozen before evaluation: this is optimization of actions for each supplied
 // goal, not training a policy that learned planning for arbitrary new goals.
@@ -131,7 +130,6 @@ function solve(goal, split) {
     },
   });
   const elapsedMs = performance.now() - start;
-  const budget = getBudget();
   const [initialLoss, finalLoss, velocityTensor, pathTensor, acceptedNV] = result.records[0].values;
   const measured = simulate(velocityTensor.data, goal);
   assert.equal(measured.accepted, acceptedNV, 'Independent acceptance must match NERVA');
@@ -149,7 +147,7 @@ function solve(goal, split) {
     energyImprovementVsBaselinePercent: optimized.accepted && baselineSummary.accepted && baselineSummary.energy > 0
       ? (baselineSummary.energy - optimized.energy) / baselineSummary.energy * 100 : null,
     velocityPlan: velocityTensor.data,
-    execution: { steps: result.steps, tensorOperations: budget.used, elapsedMs } };
+    execution: { steps: result.steps, tensorOperations: result.tensorOperations, elapsedMs } };
 }
 
 const started = performance.now();
@@ -209,7 +207,7 @@ const output = {
 };
 const outIndex = process.argv.indexOf('--out');
 if (outIndex >= 0) {
-  const destination = resolve(process.argv[outIndex + 1] ?? 'experiments/results/planning.json');
+  const destination = resolve(process.argv[outIndex + 1] ?? `experiments/results/${VERSION}/planning.json`);
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, JSON.stringify(output, null, 2) + '\n');
 }

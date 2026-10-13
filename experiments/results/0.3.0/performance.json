@@ -1,0 +1,254 @@
+{
+  "experiment": "execution_scaling",
+  "runtimeVersion": "0.3.0",
+  "environment": {
+    "node": "v24.19.0",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "logicalCPUs": 5
+  },
+  "timingPolicy": "Run after other experiments finish; alternating/rotated order and medians of five rounds.",
+  "decoder": {
+    "hypothesis": "Avoid repeated parsing and exporting unused globals on a fixed decoder path.",
+    "preparationMs": 4.766541,
+    "parityCases": 24,
+    "preparedSourceIsolationAndBudgetChecks": true,
+    "results": [
+      {
+        "vocabularySize": 128,
+        "callsPerRound": 160,
+        "rounds": 5,
+        "measurements": {
+          "run_program": {
+            "medianMsPerDecision": 0.242305,
+            "samplesMsPerDecision": [
+              0.461533,
+              0.243252,
+              0.220006,
+              0.182993,
+              0.242305
+            ],
+            "speedupVsRunProgram": 1
+          },
+          "prepared_program": {
+            "medianMsPerDecision": 0.214438,
+            "samplesMsPerDecision": [
+              0.28733,
+              0.327096,
+              0.214438,
+              0.142313,
+              0.156508
+            ],
+            "speedupVsRunProgram": 1.129957
+          },
+          "run_records_only": {
+            "medianMsPerDecision": 0.195354,
+            "samplesMsPerDecision": [
+              0.81743,
+              0.264044,
+              0.195354,
+              0.176015,
+              0.170651
+            ],
+            "speedupVsRunProgram": 1.240336
+          },
+          "prepared_records_only": {
+            "medianMsPerDecision": 0.10787,
+            "samplesMsPerDecision": [
+              0.10787,
+              0.109347,
+              0.140762,
+              0.087749,
+              0.10524
+            ],
+            "speedupVsRunProgram": 2.246274
+          }
+        },
+        "isolatedComparisons": {
+          "preparationWithGlobals": 1.129957,
+          "preparationWithoutGlobals": 1.811021,
+          "omitGlobalsWithoutPreparation": 1.240336,
+          "omitGlobalsWithPreparation": 1.987929
+        }
+      },
+      {
+        "vocabularySize": 1024,
+        "callsPerRound": 100,
+        "rounds": 5,
+        "measurements": {
+          "run_program": {
+            "medianMsPerDecision": 0.971322,
+            "samplesMsPerDecision": [
+              1.072804,
+              0.928218,
+              0.955829,
+              1.902815,
+              0.971322
+            ],
+            "speedupVsRunProgram": 1
+          },
+          "prepared_program": {
+            "medianMsPerDecision": 0.975125,
+            "samplesMsPerDecision": [
+              0.985571,
+              0.927014,
+              0.975125,
+              1.270941,
+              0.93367
+            ],
+            "speedupVsRunProgram": 0.9961
+          },
+          "run_records_only": {
+            "medianMsPerDecision": 0.672254,
+            "samplesMsPerDecision": [
+              0.672254,
+              0.608162,
+              0.674747,
+              0.699307,
+              0.656937
+            ],
+            "speedupVsRunProgram": 1.444875
+          },
+          "prepared_records_only": {
+            "medianMsPerDecision": 0.588083,
+            "samplesMsPerDecision": [
+              0.584296,
+              0.617505,
+              0.588083,
+              0.636381,
+              0.547072
+            ],
+            "speedupVsRunProgram": 1.651676
+          }
+        },
+        "isolatedComparisons": {
+          "preparationWithGlobals": 0.9961,
+          "preparationWithoutGlobals": 1.143127,
+          "omitGlobalsWithoutPreparation": 1.444875,
+          "omitGlobalsWithPreparation": 1.658143
+        }
+      },
+      {
+        "vocabularySize": 8192,
+        "callsPerRound": 40,
+        "rounds": 5,
+        "measurements": {
+          "run_program": {
+            "medianMsPerDecision": 4.855507,
+            "samplesMsPerDecision": [
+              10.849649,
+              4.855507,
+              4.821572,
+              5.437799,
+              4.753885
+            ],
+            "speedupVsRunProgram": 1
+          },
+          "prepared_program": {
+            "medianMsPerDecision": 4.6862,
+            "samplesMsPerDecision": [
+              9.061423,
+              11.255657,
+              4.6862,
+              4.532073,
+              4.444743
+            ],
+            "speedupVsRunProgram": 1.036129
+          },
+          "run_records_only": {
+            "medianMsPerDecision": 2.45606,
+            "samplesMsPerDecision": [
+              3.714319,
+              5.263448,
+              2.451112,
+              2.45606,
+              2.401786
+            ],
+            "speedupVsRunProgram": 1.97695
+          },
+          "prepared_records_only": {
+            "medianMsPerDecision": 2.429813,
+            "samplesMsPerDecision": [
+              4.570997,
+              4.413486,
+              2.261574,
+              2.429813,
+              2.281442
+            ],
+            "speedupVsRunProgram": 1.998305
+          }
+        },
+        "isolatedComparisons": {
+          "preparationWithGlobals": 1.036129,
+          "preparationWithoutGlobals": 1.010802,
+          "omitGlobalsWithoutPreparation": 1.97695,
+          "omitGlobalsWithPreparation": 1.928626
+        }
+      }
+    ],
+    "scope": "Public runProgram and prepareProgram(...).run APIs with captureGlobals true/false; same records/steps on tested decoder inputs. Preparation occurs outside repeated-run timings.",
+    "limitations": "No full conversation or system speedup established. Omitting globals changes the returned global exports and their serialization cost; results describe in-process token decisions only."
+  },
+  "fusion": {
+    "expression": "tanh(x * 0.73 - 0.17)",
+    "results": [
+      {
+        "elements": 8192,
+        "dtype": "f64",
+        "callsPerRound": 24,
+        "rounds": 5,
+        "exactForwardParity": true,
+        "medianMsPerCall": {
+          "generic": 0.814195,
+          "fused": 0.117409
+        },
+        "speedup": 6.934693,
+        "samplesMsPerCall": {
+          "generic": [
+            2.034473,
+            0.814195,
+            0.80964,
+            0.910131,
+            0.767344
+          ],
+          "fused": [
+            0.508462,
+            0.347153,
+            0.104794,
+            0.117409,
+            0.108044
+          ]
+        }
+      },
+      {
+        "elements": 65536,
+        "dtype": "f64",
+        "callsPerRound": 4,
+        "rounds": 5,
+        "exactForwardParity": true,
+        "medianMsPerCall": {
+          "generic": 9.701408,
+          "fused": 1.167648
+        },
+        "speedup": 8.308506,
+        "samplesMsPerCall": {
+          "generic": [
+            12.529956,
+            17.431099,
+            9.701408,
+            9.399058,
+            9.442231
+          ],
+          "fused": [
+            2.427352,
+            2.63228,
+            0.81412,
+            0.774819,
+            1.167648
+          ]
+        }
+      }
+    ],
+    "scope": "Handwritten inference-only JavaScript kernel, not an implemented NERVA compiler.",
+    "limitations": "Fused prototype bypasses tensor validation/accounting and has no backward pass. Speedups mix fewer allocations, fewer checks and fewer traversals; production must preserve errors, budgets and gradients."
+  }
+}

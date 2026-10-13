@@ -126,7 +126,7 @@ const invalidPrograms = [
   ['range must make progress', 'range(1, 3, 0)', /paso cero/],
   ['indices cannot be negative', 'print([1][-1])', /fuera de rango/],
   ['nonfinite arithmetic is rejected', 'print(1 / 0)', /finito/],
-  ['unsupported headers are rejected', 'nerva 0.3\nprint(1)', /0\.2 header/],
+  ['unsupported headers are rejected', 'nerva 0.4\nprint(1)', /0\.2 and 0\.3 headers/],
   ['missing separators are rejected', 'const x = 1 const y = 2', /newline or semicolon/],
 ];
 
@@ -154,10 +154,10 @@ test('tensor annotations, shape validation and host values reject incompatible d
   assert.throws(() => runProgram('reshape(tensor([1, 2]), [3])'), /preserve element count/);
   assert.throws(() => runProgram('tensor([1, 2]) + tensor([1, 2, 3])'), /Cannot broadcast/);
   assert.throws(() => runProgram('', { inputs: { print: 1 } }), /Nombre de entrada/);
-  assert.throws(() => runProgram('', { inputs: { item: { nested: 1 } } }), /entradas admiten/);
+  assert.deepEqual(runProgram('print(item.nested)', { inputs: { item: { nested: 1 } } }).records[0].values, [1]);
   assert.throws(() => runProgram('', { inputs: { item: Infinity } }), /finito/);
-  assert.throws(() => runProgram('', { inputs: { item: () => 1 } }), /entradas admiten/);
+  assert.throws(() => runProgram('', { inputs: { item: () => 1 } }), /JSON/);
   assert.throws(() => runProgram('', { stepLimit: 0 }), /stepLimit/);
-  assert.throws(() => runProgram('', { operationLimit: 20000001 }), /operationLimit/);
+  assert.throws(() => runProgram('', { operationLimit: Number.MAX_SAFE_INTEGER + 1 }), /operationLimit/);
   assert.throws(() => runProgram('', { seed: -1 }), /semilla/);
 });
