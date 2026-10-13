@@ -2,8 +2,10 @@
 
 Esta extensión ejecuta únicamente `conversation_decoder.nv` con SHA-256
 `97d5b38f4e3aa0277eec0d37debbfdbba4e6b814eb281b1cbcd05fc9a2bfec4d`.
-No cambia `runProgram`, `runSource2`, la CLI ni los siete archivos originales;
-`provenance.json` conserva sus hashes. Node.js 18+, sin dependencias nuevas.
+La extensión no cambia `runProgram`, `runSource2` ni la CLI de cada versión.
+UNIDAD conserva sus siete archivos 0.2 originales; NERVA independiente avanzó
+a 0.3 durante este trabajo y se conservaron todos esos cambios ajenos.
+`provenance.json` conserva los hashes históricos, sin reescribirlos. Node.js 18+, sin dependencias nuevas.
 
 ```js
 import {readFileSync} from 'node:fs';
@@ -16,7 +18,7 @@ const token = select({scores: [3, 2, 1], excluded: [], generated: [],
 `prepareTokenSelector` valida sintaxis y hash una vez. Devuelve una función que
 acepta exactamente las ocho entradas numéricas del worker y devuelve un entero.
 Su segundo argumento opcional admite `stepLimit` y `operationLimit` con los
-mismos rangos del intérprete. La nueva API no devuelve variables globales.
+rangos acotados del intérprete 0.2, también cuando se usa desde 0.3. La nueva API no devuelve variables globales.
 Usa los mismos `tensor` f64, `selectToken` y `serialize`: conserva algoritmos,
 desempates, validaciones y cargos de operaciones. Conserva también los fallos
 por presupuesto reducido. El código `.nv` modificado se rechaza explícitamente.
@@ -43,7 +45,7 @@ Verificación y mediciones:
 
 ```sh
 npm test
-npm run verify:origin -- ../UNIDAD
+npm run verify:origin -- --report
 node scripts/verify-selector.mjs ../UNIDAD
 node experiments/selector.mjs private/selector-kernel.json
 ```
@@ -53,3 +55,11 @@ vocabularios de 2.048 y 8.192. No mide respuestas completas. Las comparaciones
 completas viven en UNIDAD, en `docs/nerva-selector-20261013/`, con C7,
 `reference-wiki1` (predeterminado al iniciar) y el candidato de memoria separado.
 Se publican resultados y limitaciones antes de decidir su adopción.
+
+La misma extensión se verifica con los runtimes 0.2.0 y 0.3.0. En 0.3 respeta
+los contextos de presupuesto del anfitrión y cobra los tres pasos adicionales
+de invocación introducidos por esa versión. El programa fijo conserva su
+encabezado 0.2. No importa módulos ni registra funciones del anfitrión. Los
+getters, símbolos, prototipos personalizados y arrays dispersos se rechazan
+sin ejecutar código del anfitrión. Versiones futuras requieren una revisión
+explícita; no se supone compatibilidad por compartir el nombre NERVA.

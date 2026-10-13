@@ -118,11 +118,11 @@ export function lex(source) {
       emit('op', pair, atLine, atColumn);
       continue;
     }
-    if ('+-*/@^<>=()[]{},:;'.includes(char)) {
+    if ('+-*/%@^<>=()[]{},:;.'.includes(char)) {
       advance();
       if (char === '(' || char === '[') grouping++;
       else if (char === ')' || char === ']') grouping = Math.max(0, grouping - 1);
-      emit('()[]{},:;'.includes(char) ? 'punct' : 'op', char, atLine, atColumn);
+      emit('()[]{},:;.'.includes(char) ? 'punct' : 'op', char, atLine, atColumn);
       continue;
     }
     throw new LangError(`Unexpected character ${JSON.stringify(char)}`, { line: atLine, column: atColumn });
@@ -134,7 +134,7 @@ export function lex(source) {
 const PRECEDENCE = new Map([
   ['or', 20], ['and', 30],
   ['==', 40], ['!=', 40], ['<', 40], ['<=', 40], ['>', 40], ['>=', 40],
-  ['+', 50], ['-', 50], ['*', 60], ['/', 60], ['@', 60], ['^', 80],
+  ['+', 50], ['-', 50], ['*', 60], ['/', 60], ['%', 60], ['@', 60], ['^', 80],
 ]);
 
 class Parser {
@@ -142,6 +142,7 @@ class Parser {
     this.tokens = tokens;
     this.position = 0;
     this.depth = 0;
+    this.scopeDepth = 0;
     this.nodes = 0;
     this.nodeDepths = new WeakMap();
   }
@@ -179,16 +180,17 @@ class Parser {
   }
   program() {
     this.separators();
+    let version = '0.2';
     if (this.is('nerva')) {
       this.take();
-      const version = this.peek();
-      if (version.type !== 'number' || version.value !== 0.2) this.fail('Only the nerva 0.2 header is supported');
-      this.take();
+      const token = this.peek();
+      if (token.type !== 'number' || ![0.2, 0.3].includes(token.value)) this.fail('Only the nerva 0.2 and 0.3 headers are supported');
+      version = String(this.take().value);
       if (this.peek().type !== 'newline' && !this.is(';') && this.peek().type !== 'eof') this.fail('Expected a separator after the version header');
       this.separators();
     }
     const body = this.statements(false);
-    return { type: 'program', body };
+    return { type: 'program', version, body };
   }
   statements(inBlock) {
     const body = [];
@@ -204,13 +206,25 @@ class Parser {
   block() {
     this.newlines();
     this.expect('{');
-    const body = this.statements(true);
-    this.expect('}');
-    return body;
+    this.scopeDepth++;
+    try {
+      const body = this.statements(true);
+      this.expect('}');
+      return body;
+    } finally { this.scopeDepth--; }
   }
   statement() {
     return this.bounded(() => {
       const token = this.peek();
+      const next = this.peek(1);
+      // Module words remain identifiers outside declaration forms, preserving
+      // programs that already used names such as import, export, from, or as.
+      const isImport = this.is('import') && ((next.type === 'punct' && next.value === '{') || (next.type === 'op' && next.value === '*'));
+      const isExport = this.is('export') && next.type === 'keyword' && ['fn', 'let', 'const', 'param'].includes(next.value);
+      if (isImport || isExport) {
+        if (this.scopeDepth !== 0) this.fail(`${token.value} is only allowed at the top level`, token);
+        return isImport ? this.importDeclaration() : this.exportDeclaration();
+      }
       if (token.type === 'keyword' && ['let', 'const', 'param'].includes(token.value)) return this.declaration();
       if (this.is('fn')) return this.functionDeclaration();
       if (this.is('if')) return this.ifStatement();
@@ -246,6 +260,56 @@ class Parser {
       const expr = this.expression();
       return this.node('expr', { expr }, token, [expr]);
     });
+  }
+  importDeclaration() {
+    const token = this.expect('import');
+    const names = [];
+    const locals = new Set();
+    let namespace = null;
+    if (this.is('*')) {
+      this.take();
+      this.expect('as');
+      namespace = this.identifier().value;
+    } else {
+      this.expect('{');
+      this.newlines();
+      while (!this.is('}')) {
+        const imported = this.identifier();
+        this.newlines();
+        let local = imported;
+        if (this.is('as')) {
+          this.take();
+          this.newlines();
+          local = this.identifier();
+          this.newlines();
+        }
+        if (locals.has(local.value)) this.fail(`Duplicate import binding ${local.value}`, local);
+        locals.add(local.value);
+        names.push({ imported: imported.value, local: local.value });
+        if (!this.is(',')) break;
+        this.take();
+        this.newlines();
+      }
+      this.expect('}');
+    }
+    this.newlines();
+    this.expect('from');
+    this.newlines();
+    const path = this.peek();
+    if (path.type !== 'string') this.fail('Expected a module path string');
+    this.take();
+    return this.node('import', { path: path.value, names, namespace }, token);
+  }
+  exportDeclaration() {
+    this.expect('export');
+    let declaration;
+    if (this.is('fn')) declaration = this.functionDeclaration();
+    else if (this.peek().type === 'keyword' && ['let', 'const', 'param'].includes(this.peek().value)) {
+      declaration = this.declaration();
+    }
+    if (!declaration) this.fail('export must precede a function, let, const, or param declaration');
+    declaration.exported = true;
+    return declaration;
   }
   declaration() {
     const token = this.take();
@@ -338,6 +402,14 @@ class Parser {
           left = this.node('index', { target: left, index }, token, [left, index]);
           continue;
         }
+        if (token.type === 'punct' && token.value === '.' && 100 >= minimum) {
+          this.take();
+          const name = this.peek();
+          if (name.type !== 'id' && name.type !== 'keyword') this.fail('Expected a member name');
+          this.take();
+          left = this.node('member', { target: left, name: name.value }, token, [left]);
+          continue;
+        }
         const precedence = token.type === 'op' || token.type === 'keyword' ? PRECEDENCE.get(token.value) : undefined;
         if (precedence === undefined || precedence < minimum) break;
         this.take();
@@ -373,6 +445,28 @@ class Parser {
       }
       this.expect(']');
       return this.node('list', { items }, token, items);
+    }
+    if (token.value === '{') {
+      const entries = [];
+      const keys = new Set();
+      this.newlines();
+      while (!this.is('}')) {
+        const key = this.peek();
+        if (!['id', 'keyword', 'string'].includes(key.type)) this.fail('Expected a record key');
+        this.take();
+        if (keys.has(key.value)) this.fail(`Duplicate record key ${JSON.stringify(key.value)}`, key);
+        keys.add(key.value);
+        this.newlines();
+        this.expect(':');
+        this.newlines();
+        entries.push({ key: key.value, value: this.expression() });
+        this.newlines();
+        if (!this.is(',')) break;
+        this.take();
+        this.newlines();
+      }
+      this.expect('}');
+      return this.node('record', { entries }, token, entries.map((entry) => entry.value));
     }
     this.fail('Expected an expression', token);
   }

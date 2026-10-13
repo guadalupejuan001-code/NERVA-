@@ -5,6 +5,11 @@ El creador quiere que NERVA alcance la máxima capacidad general en código:
 hacia programación general, interoperabilidad, aprendizaje y transformación de
 programas; las capacidades disponibles se siguen declarando por evidencia.
 
+La continuación pide implementar NERVA para programación profesional. Prioriza
+proyectos modulares ejecutables, datos estructurados, interoperabilidad explícita,
+pruebas y empaquetado reproducible. Los ejemplos y experimentos deben funcionar
+con la versión publicada, conservando la evidencia histórica por versión.
+
 - Lee README.md y docs/lenguaje.md para conocer el contrato existente.
 - Desarrolla el lenguaje aquí. UNIDAD conserva una copia empaquetada; una
   actualización allí requiere revisar sus adaptadores y pruebas de integración.

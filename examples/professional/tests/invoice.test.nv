@@ -1,0 +1,36 @@
+nerva 0.3
+
+import { build_invoice, build_batch } from "../lib/invoice.nv"
+import { support_order, course_order } from "./fixtures.nv"
+
+const invoice = build_invoice(support_order)
+assert(invoice.invoice_id == "DEMO-001")
+assert(invoice.taxable_line_count == 2)
+assert(invoice.totals.subtotal_cents == 30997)
+assert(invoice.totals.discount_cents == 2500)
+assert(invoice.totals.net_cents == 28497)
+assert(invoice.totals.tax_cents == 5325)
+assert(invoice.totals.total_cents == 33822)
+assert(invoice.items[0].sku == "NERVA-SUPPORT")
+assert(invoice.items[0].tax_cents == 4725)
+assert(invoice.items[1].sku == "NERVA-BOOK")
+assert(invoice.items[1].tax_cents == 600)
+assert(invoice.items[2].total_cents == 0)
+
+const batch = build_batch([support_order, course_order])
+assert(batch.invoice_count == 2)
+assert(batch.currency == "EUR")
+assert(batch.invoices[1].totals.total_cents == 18171)
+assert(batch.totals.subtotal_cents == 51097)
+assert(batch.totals.discount_cents == 5500)
+assert(batch.totals.net_cents == 45597)
+assert(batch.totals.tax_cents == 6396)
+assert(batch.totals.total_cents == 51993)
+
+# Se conserva el orden de entrada; sort y set generan nuevas colecciones.
+assert(support_order.items[0].sku == "NERVA-SUPPORT")
+assert(not has(support_order.items[0], "total_cents"))
+const serialized = json_stringify(batch)
+const restored = json_parse(serialized)
+assert(restored.totals.total_cents == 51993)
+assert(restored.invoices[0].customer.id == "SYNTHETIC-A")

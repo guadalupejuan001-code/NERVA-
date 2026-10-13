@@ -1,0 +1,8 @@
+nerva 0.3
+
+import { build_frame } from "./lib/geometry.nv"
+
+# scene es una entrada JSON explícita; host.present recibe las líneas proyectadas.
+const frame = build_frame(scene)
+host.present(frame)
+print({vertices: len(frame.points), edges: len(frame.lines)})

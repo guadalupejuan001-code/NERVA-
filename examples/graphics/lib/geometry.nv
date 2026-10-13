@@ -1,0 +1,79 @@
+nerva 0.3
+
+# Coordenadas del cubo en espacio local. Los vértices son vectores fila f64.
+const vertices: Tensor[8, 3] = tensor64([
+    [-1, -1, -1],
+    [1, -1, -1],
+    [1, 1, -1],
+    [-1, 1, -1],
+    [-1, -1, 1],
+    [1, -1, 1],
+    [1, 1, 1],
+    [-1, 1, 1],
+])
+
+const edges = [
+    [0, 1], [1, 2], [2, 3], [3, 0],
+    [4, 5], [5, 6], [6, 7], [7, 4],
+    [0, 4], [1, 5], [2, 6], [3, 7],
+]
+
+fn positive_number(value, message) {
+    assert(number(value) == value and value > 0, message)
+}
+
+export fn build_frame(scene) {
+    positive_number(scene.width, "width debe ser un número positivo")
+    positive_number(scene.height, "height debe ser un número positivo")
+    positive_number(scene.focal, "focal debe ser un número positivo")
+    positive_number(scene.distance, "distance debe ser un número positivo")
+    positive_number(scene.near, "near debe ser un número positivo")
+    assert(number(scene.angle) == scene.angle, "angle debe ser un número")
+    assert(number(scene.pitch) == scene.pitch, "pitch debe ser un número")
+
+    # El anfitrión aporta sólo seno/coseno y el destino de presentación.
+    # Las matrices, sus productos y la perspectiva se calculan en NERVA.
+    const cy = host.cos(scene.angle)
+    const sy = host.sin(scene.angle)
+    const cp = host.cos(scene.pitch)
+    const sp = host.sin(scene.pitch)
+    const yaw: Tensor[3, 3] = tensor64([
+        [cy, 0, -sy],
+        [0, 1, 0],
+        [sy, 0, cy],
+    ])
+    const pitch: Tensor[3, 3] = tensor64([
+        [1, 0, 0],
+        [0, cp, sp],
+        [0, -sp, cp],
+    ])
+    const rotated = vertices @ yaw @ pitch
+
+    let points = []
+    for i in range(len(rotated)) {
+        const vertex = rotated[i]
+        const z = value(vertex[2]) + scene.distance
+        # Esta primera prueba rechaza cruces del plano cercano; no hace clipping.
+        assert(z > scene.near, "Un vértice cruza el plano cercano de la cámara")
+        const scale = scene.focal / z
+        points = append(points, {
+            x: scene.width / 2 + value(vertex[0]) * scale,
+            y: scene.height / 2 - value(vertex[1]) * scale,
+            z: z,
+        })
+    }
+
+    let lines = []
+    for edge in edges {
+        const a = points[edge[0]]
+        const b = points[edge[1]]
+        lines = append(lines, {
+            x1: a.x,
+            y1: a.y,
+            x2: b.x,
+            y2: b.y,
+            color: "#68e0ff",
+        })
+    }
+    return {width: scene.width, height: scene.height, points: points, lines: lines}
+}

@@ -3,9 +3,10 @@ import { mkdir, readFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import { VERSION } from '../src/runtime.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const destination = join(root, 'experiments', 'results');
+const destination = join(root, 'experiments', 'results', VERSION);
 await mkdir(destination, { recursive: true });
 const reports = {};
 for (const name of ['learning', 'synthesis', 'planning', 'performance']) {
@@ -22,6 +23,8 @@ for (const name of ['learning', 'synthesis', 'planning', 'performance']) {
 }
 assert(reports.learning.runs.every(run => run.status === 'ok'), 'All learning runs must execute');
 const summary = {
+  runtimeVersion: VERSION,
+  reportsDirectory: `experiments/results/${VERSION}/`,
   learning: reports.learning.summaries.map(row => ({
     configuration: row.configuration, heldoutMseMean: row.heldout_loss.mean,
     thresholdReached: row.threshold_reached_runs,
@@ -36,12 +39,13 @@ const summary = {
   performance: {
     decoder: reports.performance.decoder.results.map(row => ({
       vocabularySize: row.vocabularySize,
-      prototypeSpeedup: row.measurements.cache_ast_records_only.speedupVsOriginal,
+      preparedRecordsOnlySpeedup: row.measurements.prepared_records_only.speedupVsRunProgram,
+      isolatedComparisons: row.isolatedComparisons,
     })),
     inferenceOnlyFusion: reports.performance.fusion.results.map(row => ({
       elements: row.elements, prototypeSpeedup: row.speedup,
     })),
   },
-  note: 'Small explicit experiments, not general programming/conversation acceptance. Performance uses temporary prototypes with the limitations in each report.',
+  note: 'Small explicit experiments, not general programming/conversation acceptance. Decoder performance measures the public runtime APIs; inference fusion remains a prototype with the limitations in its report.',
 };
 process.stdout.write(JSON.stringify(summary, null, 2) + '\n');

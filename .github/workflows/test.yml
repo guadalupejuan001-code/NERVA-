@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm test
+      - run: npm run test:professional
+      - run: npm run demo:professional
+      - run: npm run demo:graphics
       - run: npm run demo
       - run: npm run train:regression
       - run: npm run train:classification

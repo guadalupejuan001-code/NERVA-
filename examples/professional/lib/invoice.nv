@@ -1,0 +1,164 @@
+nerva 0.3
+
+# Dinero en centavos enteros; porcentajes en puntos básicos (10000 = 100%).
+# Se redondean descuento e impuesto por línea, en ese orden.
+fn invalid(message) {
+    return {ok: false, error: message}
+}
+
+fn valid() {
+    return {ok: true, error: ""}
+}
+
+export fn validate_item(item) {
+    for name in ["sku", "quantity", "unit_price_cents", "tax_bps"] {
+        if not has(item, name) {
+            return invalid("Falta el campo de línea: " + name)
+        }
+    }
+    if str(item.sku) != item.sku or len(item.sku) == 0 or len(item.sku) > 64 {
+        return invalid("sku debe ser una cadena de 1 a 64 caracteres")
+    }
+    if item.quantity <= 0 or item.quantity > 1000000 or item.quantity % 1 != 0 {
+        return invalid("quantity debe ser un entero de 1 a 1000000")
+    }
+    if item.unit_price_cents < 0 or item.unit_price_cents > 1000000000 or item.unit_price_cents % 1 != 0 {
+        return invalid("unit_price_cents debe ser un entero de 0 a 1000000000")
+    }
+    if item.tax_bps < 0 or item.tax_bps > 10000 or item.tax_bps % 1 != 0 {
+        return invalid("tax_bps debe ser un entero de 0 a 10000")
+    }
+    const discount = get(item, "discount_bps", 0)
+    if discount < 0 or discount > 10000 or discount % 1 != 0 {
+        return invalid("discount_bps debe ser un entero de 0 a 10000")
+    }
+    if item.quantity * item.unit_price_cents > 1000000000 {
+        return invalid("El subtotal de una línea supera 1000000000 centavos")
+    }
+    return valid()
+}
+
+export fn validate_invoice(order) {
+    for name in ["invoice_id", "currency", "customer", "items"] {
+        if not has(order, name) {
+            return invalid("Falta el campo de factura: " + name)
+        }
+    }
+    if str(order.invoice_id) != order.invoice_id or len(order.invoice_id) == 0 or len(order.invoice_id) > 64 {
+        return invalid("invoice_id debe ser una cadena de 1 a 64 caracteres")
+    }
+    if str(order.currency) != order.currency or len(order.currency) != 3 {
+        return invalid("currency debe ser una cadena de tres caracteres")
+    }
+    if len(order.items) == 0 or len(order.items) > 1000 {
+        return invalid("Una factura requiere entre 1 y 1000 líneas")
+    }
+    for item in order.items {
+        const checked = validate_item(item)
+        if not checked.ok {
+            return checked
+        }
+    }
+    return valid()
+}
+
+export fn validate_batch(orders) {
+    if len(orders) == 0 or len(orders) > 100 {
+        return invalid("Un lote requiere entre 1 y 100 facturas")
+    }
+    let identifiers = {}
+    let currency = ""
+    for order in orders {
+        const checked = validate_invoice(order)
+        if not checked.ok {
+            return checked
+        }
+        if has(identifiers, order.invoice_id) {
+            return invalid("invoice_id duplicado: " + order.invoice_id)
+        }
+        identifiers = set(identifiers, order.invoice_id, true)
+        if currency == "" {
+            currency = order.currency
+        }
+        if currency != order.currency {
+            return invalid("No se pueden sumar facturas de monedas distintas")
+        }
+    }
+    return valid()
+}
+
+fn price_item(item) {
+    const subtotal = item.quantity * item.unit_price_cents
+    const discount_bps = get(item, "discount_bps", 0)
+    const discount = round(subtotal * discount_bps / 10000)
+    const net = subtotal - discount
+    const tax = round(net * item.tax_bps / 10000)
+    return {
+        sku: item.sku,
+        quantity: item.quantity,
+        unit_price_cents: item.unit_price_cents,
+        discount_bps: discount_bps,
+        tax_bps: item.tax_bps,
+        subtotal_cents: subtotal,
+        discount_cents: discount,
+        net_cents: net,
+        tax_cents: tax,
+        total_cents: net + tax,
+    }
+}
+
+fn empty_totals() {
+    return {
+        subtotal_cents: 0,
+        discount_cents: 0,
+        net_cents: 0,
+        tax_cents: 0,
+        total_cents: 0,
+    }
+}
+
+fn add_item(totals, item) {
+    let next = totals
+    for name in keys(totals) {
+        next = set(next, name, get(totals, name) + get(item, name))
+    }
+    return next
+}
+
+fn add_invoice(totals, invoice) {
+    return add_item(totals, invoice.totals)
+}
+
+fn taxable(item) {
+    return item.tax_bps > 0
+}
+
+fn descending_total(a, b) {
+    return b.total_cents - a.total_cents
+}
+
+export fn build_invoice(order) {
+    const checked = validate_invoice(order)
+    assert(checked.ok, checked.error)
+    const priced = map(order.items, price_item)
+    return {
+        invoice_id: order.invoice_id,
+        currency: order.currency,
+        customer: order.customer,
+        items: sort(priced, descending_total),
+        taxable_line_count: len(filter(priced, taxable)),
+        totals: reduce(priced, add_item, empty_totals()),
+    }
+}
+
+export fn build_batch(orders) {
+    const checked = validate_batch(orders)
+    assert(checked.ok, checked.error)
+    const invoices = map(orders, build_invoice)
+    return {
+        currency: orders[0].currency,
+        invoice_count: len(invoices),
+        invoices: invoices,
+        totals: reduce(invoices, add_invoice, empty_totals()),
+    }
+}

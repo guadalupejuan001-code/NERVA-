@@ -1,0 +1,35 @@
+nerva 0.3
+
+import { validate_item, validate_invoice, validate_batch } from "../lib/invoice.nv"
+import { minimal_item, support_order, course_order } from "./fixtures.nv"
+
+assert(validate_item(minimal_item).ok)
+assert(not validate_item(set(minimal_item, "quantity", 0)).ok)
+assert(not validate_item(set(minimal_item, "quantity", -1)).ok)
+assert(not validate_item(set(minimal_item, "quantity", 1.5)).ok)
+assert(not validate_item(set(minimal_item, "quantity", 1000001)).ok)
+assert(not validate_item(set(minimal_item, "unit_price_cents", -1)).ok)
+assert(not validate_item(set(minimal_item, "unit_price_cents", 1.5)).ok)
+assert(not validate_item(set(minimal_item, "tax_bps", -1)).ok)
+assert(not validate_item(set(minimal_item, "tax_bps", 10001)).ok)
+assert(not validate_item(set(minimal_item, "tax_bps", 2.5)).ok)
+assert(not validate_item(set(minimal_item, "discount_bps", -1)).ok)
+assert(not validate_item(set(minimal_item, "discount_bps", 10001)).ok)
+assert(not validate_item(set(minimal_item, "discount_bps", 1.5)).ok)
+assert(not validate_item(set(minimal_item, "sku", "")).ok)
+assert(not validate_item({sku: "INCOMPLETE", quantity: 1}).ok)
+const overflow = set(set(minimal_item, "quantity", 2), "unit_price_cents", 1000000000)
+assert(not validate_item(overflow).ok)
+
+assert(validate_invoice(support_order).ok)
+assert(not validate_invoice(set(support_order, "items", [])).ok)
+assert(not validate_invoice(set(support_order, "invoice_id", "")).ok)
+assert(not validate_invoice(set(support_order, "currency", "EURO")).ok)
+const bad_items = set(support_order.items, 0, set(support_order.items[0], "quantity", -2))
+assert(not validate_invoice(set(support_order, "items", bad_items)).ok)
+assert(support_order.items[0].quantity == 2)
+
+assert(validate_batch([support_order, course_order]).ok)
+assert(not validate_batch([]).ok)
+assert(not validate_batch([support_order, support_order]).ok)
+assert(not validate_batch([support_order, set(course_order, "currency", "USD")]).ok)

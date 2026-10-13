@@ -1,7 +1,7 @@
 {
   "name": "nerva-private",
-  "version": "0.2.0",
-  "description": "Lenguaje privado para programación y aprendizaje local con tensores en CPU",
+  "version": "0.3.0",
+  "description": "Lenguaje privado con módulos, colecciones, herramientas de proyecto y aprendizaje local",
   "private": true,
   "type": "module",
   "engines": {
@@ -14,6 +14,7 @@
     ".": "./src/runtime.mjs",
     "./parser": "./src/parser.mjs",
     "./tensor": "./src/tensor.mjs",
+    "./project": "./src/project.mjs",
     "./selector": "./src/token_selector.mjs"
   },
   "files": [
@@ -28,6 +29,9 @@
     "nerva": "node src/nerva.mjs",
     "check": "node src/nerva.mjs check",
     "demo": "node src/nerva.mjs run examples/hola.nv",
+    "demo:graphics": "node examples/graphics/render.mjs",
+    "demo:professional": "node src/nerva.mjs run examples/professional --inputs examples/professional/input.json --json",
+    "test:professional": "node src/nerva.mjs test examples/professional --json",
     "train:regression": "node src/nerva.mjs run examples/regresion.nv",
     "train:classification": "node src/nerva.mjs run examples/clasificacion.nv",
     "test": "node --test tests/*.test.mjs",

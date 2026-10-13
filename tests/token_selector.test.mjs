@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runProgram, runSource2 } from '../src/runtime.mjs';
+import { runProgram, runSource2, VERSION } from '../src/runtime.mjs';
 import { prepareTokenSelector } from '../src/token_selector.mjs';
 import { getBudget } from '../src/tensor.mjs';
+import * as T from '../src/tensor.mjs';
 
 const source = readFileSync(new URL('../src/conversation_decoder.nv', import.meta.url), 'utf8');
 const select = prepareTokenSelector(source);
@@ -35,7 +36,7 @@ test('specialized selection has exact tokens and operation charges across contro
 
 test('preserves operation and step boundaries and resets budgets after exceptions', () => {
   const expected = runProgram(source, {inputs: defaults});
-  const charged = getBudget().used;
+  const charged = expected.tensorOperations ?? getBudget().used;
   for (let stepLimit = 1; stepLimit < expected.steps; stepLimit++) {
     assert.throws(() => runProgram(source, {inputs: defaults, stepLimit}));
     assert.throws(() => select(defaults, {stepLimit}));
@@ -43,7 +44,8 @@ test('preserves operation and step boundaries and resets budgets after exception
   assert.equal(select(defaults, {stepLimit: expected.steps, operationLimit: charged}), 2);
   for (const options of [{operationLimit: charged - 1}, {operationLimit: 0}, {operationLimit: 20000001},
       {stepLimit: 200001}, {stepLimit: 0}, {operationLimit: 1.5}, {stepLimit: NaN}]) {
-    assert.throws(() => runProgram(source, {inputs: defaults, ...options}));
+    if (VERSION === '0.2.0' || !(options.operationLimit > 20000000 || options.stepLimit > 200000))
+      assert.throws(() => runProgram(source, {inputs: defaults, ...options}));
     assert.throws(() => select(defaults, options));
     assert.equal(select(defaults), 2);
   }
@@ -67,8 +69,39 @@ test('rejects invalid values and executable input and refuses a changed fixed pr
 
 test('public interpreter still exports globals and outputs without changing its API', () => {
   const result = runProgram(source, {inputs: defaults});
-  assert.deepEqual(Object.keys(result).sort(), ['globals', 'records', 'steps']);
+  assert.deepEqual(Object.keys(result).sort(), VERSION === '0.2.0' ? ['globals', 'records', 'steps'] :
+    ['globals', 'records', 'steps', 'tensorOperations']);
   assert.deepEqual(result.globals.scores, defaults.scores);
   assert.deepEqual(result.globals.logits.data, defaults.scores);
   assert.deepEqual(runSource2(source, {inputs: defaults}), result.records);
+});
+
+test('rejects JSON accessors and hidden executable values without invoking them', () => {
+  let calls = 0;
+  const input = {...defaults};
+  Object.defineProperty(input, 'scores', {get() {calls++; return [1];}, enumerable: true});
+  assert.throws(() => select(input));
+  const scores = [1, 2, 3];
+  Object.defineProperty(scores, '0', {get() {calls++; return 1;}, enumerable: true});
+  assert.throws(() => select({...defaults, scores}));
+  assert.equal(calls, 0);
+  assert.throws(() => select({...defaults, [Symbol('code')]: () => 1}));
+  assert.throws(() => select(Object.assign(Object.create({code() {}}), defaults)));
+  assert.throws(() => select({...defaults, scores: Object.assign([1, 2], {code() {}})}));
+});
+
+test('on 0.3 the specialization preserves enclosing budgets on success and failure', {skip: !T.withBudget}, () => {
+  const caller = T.createBudget(100);
+  T.withBudget(caller, () => {
+    T.ones([3]);
+    const before = getBudget();
+    assert.equal(select(defaults), 2);
+    assert.deepEqual(getBudget(), before);
+    assert.throws(() => select(defaults, {operationLimit: 1}));
+    assert.deepEqual(getBudget(), before);
+    const charged = runProgram(source, {inputs: defaults}).tensorOperations;
+    assert.equal(select(defaults, {operationLimit: charged}), 2);
+    assert.throws(() => select(defaults, {operationLimit: charged - 1}));
+    assert.deepEqual(getBudget(), before);
+  });
 });
