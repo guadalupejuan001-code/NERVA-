@@ -1,6 +1,8 @@
 /** Persistent instance data shared by the CPU reference and the GPU renderer.
  * Each vec4 array is tightly packed and can be uploaded without JSON conversion.
  */
+import { cameraBasis } from './camera.mjs';
+
 export const MAX_SCENE_INSTANCES = 1_000_000;
 const INSTANCE_BYTES = 8 * Float32Array.BYTES_PER_ELEMENT;
 
@@ -160,13 +162,14 @@ function validateScene(scene) {
     throw new TypeError('scene buffers must be Float32Array values with four components per instance');
 }
 
-/** The prototype camera looks along +Z; rotation is deliberately not implied. */
+/** Positive yaw turns toward +X; positive pitch looks up. The default looks +Z. */
 export function defaultCamera(overrides = {}) {
-  return {
-    position: [0, 0, 0], near: 1, far: 500,
+  const camera = {
+    position: [0, 0, 0], yaw: 0, pitch: 0, near: 1, far: 500,
     fovY: Math.PI / 3, aspect: 4 / 3, lodDistances: [40, 100],
     ...overrides,
   };
+  return { ...camera, ...cameraBasis({ yaw: camera.yaw, pitch: camera.pitch }) };
 }
 
 /** Use these same f32 values when packing GPU camera uniforms. */
@@ -174,6 +177,9 @@ export function cameraParameters(camera = defaultCamera()) {
   if (!camera || typeof camera !== 'object' || Array.isArray(camera))
     throw new TypeError('camera must be an object');
   const position = vector3(camera.position ?? [0, 0, 0], 'camera.position');
+  const yaw = finiteFloat(camera.yaw ?? 0, 'camera.yaw');
+  const pitch = finiteFloat(camera.pitch ?? 0, 'camera.pitch');
+  const { right, up, forward } = cameraBasis({ yaw, pitch });
   const near = positiveFloat(camera.near ?? 1, 'camera.near');
   const far = positiveFloat(camera.far ?? 500, 'camera.far');
   if (far <= near) throw new RangeError('camera.far must exceed camera.near');
@@ -189,7 +195,7 @@ export function cameraParameters(camera = defaultCamera()) {
   const lodDistances = [positiveFloat(inputDistances[0], 'camera.lodDistances[0]'),
     positiveFloat(inputDistances[1], 'camera.lodDistances[1]')];
   if (lodDistances[1] <= lodDistances[0]) throw new RangeError('camera.lodDistances must be strictly increasing');
-  return { position, tanX, tanY, near, far, lodDistances };
+  return { position, yaw, pitch, right, up, forward, tanX, tanY, near, far, lodDistances };
 }
 
 /** CPU reference: six normalized frustum planes against instance bounding spheres.
@@ -198,7 +204,7 @@ export function cameraParameters(camera = defaultCamera()) {
  */
 export function cullScene(scene, camera = defaultCamera()) {
   validateScene(scene);
-  const { position, tanX, tanY, near, far, lodDistances } = cameraParameters(camera);
+  const { position, right, up, forward, tanX, tanY, near, far, lodDistances } = cameraParameters(camera);
   const visible = new Uint32Array(scene.count);
   const lods = new Uint32Array(scene.count);
   const counts = [0, 0, 0];
@@ -210,14 +216,17 @@ export function cullScene(scene, camera = defaultCamera()) {
   let length = 0;
   for (let index = 0; index < scene.count; index++) {
     const offset = index * 4;
-    const x = data[offset] - position[0];
-    const y = data[offset + 1] - position[1];
-    const z = data[offset + 2] - position[2];
+    const dx = data[offset] - position[0];
+    const dy = data[offset + 1] - position[1];
+    const dz = data[offset + 2] - position[2];
+    const x = dx * right[0] + dy * right[1] + dz * right[2];
+    const y = dx * up[0] + dy * up[1] + dz * up[2];
+    const z = dx * forward[0] + dy * forward[1] + dz * forward[2];
     const radius = data[offset + 3];
     if (z - near < -radius || far - z < -radius ||
         (z * tanX + x) / sideX < -radius || (z * tanX - x) / sideX < -radius ||
         (z * tanY + y) / sideY < -radius || (z * tanY - y) / sideY < -radius) continue;
-    const distanceSquared = x * x + y * y + z * z;
+    const distanceSquared = dx * dx + dy * dy + dz * dz;
     const lod = distanceSquared < nearLOD ? 0 : distanceSquared < farLOD ? 1 : 2;
     visible[length] = index;
     lods[length++] = lod;

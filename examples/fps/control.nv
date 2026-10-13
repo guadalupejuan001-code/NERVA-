@@ -1,0 +1,83 @@
+nerva 0.3
+
+# El anfitrión mantiene física, mallas y estado. NERVA decide misión y conducta.
+const movement = host.move({
+    forward: control.forward, strafe: control.strafe,
+    sprint: control.sprint, jump: control.jump,
+    lookDX: control.lookDX, lookDY: control.lookDY
+}, min(dt, 0.25))
+
+const dx = movement.position[0]
+const dz = movement.position[2] - 30
+const nearby = dx * dx + dz * dz < 4
+let scanned = mission.scanned
+if control.interact and nearby {
+    scanned = true
+}
+let message = "Explora la instalación y localiza la consola del núcleo"
+
+# Una máquina de estados original: Iria vigila el corredor, se detiene al
+# acercarnos y transmite la pista al pulsar E. Sólo sale un registro pequeño;
+# las mallas y el esqueleto permanecen residentes en GPU.
+const previousNPC = get(mission, "npc", {
+    name: "Iria", position: [-1.7, 0, 6], homePosition: [-1.7, 0, 6],
+    yaw: 3.141592653589793, interactionRadius: 2,
+    patrolDistance: 0.65, patrolSpeed: 0.2,
+    dialogue: "Iria: la señal del núcleo cambió. Inspecciónalo; yo vigilaré el pasillo.",
+    state: "idle", elapsed: 0, spoken: false, speechRemaining: 0, patrolDirection: 1, interactionCount: 0
+})
+const elapsed = previousNPC.elapsed + min(dt, 0.25)
+const npcDX = movement.position[0] - previousNPC.position[0]
+const npcDZ = movement.position[2] - previousNPC.position[2]
+const npcNearby = npcDX * npcDX + npcDZ * npcDZ < previousNPC.interactionRadius * previousNPC.interactionRadius
+let speechRemaining = max(0, previousNPC.speechRemaining - min(dt, 0.25))
+let spoken = previousNPC.spoken
+let interactionCount = get(previousNPC, "interactionCount", 0)
+if control.interact and npcNearby {
+    speechRemaining = 5
+    spoken = true
+    interactionCount = interactionCount + 1
+}
+let npcState = "idle"
+let npcZ = previousNPC.position[2]
+let direction = previousNPC.patrolDirection
+let npcYaw = 3.141592653589793
+if speechRemaining > 0 {
+    npcState = "speaking"
+    message = previousNPC.dialogue
+} else {
+    if npcNearby {
+        message = "Pulsa E para hablar con " + previousNPC.name
+    } else {
+        if elapsed > 4 {
+            npcState = "walking"
+            npcZ = npcZ + direction * previousNPC.patrolSpeed * min(dt, 0.25)
+            if npcZ >= previousNPC.homePosition[2] + previousNPC.patrolDistance {
+                npcZ = previousNPC.homePosition[2] + previousNPC.patrolDistance
+                direction = -1
+            }
+            if npcZ <= previousNPC.homePosition[2] - previousNPC.patrolDistance {
+                npcZ = previousNPC.homePosition[2] - previousNPC.patrolDistance
+                direction = 1
+            }
+            if direction > 0 {
+                npcYaw = 0
+            }
+        }
+    }
+}
+const npc = {
+    name: previousNPC.name, position: [previousNPC.position[0], previousNPC.position[1], npcZ],
+    homePosition: previousNPC.homePosition, yaw: npcYaw,
+    interactionRadius: previousNPC.interactionRadius, patrolDistance: previousNPC.patrolDistance,
+    patrolSpeed: previousNPC.patrolSpeed, dialogue: previousNPC.dialogue,
+    state: npcState, elapsed: elapsed, spoken: spoken,
+    speechRemaining: speechRemaining, patrolDirection: direction, interactionCount: interactionCount
+}
+if nearby and not scanned {
+    message = "Pulsa E para inspeccionar el núcleo"
+}
+if scanned {
+    message = "Núcleo inspeccionado · SECTOR 07 operativo"
+}
+host.status({scanned: scanned, nearby: nearby, message: message, npc: npc})

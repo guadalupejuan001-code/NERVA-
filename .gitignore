@@ -2,3 +2,4 @@ node_modules/
 private/
 *.tgz
 .DS_Store
+__pycache__/

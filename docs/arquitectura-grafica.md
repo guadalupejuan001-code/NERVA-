@@ -129,8 +129,9 @@ en cero evita exigir la capacidad opcional `indirect-first-instance`; el shader
 usa el índice de LOD para encontrar su región de IDs. Consulte la
 [referencia oficial WebGPU de comandos de dibujo](https://gpuweb.github.io/types/interfaces/GPURenderCommandsMixin.html).
 
-La cámara pública actual tiene posición y perspectiva y mira hacia `+Z`.
-No expone rotación de cámara. Los umbrales LOD son distancias, no error
+La cámara pública tiene posición, perspectiva y orientación `yaw`/`pitch`.
+Su orientación inicial mira hacia `+Z`; CPU y GPU comparten las bases f32.
+Los umbrales LOD son distancias, no error
 proyectado en píxeles. No hay oclusión GPU, meshlets, jerarquía de clusters,
 streaming ni selección de detalle por error de imagen.
 
@@ -286,7 +287,7 @@ costes de un juego con texturas, personajes, partículas y materiales diversos.
 | Etapa | Trabajo | Evidencia necesaria para avanzar |
 | --- | --- | --- |
 | Assets preparados | Importar glTF; optimizar índices y atributos; generar LOD, bounds y paquetes con hashes durante el build. | Calidad/error medidos, carga reproducible y bytes/tiempo de importación frente al formato de origen. |
-| Visibilidad avanzada | HZB conservador, rotación de cámara, LOD por error proyectado e histéresis; grupos de geometría/material. | Sin desapariciones incorrectas al mover cámara u objetos; ahorro GPU mayor que el coste de culling. |
+| Visibilidad avanzada | HZB conservador, LOD por error proyectado e histéresis; grupos de geometría/material. | Sin desapariciones incorrectas al mover cámara u objetos; ahorro GPU mayor que el coste de culling. |
 | Iluminación y materiales | Texturas/normal maps, HDR, luces agrupadas por tiles o clusters y sombras con límites de actualización. | Imágenes de referencia y tiempo/memoria por pase en escenas con muchas luces y materiales. |
 | Temporal | Transformaciones anteriores, vectores de movimiento, jitter y tratamiento de transparencias/disoclusiones. | Estabilidad en movimiento, cambios de cámara y materiales; coste y calidad frente a render nativo. |
 | Streaming y grafo completo | Añadir allocator transitorio y nuevos pases al grafo; cargas asíncronas, residencia y presupuestos de memoria. | Sin recursos usados después de liberar, picos acotados y recuperación ante recursos ausentes. |

@@ -25,6 +25,10 @@ BASE_CHROMIUM_ARGS = [
 SOFTWARE_CHROMIUM_ARGS = [
     "--use-angle=swiftshader",
     "--allow-unsafe-swiftshader",
+    # Linux headless direct GPUCanvas presentation needs a matching Vulkan
+    # backing. Compute/offscreen rendering alone can work without these flags.
+    "--enable-features=Vulkan",
+    "--use-vulkan=swiftshader",
 ]
 
 

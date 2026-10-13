@@ -1,7 +1,10 @@
 # Referencia de NERVA 0.3.0
 
 NERVA ejecuta programas y proyectos `.nv` en CPU mediante un intérprete de
-Node.js 18 o posterior, sin dependencias npm. Esta referencia describe
+Node.js 18 o posterior para el CLI, sin dependencias npm. El runtime
+`runtime.mjs` también se importa directamente en navegadores como módulo ES;
+parser, tensores y resolución léxica de módulos no requieren APIs Node.
+`project.mjs` y el CLI conservan sus operaciones de archivos en Node. Esta referencia describe
 [`parser.mjs`](../src/parser.mjs), [`runtime.mjs`](../src/runtime.mjs),
 [`tensor.mjs`](../src/tensor.mjs), [`project.mjs`](../src/project.mjs) y
 [`cli.mjs`](../src/cli.mjs): módulos, datos estructurados, funciones del

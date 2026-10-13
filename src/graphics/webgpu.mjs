@@ -292,6 +292,9 @@ export async function createWebGPURenderer({ device, scene, width = 640, height 
     if (derived.some(value => !Number.isFinite(value)))
       throw new RangeError('Camera projection and squared LOD distances must remain finite in Float32 GPU arithmetic');
     cameraFloats.set(params.position, 0);
+    cameraFloats.set(params.right, 4);
+    cameraFloats.set(params.up, 8);
+    cameraFloats.set(params.forward, 12);
     cameraFloats.set([params.tanX, params.tanY, params.near, params.far], 16);
     cameraFloats.set([width, height, ...distancesSquared], 20);
     // Normalize camera side planes once per frame, not once per GPU instance.

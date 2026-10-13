@@ -1,5 +1,5 @@
 // NERVA 0.3: modules, persistent collections and an explicit host boundary.
-import path from 'node:path';
+import path from './virtual-path.mjs';
 import { parse, LangError } from './parser.mjs';
 import * as T from './tensor.mjs';
 

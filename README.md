@@ -4,7 +4,8 @@
 colecciones, herramientas de proyecto e interoperabilidad JavaScript. Conserva
 los tensores, autodiferenciación y entrenamiento local de la versión anterior.
 
-El motor ejecuta programas `.nv` y requiere **Node.js 18+**, sin dependencias npm.
+El CLI ejecuta programas `.nv` y requiere **Node.js 18+**, sin dependencias npm.
+El runtime también funciona directamente en navegadores con módulos JavaScript.
 La versión 0.3 permite construir proyectos de varios archivos, probarlos y
 empaquetarlos para ejecutarlos desde un snapshot portable.
 
@@ -117,6 +118,26 @@ validación. Las funciones asíncronas y Promises se rechazan. Los efectos de un
 función registrada pertenecen al anfitrión; un fallo no los revierte.
 
 ## Aprendizaje y experimentos
+
+La [demo en primera persona SECTOR 07](examples/fps/README.md) construye una
+instalación industrial desde NERVA y ejecuta su lógica de movimiento e inspección
+en el navegador. Incluye materiales metálicos, sombras PCF, reflejos de suelo,
+HDR, bloom, AO por profundidad y niebla. Iria, un [personaje original](docs/character-model.md)
+con 23 articulaciones y animaciones glTF, patrulla y conversa mediante lógica NERVA.
+La calidad Alta usa la resolución de la ventana, MSAA 4× y FXAA, hasta 1920×1080.
+WASD, ratón, sprint, salto y colisiones permiten explorarla; «Conocer a Iria»
+acerca la cámara al personaje y E activa su diálogo. El [renderer FPS](docs/fps-renderer.md) documenta el pipeline,
+sus costes y las aproximaciones visuales.
+
+```sh
+npm run demo:fps
+python -m http.server 8080 --bind 127.0.0.1
+# Abrir http://127.0.0.1:8080/examples/fps/
+```
+
+El servidor sirve el repositorio local; la demo carga y ejecuta sus fuentes `.nv`
+sin necesitar archivos generados previamente. Las pruebas automatizadas de GPU
+y controles son opcionales y requieren Chromium y Python Playwright.
 
 La [base de motor WebGPU](examples/graphics-engine/README.md) incorpora escena
 persistente, actualizaciones parciales, culling y tres LOD en GPU, dibujo
